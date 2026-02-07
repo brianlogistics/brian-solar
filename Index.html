@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Brian Solar & Electrical | Solar & Electrical Services in Kenya</title>
+
+<meta name="description" content="Brian Solar & Electrical offers professional solar PV installation, solar water heaters, digital meters, borehole solarisation and electrical services across Kenya.">
+<meta name="robots" content="index, follow">
+
+<link rel="icon" href="images/logo.png">
+
+<style>
+:root{
+  --primary:#FFD700;
+  --dark:#111;
+  --light:#f9f9f9;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family:Arial,Helvetica,sans-serif;
+  line-height:1.6;
+  color:#333;
+  padding-top:80px;
+}
+img{max-width:100%;display:block}
+a{text-decoration:none;color:inherit}
+.container{max-width:1200px;margin:auto;padding:0 20px}
+.section{padding:70px 0}
+h2{text-align:center;margin-bottom:40px}
+
+/* ================= HEADER ================= */
+header{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  background:#fff;
+  z-index:9999;
+  box-shadow:0 2px 12px rgba(0,0,0,.12)
+}
+.header-inner{
+  max-width:1200px;
+  margin:auto;
+  padding:10px 20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center
+}
+.header-logo{height:46px}
+.header-cta{
+  background:var(--primary);
+  color:#000;
+  padding:12px 22px;
+  border-radius:8px;
+  font-weight:bold;
+  animation:pulse 2.5s infinite
+}
+
+/* ================= HERO ================= */
+#hero{
+  background:
+    linear-gradient(rgba(0,0,0,.6),rgba(0,0,0,.6)),
+    url("images/solar-banner.jpg") center/cover no-repeat;
+  color:#fff;
+  min-height:620px;
+  display:flex;
+  align-items:center;
+  text-align:center
+}
+#hero h1{font-size:clamp(1.9rem,4vw,2.8rem)}
+#hero h2{font-weight:400;margin:15px 0 25px}
+.cta-buttons a{
+  display:inline-block;
+  padding:14px 28px;
+  margin:6px;
+  border-radius:8px;
+  font-weight:bold;
+  transition:.3s
+}
+.quote-btn{background:var(--primary);color:#000}
+.whatsapp-btn{background:#25D366;color:#fff}
+.cta-buttons a:hover{transform:scale(1.08)}
+
+/* ================= SERVICES ================= */
+#services{background:var(--light)}
+.service-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(240px,1fr));
+  gap:30px
+}
+.service-card{
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 6px 18px rgba(0,0,0,.1);
+  opacity:0;
+  transform:translateY(40px);
+  transition:.6s ease
+}
+.service-card.show{opacity:1;transform:none}
+
+/* ================= GALLERY ================= */
+#gallery{
+  background:#fff;
+}
+
+.gallery-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:25px;
+}
+
+.gallery-item{
+  position:relative;
+  overflow:hidden;
+  border-radius:14px;
+  box-shadow:0 8px 22px rgba(0,0,0,.15);
+  transition:.4s ease;
+}
+
+.gallery-item img{
+  width:100%;
+  height:260px;
+  object-fit:cover;
+  transition:.5s ease;
+}
+
+.gallery-item span{
+  position:absolute;
+  bottom:0;
+  left:0;
+  width:100%;
+  padding:14px;
+  background:rgba(0,0,0,.65);
+  color:#fff;
+  font-weight:bold;
+  text-align:center;
+}
+
+.gallery-item:hover img{
+  transform:scale(1.1);
+}
+
+.gallery-item:hover{
+  transform:translateY(-6px);
+}
+
+
+/* ================= TESTIMONIALS ================= */
+#testimonials{
+  background:#fff
+}
+.testimonial-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+  gap:30px
+}
+.testimonial{
+  background:var(--light);
+  padding:30px;
+  border-radius:14px;
+  box-shadow:0 6px 15px rgba(0,0,0,.08)
+}
+.testimonial strong{display:block;margin-top:15px}
+
+/* ================= FAQ ================= */
+#faq{background:var(--light)}
+.faq-item{
+  max-width:800px;
+  margin:0 auto 20px;
+  background:#fff;
+  padding:20px;
+  border-radius:10px;
+  box-shadow:0 4px 12px rgba(0,0,0,.08)
+}
+
+/* ================= CONTACT ================= */
+form{
+  max-width:600px;
+  margin:auto;
+  display:grid;
+  gap:15px
+}
+input,textarea,button{
+  padding:14px;
+  border-radius:8px;
+  border:1px solid #ccc;
+  font-size:1rem
+}
+button{
+  background:var(--primary);
+  border:none;
+  font-weight:bold;
+  cursor:pointer
+}
+
+/* ================= FLOATING ================= */
+.floating-widgets{
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  z-index:999
+}
+.floating-widgets a{
+  width:56px;
+  height:56px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#fff;
+  font-size:26px;
+  animation:float 2s ease-in-out infinite
+}
+.phone{background:#000}
+.whatsapp{background:#25D366}
+
+/* ================= FOOTER ================= */
+footer{
+  background:#111;
+  color:#fff;
+  padding:35px 20px;
+  text-align:center
+}
+
+/* ================= ANIMATIONS ================= */
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,215,0,.7)}
+  70%{box-shadow:0 0 0 18px rgba(255,215,0,0)}
+  100%{box-shadow:0 0 0 0 rgba(255,215,0,0)}
+}
+@keyframes float{
+  0%{transform:translateY(0)}
+  50%{transform:translateY(-8px)}
+  100%{transform:translateY(0)}
+}
+</style>
+
+<!-- LocalBusiness + FAQ Schema -->
+<script type="application/ld+json">
+{
+ "@context":"https://schema.org",
+ "@graph":[
+  {
+   "@type":"LocalBusiness",
+   "name":"Brian Solar & Electrical",
+   "url":"https://brian-solar-and-electrical.pages.dev/",
+   "telephone":"+254768463203",
+   "email":"info@briansolar.co.ke",
+   "areaServed":{"@type":"Country","name":"Kenya"}
+  },
+  {
+   "@type":"FAQPage",
+   "mainEntity":[
+    {
+     "@type":"Question",
+     "name":"Do you provide solar installation services across Kenya?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes, we operate as a service-area business serving clients across Kenya."}
+    },
+    {
+     "@type":"Question",
+     "name":"Do you install solar water heaters?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes, we install reliable solar water heating systems for homes and businesses."}
+    },
+    {
+     "@type":"Question",
+     "name":"Do you install digital meters?",
+     "acceptedAnswer":{"@type":"Answer","text":"Yes, we install digital electricity and water meters for accurate monitoring."}
+    }
+   ]
+  }
+ ]
+}
+</script>
+</head>
+
+<!-- WhatsApp Floating Button -->
+<a href="https://wa.me/254768463203"
+   target="_blank"
+   style="
+     position: fixed;
+     bottom: 90px;
+     left: 20px;
+     background: #25D366;
+     color: white;
+     padding: 14px 20px;
+     border-radius: 40px;
+     font-weight: 600;
+     box-shadow: 0 15px 30px rgba(37,211,102,.4);
+     z-index: 999;
+     display: flex;
+     align-items: center;
+     gap: 8px;
+   ">
+   💬 WhatsApp Us
+</a>
+
+
+<body>
+
+<header>
+  <div class="header-inner">
+    <img src="images/logo.png" class="header-logo" alt="Brian Solar & Electrical">
+    <a href="#contact" class="header-cta">Request Quote</a>
+  </div>
+</header>
+
+<section id="hero">
+  <div class="container">
+    <h1>Professional Solar & Electrical Services in Kenya</h1>
+    <h2>Reliable energy solutions for homes and businesses</h2>
+    <div class="cta-buttons">
+      <a href="#contact" class="quote-btn">Get Free Quote</a>
+      <a href="https://wa.me/254768463203" class="whatsapp-btn">WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+    
+    <h2>Our Services</h2>
+
+<section id="service-area">
+  <h2>Our Service Area</h2>
+  <p>
+    Brian Solar & Electrical operates as a <strong>service-area business</strong>,
+    providing professional solar and electrical services directly at customer locations.
+    We do not operate a public walk-in office.
+  </p>
+
+  <p>
+    Our team travels to homes, businesses, farms, and project sites to deliver
+    reliable, safe, and efficient solar and electrical solutions tailored to each client’s needs.
+  </p>
+
+  <p>
+    We proudly serve <strong>Nairobi, Kiambu, Mombasa, kisumu, kitui, Nyeri, Nanyuki and surrounding areas</strong>, depending on project
+    requirements. If you are unsure whether your location is covered, please contact us
+    for confirmation.
+  </p>
+  <section id="services" class="section">
+  <div class="container">
+    <p>
+    <div class="service-cards">
+      <div class="service-card">Solar PV Installation</div>
+      <div class="service-card">Solar Water Heaters</div>
+      <div class="service-card">Solar Floodlights</div>
+      <div class="service-card">Digital Meters</div>
+      <div class="service-card">Borehole Solarisation</div>
+      <div class="service-card">Electrical Installation</div>
+    </div>
+  </div>
+</section>
+
+<section id="gallery" class="section">
+  <div class="container">
+    <h2>Recent Solar & Electrical Projects</h2>
+    <p style="text-align:center;max-width:760px;margin:0 auto 45px">
+      Below are some of our completed solar and electrical installations across Kenya,
+      including solar PV systems, borehole solarisation, solar water heaters, and
+      electrical wiring projects.
+    </p>
+
+    <div class="gallery-grid">
+      <div class="gallery-item">
+        <img src="images/project1.jpg" alt="Residential solar PV installation in Kenya" loading="lazy">
+        <span>Solar PV Installation</span>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/project2.jpg" alt="Solar water heater installation" loading="lazy">
+        <span>Solar Water Heater</span>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/project3.jpg" alt="Electrical wiring and distribution board installation" loading="lazy">
+        <span>Electrical Installation</span>
+      </div>
+      
+      
+      <div class="gallery-item">
+        <img src="images/project4.jpg" alt="5kwh solar system using lithium battery, Nanyuki" loading="lazy">
+        <span>5kwh solar system</span>
+      </div>
+      
+       <div class="gallery-item">
+        <img src="images/project5.jpg" alt="Floodlights" loading="lazy">
+        <span>Floodlights</span>
+      </div>
+
+      <div class="gallery-item">
+        <img src="images/project6.jpg" alt="Borehole solar pumping system" loading="lazy">
+        <span>Borehole Solarisation</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<section id="testimonials" class="section">
+  <div class="container">
+    <h2>What Our Clients Say</h2>
+    <div class="testimonial-grid">
+      <div class="testimonial">“Professional installation and very reliable service.”<strong>— Homeowner, Kitui</strong></div>
+      <div class="testimonial">“Our borehole solar system works perfectly.”<strong>— Farm Owner</strong></div>
+      <div class="testimonial">“Clean wiring and excellent workmanship.”<strong>— Business Client</strong></div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="section">
+  <div class="container">
+    <h2>Frequently Asked Questions</h2>
+    <div class="faq-item"><strong>Do you serve outside your town?</strong><p>Yes, we operate as a service-area business across Kenya.</p></div>
+    <div class="faq-item"><strong>Do you install solar water heaters?</strong><p>Yes, for both residential and commercial use.</p></div>
+    <div class="faq-item"><strong>Are your installations compliant?</strong><p>All work is done by qualified technicians following safety standards.</p></div>
+  </div>
+</section>
+
+<section id="contact" class="section">
+  <div class="container">
+    <h2>Request a Quote</h2>
+    <form onsubmit="sendWhatsApp();return false;">
+      <input id="name" type="text" placeholder="Your Name" required>
+      <input id="phone" type="tel" placeholder="Phone Number" required>
+      <textarea id="message" placeholder="Tell us what you need" required></textarea>
+      <button type="submit">Send via WhatsApp</button>
+    </form>
+  </div>
+</section>
+
+<div class="floating-widgets">
+  <a href="tel:+254768463203" class="phone">📞</a>
+  <a href="https://wa.me/254768463203" class="whatsapp">💬</a>
+</div>
+
+<footer>
+  © 2026 Brian Solar & Electrical. All rights reserved.
+</footer>
+
+<script>
+function sendWhatsApp(){
+  const name=document.getElementById("name").value;
+  const phone=document.getElementById("phone").value;
+  const msg=document.getElementById("message").value;
+  const text=`Name: ${name}%0APhone: ${phone}%0ARequest: ${msg}`;
+  window.open(`https://wa.me/254768463203?text=${text}`,"_blank");
+}
+
+/* Scroll reveal */
+const obs=new IntersectionObserver(entries=>{
+ entries.forEach(e=>{
+  if(e.isIntersecting)e.target.classList.add("show");
+ });
+},{threshold:.2});
+document.querySelectorAll(".service-card").forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
