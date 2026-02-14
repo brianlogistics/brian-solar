@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 
   <!-- Home Page -->
   <url>
@@ -9,12 +10,32 @@
     <priority>1.0</priority>
   </url>
 
+  <!-- About Page -->
+  <url>
+    <loc>https://www.briansolar.co.ke/about.html</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://www.briansolar.co.ke/contact.html</loc>
+    <lastmod>2026-02-12</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.9</priority>
+  </url>
+
   <!-- Services Pages -->
   <url>
     <loc>https://www.briansolar.co.ke/services/solar-installation.html</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/solar-installation-service.jpg</image:loc>
+      <image:caption>Professional Solar Installation Services in Nairobi</image:caption>
+    </image:image>
   </url>
 
   <url>
@@ -22,6 +43,10 @@
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/hybrid-inverter.jpg</image:loc>
+      <image:caption>Expert Hybrid Inverter Installation Services in Nairobi</image:caption>
+    </image:image>
   </url>
 
   <url>
@@ -29,14 +54,22 @@
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/lithium-battery.jpg</image:loc>
+      <image:caption>Lithium Battery Installation Services for Solar Systems in Nairobi</image:caption>
+    </image:image>
   </url>
 
-  <!-- Blog Pages (Nairobi Focus) -->
+  <!-- Blog Pages with Images and Captions -->
   <url>
     <loc>https://www.briansolar.co.ke/blog/cost-of-solar-installation-nairobi-2026.html</loc>
     <lastmod>2026-02-12</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.9</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/solar-nairobi-2026.jpg</image:loc>
+      <image:caption>Cost of Solar Installation in Nairobi 2026</image:caption>
+    </image:image>
   </url>
 
   <url>
@@ -44,6 +77,10 @@
     <lastmod>2026-01-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/solar-batteries-nairobi.jpg</image:loc>
+      <image:caption>Best Solar Batteries for Homes and Businesses in Nairobi</image:caption>
+    </image:image>
   </url>
 
   <url>
@@ -51,6 +88,10 @@
     <lastmod>2026-01-20</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/hybrid-inverters-nairobi.jpg</image:loc>
+      <image:caption>Guide to Hybrid Inverters for Nairobi Solar Installations</image:caption>
+    </image:image>
   </url>
 
   <url>
@@ -58,7 +99,12 @@
     <lastmod>2026-01-25</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
+    <image:image>
+      <image:loc>https://www.briansolar.co.ke/images/solar-maintenance-nairobi.jpg</image:loc>
+      <image:caption>Solar Maintenance Tips for Homes in Nairobi</image:caption>
+    </image:image>
   </url>
 
 </urlset>
+
 
