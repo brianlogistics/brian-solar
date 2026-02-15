@@ -1,10 +1,10 @@
 # Enable rewrite engine
 RewriteEngine On
 
-# Force HTTPS and redirect www to non-www
+# Force HTTPS and redirect non-www to www
 RewriteCond %{HTTPS} off [OR]
-RewriteCond %{HTTP_HOST} ^www\.briansolar\.co\.ke [NC]
-RewriteRule ^(.*)$ https://briansolar.co.ke/$1 [R=301,L]
+RewriteCond %{HTTP_HOST} ^briansolar\.co\.ke [NC]
+RewriteRule ^(.*)$ https://www.briansolar.co.ke/$1 [R=301,L]
 
 # Redirect index.html to root
 RewriteCond %{THE_REQUEST} /index\.html [NC]
