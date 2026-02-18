@@ -11,11 +11,11 @@
 <meta property="og:image" content="https://www.briansolar.co.ke/images/solar-banner.jpg">
 <meta property="og:image:alt" content="Solar installation services in Kenya by Brian Solar & Electrical">
 
-
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
+
     {
       "@type": ["Electrician", "LocalBusiness"],
       "@id": "https://www.briansolar.co.ke/#business",
@@ -34,6 +34,7 @@
         "addressCountry": "KE"
       }
     },
+
     {
       "@type": "FAQPage",
       "@id": "https://www.briansolar.co.ke/#faq",
@@ -63,7 +64,21 @@
           }
         }
       ]
+    },
+
+    {
+      "@type": "BreadcrumbList",
+      "@id": "https://www.briansolar.co.ke/#breadcrumb",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.briansolar.co.ke/"
+        }
+      ]
     }
+
   ]
 }
 </script>
@@ -311,7 +326,49 @@ footer{
   animation:float 2.5s ease-in-out infinite;
   box-shadow:0 15px 30px rgba(0,0,0,.25);
 }
-  
+/* ================= WHY CHOOSE US ================= */
+#why-choose{
+  background:var(--light);
+}
+
+.why-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(250px,1fr));
+  gap:30px;
+  margin-top:40px;
+}
+
+.why-card{
+  background:#fff;
+  padding:30px;
+  border-radius:14px;
+  text-align:center;
+  box-shadow:0 8px 22px rgba(0,0,0,.08);
+  transition:.4s ease;
+}
+
+.why-card:hover{
+  transform:translateY(-6px);
+  box-shadow:0 14px 28px rgba(0,0,0,.15);
+}
+
+.why-card h3{
+  margin-bottom:15px;
+  font-size:1.1rem;
+}
+
+  .why-icon{
+  font-size:40px;
+  margin-bottom:15px;
+  display:inline-block;
+  background:var(--primary);
+  width:70px;
+  height:70px;
+  line-height:70px;
+  border-radius:50%;
+  color:#000;
+}
+
 </style>
 
 <body>
@@ -325,7 +382,12 @@ footer{
 
 <section id="hero">
   <div class="container">
-   <h1>Brian Solar & Electrical is a trusted solar installation company in Kenya providing residential, commercial, and industrial solar PV systems. We design, supply, and install complete solar power systems including inverters, lithium batteries, solar panels, and borehole solar pumping solutions across Kenya.</h1>
+  <h1>Solar Installation & Electrical Services in Kenya</h1>
+
+<p style="max-width:850px;margin:20px auto 0;">
+Brian Solar & Electrical is a trusted solar installation company in Kenya providing residential, commercial, and industrial solar PV systems. We design, supply, and install complete solar power systems including inverters, lithium batteries, solar panels, and borehole solar pumping solutions across Kenya.
+</p>
+    
     <h2>Reliable energy solutions for homes and businesses</h2>
     <div class="cta-buttons">
       <a href="#contact" class="quote-btn">Get Free Quote</a>
@@ -361,6 +423,46 @@ footer{
   </div>
 </section>
 
+<section id="why-choose" class="section">
+  <div class="container">
+    <h2>Why Choose Brian Solar & Electrical?</h2>
+
+    <div class="why-grid">
+
+      <div class="why-card">
+        <div class="why-icon">🛠️</div>
+        <h3>Licensed & Qualified Technicians</h3>
+        <p>All installations are carried out by trained professionals following proper safety and electrical standards.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">⭐</div>
+        <h3>5+ Years Experience</h3>
+        <p>We have successfully completed residential, commercial and agricultural solar projects across Kenya.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">🌍</div>
+        <h3>Nationwide Service Coverage</h3>
+        <p>We operate as a service-area business and travel across Kenya for solar and electrical installations.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">🔋</div>
+        <h3>High Quality Solar Equipment</h3>
+        <p>We use reliable solar panels, lithium batteries, inverters and certified electrical components.</p>
+      </div>
+
+      <div class="why-card">
+        <div class="why-icon">🛡️</div>
+        <h3>Warranty & After-Sales Support</h3>
+        <p>We stand behind our work with reliable after-installation support and system guidance.</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+  
 <section id="service-area">
   <div class="container">
   <h2>Our Service Area</h2>
