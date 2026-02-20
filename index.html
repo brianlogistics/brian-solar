@@ -3,28 +3,34 @@
 <head>
   <link rel="canonical" href="https://www.briansolar.co.ke/">
 
-<meta property="og:title" content="Solar Installation & Electrical Services in Kenya | Brian Solar & Electrical">
-
-<meta property="og:description" content="Professional solar PV installation, borehole solarisation and electrical services across Kenya.">
-<meta property="og:url" content="https://www.briansolar.co.ke/">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://www.briansolar.co.ke/images/solar-banner.jpg">
-<meta property="og:image:alt" content="Solar installation services in Kenya by Brian Solar & Electrical">
-
+ <link rel="preload" as="image" href="/images/solar-banner.jpg">
+  
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@graph": [
-
+    {
+      "@type": "Person",
+      "@id": "https://www.briansolar.co.ke/#founder",
+      "name": "Brian Mumo"
+    },
     {
       "@type": ["Electrician", "LocalBusiness"],
       "@id": "https://www.briansolar.co.ke/#business",
       "name": "Brian Solar & Electrical",
+      "founder": { "@id": "https://www.briansolar.co.ke/#founder" },
       "url": "https://www.briansolar.co.ke/",
       "logo": "https://www.briansolar.co.ke/images/logo.png",
       "image": "https://www.briansolar.co.ke/images/solar-banner.jpg",
       "telephone": "+254768463203",
       "email": "info@briansolar.co.ke",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+254768463203",
+        "contactType": "customer service",
+        "areaServed": "KE",
+        "availableLanguage": "English"
+      },
       "areaServed": {
         "@type": "Country",
         "name": "Kenya"
@@ -32,9 +38,9 @@
       "address": {
         "@type": "PostalAddress",
         "addressCountry": "KE"
-      }
+      },
+      "priceRange": "$$"
     },
-
     {
       "@type": "FAQPage",
       "@id": "https://www.briansolar.co.ke/#faq",
@@ -65,7 +71,6 @@
         }
       ]
     },
-
     {
       "@type": "BreadcrumbList",
       "@id": "https://www.briansolar.co.ke/#breadcrumb",
@@ -78,15 +83,20 @@
         }
       ]
     }
-
   ]
 }
 </script>
+  
+<meta property="og:title" content="Solar Installation & Electrical Services in Kenya | Brian Solar & Electrical">
+<meta property="og:url" content="https://www.briansolar.co.ke/">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://www.briansolar.co.ke/images/solar-banner.jpg">
+<meta property="og:image:alt" content="Solar installation services in Kenya by Brian Solar & Electrical">
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Solar Installation & Electrical Services in Kenya | Brian Solar & Electrical</title>
+<title>Solar Installation Company in Kenya | Solar PV & Electrical Services</title>
 <meta name="description" content="Professional solar installation and electrical services in Kenya including solar PV systems, solar water heaters, borehole solarisation and certified electrical wiring.">
 
 
@@ -95,6 +105,12 @@
 <link rel="icon" href="images/logo.png">
 
 <style>
+@media(max-width:768px){
+  .main-nav{
+    display:none;
+  }
+}
+  
 :root{
   --primary:#FFD700;
   --dark:#111;
@@ -113,6 +129,21 @@ a{text-decoration:none;color:inherit}
 .container{max-width:1200px;margin:auto;padding:0 20px}
 .section{padding:70px 0}
 h2{text-align:center;margin-bottom:40px}
+
+  .main-nav{
+  display:flex;
+  gap:20px;
+  align-items:center;
+}
+
+.main-nav a{
+  font-weight:600;
+  color:#000;
+}
+
+.main-nav a:hover{
+  color:var(--primary);
+}
 
 /* ================= HEADER ================= */
 header{
@@ -375,17 +406,29 @@ footer{
 <!-- WhatsApp Floating Button -->
 <header>
   <div class="header-inner">
-    <img src="images/logo.png" class="header-logo" alt="Brian Solar & Electrical">
-    <a href="#contact" class="header-cta">Request Quote</a>
+    <a href="/">
+      <img src="images/logo.png" class="header-logo" 
+alt="Brian Solar & Electrical logo - Solar Installation Company in Kenya">
+    </a>
+
+    <nav class="main-nav">
+      <a href="/">Home</a>
+      <a href="/solar-installation-kenya.html">Solar Installation</a>
+      <a href="/borehole-solarisation-kenya.html">Borehole Solar</a>
+      <a href="/electrical-services-kenya.html">Electrical Services</a>
+      <a href="#contact" class="header-cta">Request Quote</a>
+    </nav>
   </div>
 </header>
 
 <section id="hero">
   <div class="container">
-  <h1>Solar Installation & Electrical Services in Kenya</h1>
+  <h1>Solar Installation Company in Kenya – Residential & Commercial Systems</h1>
 
 <p style="max-width:850px;margin:20px auto 0;">
-Brian Solar & Electrical is a trusted solar installation company in Kenya providing residential, commercial, and industrial solar PV systems. We design, supply, and install complete solar power systems including inverters, lithium batteries, solar panels, and borehole solar pumping solutions across Kenya.
+Brian Solar & Electrical is a licensed 
+<a href="/solar-installation-kenya.html">solar installation company in Kenya</a>
+providing professional solar PV systems...
 </p>
     
     <h2>Reliable energy solutions for homes and businesses</h2>
@@ -478,9 +521,8 @@ Brian Solar & Electrical is a trusted solar installation company in Kenya provid
 
 
   <p>
-    We proudly serve <strong>Nairobi, Kiambu, Mombasa, Kisumu, Kitui, Nyeri, Nanyuki and surrounding areas</strong>, depending on project
-    requirements. If you are unsure whether your location is covered, please contact us
-    for confirmation.
+  We provide professional solar installation services in 
+<strong>Nairobi, Mombasa, Kisumu, Kiambu, Kitui, Nyeri, Nanyuki and all counties in Kenya</strong>.
   </p>
   </div>
 </section>
@@ -567,12 +609,29 @@ Brian Solar & Electrical is a trusted solar installation company in Kenya provid
   <a href="https://wa.me/254768463203" class="whatsapp">💬</a>
 </div>
 
-<footer>
-  <p><strong>Brian Solar & Electrical</strong></p>
-  <p>📞 +254 768 463203 | Serving Kenya</p>
-  <p>© 2026 Brian Solar & Electrical. All rights reserved.</p>
-</footer>
+  <section style="background:#000;color:#fff;padding:60px 20px;text-align:center">
+  <div class="container">
+    <h2 style="color:#FFD700">Ready to Reduce Your Electricity Bill?</h2>
+    <p style="max-width:700px;margin:20px auto">
+      Get a free solar consultation and site assessment anywhere in Kenya. 
+      Our team will design a customized solar power system for your home or business.
+    </p>
+    <a href="#contact" style="background:#FFD700;color:#000;padding:14px 28px;border-radius:8px;font-weight:bold;display:inline-block;margin-top:20px">
+      Request Free Solar Quote
+    </a>
+  </div>
+</section>
 
+<footer>
+  <div class="container">
+    <p><strong>Brian Solar & Electrical</strong></p>
+    <p>Professional Solar Installation & Electrical Services in Kenya</p>
+    <p>📞 <a href="tel:+254768463203" style="color:#FFD700">+254 768 463203</a></p>
+    <p>📧 info@briansolar.co.ke</p>
+    <p>Serving: Nairobi, Kiambu, Mombasa, Kisumu, Kitui, Nyeri, Nanyuki & All Counties in Kenya</p>
+    <p>© 2026 Brian Solar & Electrical. All rights reserved.</p>
+  </div>
+</footer>
 
 <script>
 function sendWhatsApp(){
