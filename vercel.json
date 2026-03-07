@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "http://briansolar.co.ke/(.*)",
+      "destination": "https://briansolar.co.ke/$1",
+      "permanent": true
+    },
+    {
+      "source": "https://www.briansolar.co.ke/(.*)",
+      "destination": "https://briansolar.co.ke/$1",
+      "permanent": true
+    }
+  ]
+}
