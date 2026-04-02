@@ -121,4 +121,11 @@ xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
 </image:image>
 </url>
 
+  <url>
+<loc>https://briansolar.co.ke/solar-installation-mombasa.html</loc>
+<lastmod>2026-04-02</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.8</priority>
+</url>
+
 </urlset>
