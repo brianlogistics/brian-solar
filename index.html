@@ -3,7 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  
 <title>Solar Installation Company in Kenya | Brian Solar & Electrical</title>
 
 <meta name="description" content="Top solar installation company in Kenya. We install solar panels, inverters, batteries & borehole solar systems. Reduce electricity bills by up to 97.5%. Call 0768463203.">
@@ -138,10 +139,16 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 <section id="contact" class="section">
 <div class="container">
 <h2>Request a Free Quote</h2>
-<form onsubmit="sendWhatsApp();return false;">
+<form onsubmit="return validateForm();">
 <input type="text" id="name" placeholder="Your Name" required><br><br>
+
 <input type="text" id="phone" placeholder="Phone Number" required><br><br>
+
 <textarea id="message" placeholder="Your Request" required></textarea><br><br>
+
+<!-- ✅ reCAPTCHA -->
+<div class="g-recaptcha" data-sitekey="6Lf-QsAsAAAAAFyMVf11OYBu1Yj5bMb6cfUMAPVN"></div><br>
+
 <button type="submit">Send via WhatsApp</button>
 </form>
 </div>
@@ -168,13 +175,30 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 </footer>
 
 <script>
-function sendWhatsApp(){
-const name=document.getElementById("name").value;
-const phone=document.getElementById("phone").value;
-const msg=document.getElementById("message").value;
+function validateForm(){
 
-const text=`Hello, I need a solar installation quote.%0AName: ${name}%0APhone: ${phone}%0ARequest: ${msg}`;
-window.open(`https://wa.me/254768463203?text=${text}`,"_blank");
+const recaptcha = grecaptcha.getResponse();
+if(recaptcha.length === 0){
+alert("Please verify you are not a robot");
+return false;
+}
+
+const name = document.getElementById("name").value;
+const phone = document.getElementById("phone").value;
+const msg = document.getElementById("message").value;
+
+const text = `Hello, I need a solar installation quote.
+Name: ${name}
+Phone: ${phone}
+Request: ${msg}`;
+
+const encodedText = encodeURIComponent(text);
+
+window.open(`https://wa.me/254768463203?text=${encodedText}`,"_blank");
+
+grecaptcha.reset();
+
+return false;
 }
 </script>
 
