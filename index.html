@@ -136,23 +136,24 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 </div>
 </section>
 
-<section id="contact" class="section">
-<div class="container">
-<h2>Request a Free Quote</h2>
-<form onsubmit="return validateForm();">
-<input type="text" id="name" placeholder="Your Name" required><br><br>
+<form id="leadForm">
+<input type="text" name="name" placeholder="Your Name" required><br><br>
 
-<input type="text" id="phone" placeholder="Phone Number" required><br><br>
+<input type="tel" name="phone" placeholder="Phone Number" required><br><br>
 
-<textarea id="message" placeholder="Your Request" required></textarea><br><br>
+<input type="text" name="location" placeholder="Your Location"><br><br>
 
-<!-- ✅ reCAPTCHA -->
+<select name="service">
+  <option>Solar Installation</option>
+  <option>Borehole Solarisation</option>
+  <option>Maintenance</option>
+</select><br><br>
+
+<!-- reCAPTCHA stays -->
 <div class="g-recaptcha" data-sitekey="6Lf-QsAsAAAAAFyMVf11OYBu1Yj5bMb6cfUMAPVN"></div><br>
 
-<button type="submit">Send via WhatsApp</button>
+<button type="submit">Submit Request</button>
 </form>
-</div>
-</section>
 
 <section class="section">
 <div class="container">
@@ -175,31 +176,43 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 </footer>
 
 <script>
-function validateForm(){
+document.getElementById("leadForm").addEventListener("submit", function(e){
+  e.preventDefault();
 
-const recaptcha = grecaptcha.getResponse();
-if(recaptcha.length === 0){
-alert("Please verify you are not a robot");
-return false;
-}
+  const recaptcha = grecaptcha.getResponse();
+  if(recaptcha.length === 0){
+    alert("Please verify you are not a robot");
+    return;
+  }
 
-const name = document.getElementById("name").value;
-const phone = document.getElementById("phone").value;
-const msg = document.getElementById("message").value;
+  const data = {
+    name: this.name.value,
+    phone: this.phone.value,
+    location: this.location.value,
+    service: this.service.value
+  };
 
-const text = `Hello, I need a solar installation quote.
-Name: ${name}
-Phone: ${phone}
-Request: ${msg}`;
+  // 🔥 SEND TO GOOGLE SHEETS
+  fetch(https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec, {
+    method: "POST",
+    body: JSON.stringify(data)
+  }).then(() => {
+    alert("Request sent successfully!");
 
-const encodedText = encodeURIComponent(text);
+    // OPTIONAL: ALSO SEND TO WHATSAPP
+    const text = `New Solar Lead:
+Name: ${data.name}
+Phone: ${data.phone}
+Location: ${data.location}
+Service: ${data.service}`;
 
-window.open(`https://wa.me/254768463203?text=${encodedText}`,"_blank");
+    const encodedText = encodeURIComponent(text);
+    window.open(`https://wa.me/254768463203?text=${encodedText}`, "_blank");
 
-grecaptcha.reset();
-
-return false;
-}
+    grecaptcha.reset();
+    this.reset();
+  });
+});
 </script>
 
 </body>
