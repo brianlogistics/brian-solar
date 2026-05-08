@@ -177,9 +177,11 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 
 <script>
 document.getElementById("leadForm").addEventListener("submit", function(e){
+
   e.preventDefault();
 
   const recaptcha = grecaptcha.getResponse();
+
   if(recaptcha.length === 0){
     alert("Please verify you are not a robot");
     return;
@@ -192,14 +194,26 @@ document.getElementById("leadForm").addEventListener("submit", function(e){
     service: this.service.value
   };
 
-  // 🔥 SEND TO GOOGLE SHEETS
-  fetch(https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec, {
+  // SEND TO GOOGLE SHEETS
+  fetch("https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec", {
+
     method: "POST",
-    body: JSON.stringify(data)
-  }).then(() => {
+
+    body: JSON.stringify(data),
+
+    headers: {
+      "Content-Type": "application/json"
+    }
+
+  })
+
+  .then(response => response.text())
+
+  .then(result => {
+
     alert("Request sent successfully!");
 
-    // OPTIONAL: ALSO SEND TO WHATSAPP
+    // SEND TO WHATSAPP
     const text = `New Solar Lead:
 Name: ${data.name}
 Phone: ${data.phone}
@@ -207,11 +221,26 @@ Location: ${data.location}
 Service: ${data.service}`;
 
     const encodedText = encodeURIComponent(text);
-    window.open(`https://wa.me/254768463203?text=${encodedText}`, "_blank");
+
+    window.open(
+      `https://wa.me/254768463203?text=${encodedText}`,
+      "_blank"
+    );
 
     grecaptcha.reset();
-    this.reset();
+
+    document.getElementById("leadForm").reset();
+
+  })
+
+  .catch(error => {
+
+    alert("Error sending request");
+
+    console.error(error);
+
   });
+
 });
 </script>
 
