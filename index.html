@@ -90,6 +90,12 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 <div class="cta-buttons">
 <a href="#contact" class="quote-btn">Get Free Quote</a>
 <a href="https://wa.me/254768463203" class="whatsapp-btn">WhatsApp</a>
+  <a href="/solar-calculator.html"
+class="quote-btn">
+
+Calculate Solar System
+
+</a>
 </div>
 </div>
 </section>
@@ -136,25 +142,118 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 </div>
 </section>
 
-<form id="leadForm">
-<input type="text" name="name" placeholder="Your Name" required><br><br>
+<!-- CONTACT SECTION -->
+<section class="section">
 
-<input type="tel" name="phone" placeholder="Phone Number" required><br><br>
+<div class="container" style="text-align:center;">
 
-<input type="text" name="location" placeholder="Your Location"><br><br>
+<h2>Trusted Solar Experts Across Kenya</h2>
 
-<select name="service">
-  <option>Solar Installation</option>
-  <option>Borehole Solarisation</option>
-  <option>Maintenance</option>
-</select><br><br>
+<div style="display:flex;justify-content:center;gap:40px;flex-wrap:wrap;margin-top:40px;">
 
-<!-- reCAPTCHA stays -->
-<div class="g-recaptcha" data-sitekey="6Lf-QsAsAAAAAFyMVf11OYBu1Yj5bMb6cfUMAPVN"></div><br>
+<div>
+<h3 style="font-size:40px;color:#FFD700;">120+</h3>
+<p>Projects Completed</p>
+</div>
 
-<button type="submit">Submit Request</button>
+<div>
+<h3 style="font-size:40px;color:#FFD700;">5+</h3>
+<p>Years Experience</p>
+</div>
+
+<div>
+<h3 style="font-size:40px;color:#FFD700;">97.5%</h3>
+<p>Electricity Savings</p>
+</div>
+
+</div>
+
+</div>
+
+</section>
+  
+<section id="contact" class="section" style="background:#f4f4f4;">
+<div class="container">
+
+<h2 style="text-align:center;font-size:32px;color:#111;">
+Get Your Free Solar Quotation
+</h2>
+
+<p style="text-align:center;max-width:700px;margin:auto;">
+Fill the form below and our team will contact you with a customized solar solution.
+</p>
+
+<div style="max-width:700px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,.1);">
+
+<form id="solarForm">
+
+<input type="text" id="name" placeholder="Full Name" required
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+
+<input type="text" id="phone" placeholder="Phone Number" required
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+
+<input type="text" id="location" placeholder="Location" required
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+
+<select id="service"
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+
+<option>Solar Installation</option>
+<option>Borehole Solarisation</option>
+<option>Electrical Installation</option>
+<option>Backup Systems</option>
+<option>Solar Water Heating</option>
+
+</select>
+
+<input type="text" id="bill" placeholder="Monthly KPLC Bill (Optional)"
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+<select id="budget"
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
+
+<option>Select Budget Range</option>
+<option>Under 100K</option>
+<option>100K - 300K</option>
+<option>300K - 700K</option>
+<option>700K+</option>
+
+</select>
+  <label><strong>Select Appliances Used:</strong></label>
+
+<div style="margin-bottom:20px;line-height:2;">
+
+<input type="checkbox" value="TV"> TV<br>
+<input type="checkbox" value="Fridge"> Fridge<br>
+<input type="checkbox" value="Lights"> Lights<br>
+<input type="checkbox" value="Pump"> Water Pump<br>
+<input type="checkbox" value="CCTV"> CCTV<br>
+<input type="checkbox" value="Computer"> Computer<br>
+<input type="checkbox" value="Welding"> Welding Machine<br>
+
+</div>
+<textarea id="notes" placeholder="Tell us your needs"
+style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;height:120px;"></textarea>
+
+<!-- RECAPTCHA -->
+<div class="g-recaptcha"
+data-sitekey="6Lf-QsAsAAAAAFyMVf11OYBu1Yj5bMb6cfUMAPVN"
+style="margin-bottom:20px;"></div>
+
+<button type="submit"
+style="width:100%;padding:16px;background:#FFD700;color:#000;font-size:18px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">
+
+Get Free Quotation
+
+</button>
+
 </form>
 
+</div>
+
+</div>
+</section>
+  
 <section class="section">
 <div class="container">
 <h2>Frequently Asked Questions</h2>
@@ -176,72 +275,87 @@ footer{background:#111;color:#fff;text-align:center;padding:30px}
 </footer>
 
 <script>
-document.getElementById("leadForm").addEventListener("submit", function(e){
 
-  e.preventDefault();
+document.getElementById("solarForm").addEventListener("submit", function(e){
 
-  const recaptcha = grecaptcha.getResponse();
+e.preventDefault();
 
-  if(recaptcha.length === 0){
-    alert("Please verify you are not a robot");
-    return;
-  }
+const recaptcha = grecaptcha.getResponse();
 
-  const data = {
-    name: this.name.value,
-    phone: this.phone.value,
-    location: this.location.value,
-    service: this.service.value
-  };
+if(recaptcha.length === 0){
 
-  // SEND TO GOOGLE SHEETS
-  fetch("https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec", {
+alert("Please verify you are not a robot");
+return;
 
-    method: "POST",
+}
 
-    body: JSON.stringify(data),
+const appliances = [];
 
-    headers: {
-      "Content-Type": "application/json"
-    }
+document.querySelectorAll('input[type="checkbox"]:checked')
+.forEach(el => appliances.push(el.value));
 
-  })
+const data = {
 
-  .then(response => response.text())
+name: document.getElementById("name").value,
+phone: document.getElementById("phone").value,
+location: document.getElementById("location").value,
+service: document.getElementById("service").value,
+bill: document.getElementById("bill").value,
+budget: document.getElementById("budget").value,
+notes: document.getElementById("notes").value,
+appliances: appliances.join(", ")
 
-  .then(result => {
+};
 
-    alert("Request sent successfully!");
+fetch("https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec", {
 
-    // SEND TO WHATSAPP
-    const text = `New Solar Lead:
+method: "POST",
+
+body: JSON.stringify(data),
+
+headers: {
+"Content-Type": "application/json"
+}
+
+})
+
+.then(response => response.text())
+
+.then(result => {
+
+alert("Quotation request sent successfully!");
+
+const text = `New Solar Lead:
 Name: ${data.name}
 Phone: ${data.phone}
 Location: ${data.location}
-Service: ${data.service}`;
+Service: ${data.service}
+KPLC Bill: ${data.bill}
+Notes: ${data.notes}`;
 
-    const encodedText = encodeURIComponent(text);
+const encodedText = encodeURIComponent(text);
 
-    window.open(
-      `https://wa.me/254768463203?text=${encodedText}`,
-      "_blank"
-    );
+window.open(
+`https://wa.me/254768463203?text=${encodedText}`,
+"_blank"
+);
 
-    grecaptcha.reset();
+grecaptcha.reset();
 
-    document.getElementById("leadForm").reset();
+document.getElementById("solarForm").reset();
 
-  })
+})
 
-  .catch(error => {
+.catch(error => {
 
-    alert("Error sending request");
+alert("Error sending request");
 
-    console.error(error);
-
-  });
+console.error(error);
 
 });
+
+});
+
 </script>
 
 </body>
