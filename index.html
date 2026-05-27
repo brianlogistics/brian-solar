@@ -66,7 +66,7 @@ header{position:fixed;top:0;width:100%;background:#fff;box-shadow:0 2px 10px rgb
 footer{background:#111;color:#fff;text-align:center;padding:30px}
 </style>
 </head>
-
+  
 <body>
 
 <header>
@@ -185,69 +185,16 @@ Fill the form below and our team will contact you with a customized solar soluti
 
 <div style="max-width:700px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,.1);">
 
-<form id="solarForm">
-
-<input type="text" id="name" placeholder="Full Name" required
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-
-<input type="text" id="phone" placeholder="Phone Number" required
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-
-<input type="text" id="location" placeholder="Location" required
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-
-<select id="service"
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-
-<option>Solar Installation</option>
-<option>Borehole Solarisation</option>
-<option>Electrical Installation</option>
-<option>Backup Systems</option>
-<option>Solar Water Heating</option>
-
-</select>
-
-<input type="text" id="bill" placeholder="Monthly KPLC Bill (Optional)"
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-<select id="budget"
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;">
-
-<option>Select Budget Range</option>
-<option>Under 100K</option>
-<option>100K - 300K</option>
-<option>300K - 700K</option>
-<option>700K+</option>
-
-</select>
-  <label><strong>Select Appliances Used:</strong></label>
-
-<div style="margin-bottom:20px;line-height:2;">
-
-<input type="checkbox" value="TV"> TV<br>
-<input type="checkbox" value="Fridge"> Fridge<br>
-<input type="checkbox" value="Lights"> Lights<br>
-<input type="checkbox" value="Pump"> Water Pump<br>
-<input type="checkbox" value="CCTV"> CCTV<br>
-<input type="checkbox" value="Computer"> Computer<br>
-<input type="checkbox" value="Welding"> Welding Machine<br>
-
-</div>
-<textarea id="notes" placeholder="Tell us your needs"
-style="width:100%;padding:14px;margin-bottom:15px;border:1px solid #ccc;border-radius:6px;height:120px;"></textarea>
-
-<!-- RECAPTCHA -->
-<div class="g-recaptcha"
-data-sitekey="6Lf-QsAsAAAAAFyMVf11OYBu1Yj5bMb6cfUMAPVN"
-style="margin-bottom:20px;"></div>
-
-<button type="submit"
-style="width:100%;padding:16px;background:#FFD700;color:#000;font-size:18px;border:none;border-radius:6px;font-weight:bold;cursor:pointer;">
-
-Get Free Quotation
-
-</button>
-
-</form>
+  <iframe 
+src="https://docs.google.com/forms/d/e/1FAIpQLScT9t_dRpk7B4QEYsgsBvQap4vPC7Fimzx9jqVpD7KsV2SrHQ/viewform?embedded=true" 
+width="100%" 
+height="1200" 
+frameborder="0" 
+marginheight="0" 
+marginwidth="0"
+style="border:none;border-radius:12px;">
+Loading…
+</iframe>
 
 </div>
 
@@ -274,89 +221,6 @@ Get Free Quotation
 <p>© 2026 All Rights Reserved</p>
 </footer>
 
-<script>
-
-document.getElementById("solarForm").addEventListener("submit", function(e){
-
-e.preventDefault();
-
-const recaptcha = grecaptcha.getResponse();
-
-if(recaptcha.length === 0){
-
-alert("Please verify you are not a robot");
-return;
-
-}
-
-const appliances = [];
-
-document.querySelectorAll('input[type="checkbox"]:checked')
-.forEach(el => appliances.push(el.value));
-
-const data = {
-
-name: document.getElementById("name").value,
-phone: document.getElementById("phone").value,
-location: document.getElementById("location").value,
-service: document.getElementById("service").value,
-bill: document.getElementById("bill").value,
-budget: document.getElementById("budget").value,
-notes: document.getElementById("notes").value,
-appliances: appliances.join(", ")
-
-};
-
-fetch("https://script.google.com/macros/s/AKfycbwgyS3GcAhyRetEtj46Lp5buLaxZ7Wax8tjZn1d7HPqyVNmeEpihMRFAgOKnv-0MaQBfw/exec", {
-
-method: "POST",
-
-body: JSON.stringify(data),
-
-headers: {
-"Content-Type": "application/json"
-}
-
-})
-
-.then(response => response.text())
-
-.then(result => {
-
-alert("Quotation request sent successfully!");
-
-const text = `New Solar Lead:
-Name: ${data.name}
-Phone: ${data.phone}
-Location: ${data.location}
-Service: ${data.service}
-KPLC Bill: ${data.bill}
-Notes: ${data.notes}`;
-
-const encodedText = encodeURIComponent(text);
-
-window.open(
-`https://wa.me/254768463203?text=${encodedText}`,
-"_blank"
-);
-
-grecaptcha.reset();
-
-document.getElementById("solarForm").reset();
-
-})
-
-.catch(error => {
-
-alert("Error sending request");
-
-console.error(error);
-
-});
-
-});
-
-</script>
 
 </body>
 </html>
