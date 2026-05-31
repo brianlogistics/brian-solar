@@ -183,20 +183,48 @@ Get Your Free Solar Quotation
 Fill the form below and our team will contact you with a customized solar solution.
 </p>
 
-<div style="max-width:700px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 5px 20px rgba(0,0,0,.1);">
+<form id="solarForm">
 
-  <iframe 
-src="https://docs.google.com/forms/d/e/1FAIpQLScT9t_dRpk7B4QEYsgsBvQap4vPC7Fimzx9jqVpD7KsV2SrHQ/viewform?embedded=true" 
-width="100%" 
-height="1200" 
-frameborder="0" 
-marginheight="0" 
-marginwidth="0"
-style="border:none;border-radius:12px;">
-Loading…
-</iframe>
+<input type="text" id="name" placeholder="Full Name" required
+style="width:100%;padding:14px;margin-bottom:15px;">
 
-</div>
+<input type="text" id="phone" placeholder="Phone Number" required
+style="width:100%;padding:14px;margin-bottom:15px;">
+
+<input type="text" id="location" placeholder="Location" required
+style="width:100%;padding:14px;margin-bottom:15px;">
+
+<select id="service"
+style="width:100%;padding:14px;margin-bottom:15px;">
+
+<option>Solar Installation</option>
+<option>Borehole Solarisation</option>
+<option>Electrical Installation</option>
+<option>Backup Systems</option>
+</select>
+
+<input type="text" id="bill"
+placeholder="Monthly KPLC Bill"
+style="width:100%;padding:14px;margin-bottom:15px;">
+
+<select id="budget"
+style="width:100%;padding:14px;margin-bottom:15px;">
+
+<option>Under 100K</option>
+<option>100K - 300K</option>
+<option>300K - 700K</option>
+<option>700K+</option>
+</select>
+
+<textarea id="notes"
+placeholder="Tell us your needs"
+style="width:100%;padding:14px;margin-bottom:15px;"></textarea>
+
+<button type="submit"
+style="width:100%;padding:16px;background:#FFD700;border:none;">
+Get Free Quotation </button>
+
+</form>
 
 </div>
 </section>
@@ -221,6 +249,58 @@ Loading…
 <p>© 2026 All Rights Reserved</p>
 </footer>
 
+<script>
+
+document.getElementById("solarForm")
+.addEventListener("submit", function(e){
+
+e.preventDefault();
+
+const data = {
+
+name: document.getElementById("name").value,
+phone: document.getElementById("phone").value,
+location: document.getElementById("location").value,
+service: document.getElementById("service").value,
+bill: document.getElementById("bill").value,
+budget: document.getElementById("budget").value,
+notes: document.getElementById("notes").value,
+appliances: "",
+backup: ""
+
+};
+
+fetch("https://script.google.com/macros/s/AKfycbzkuuNYaH3DxtV5NkOOW3mp7RNfbRO1cTYS5yzADa9mBR1fCjVjyDypNate1qaV85NlHQ/exec", {
+
+method: "POST",
+body: JSON.stringify(data),
+headers: {
+"Content-Type": "application/json"
+}
+
+})
+
+.then(response => response.text())
+
+.then(result => {
+
+alert("Thank you. Your quotation request has been received.");
+
+document.getElementById("solarForm").reset();
+
+})
+
+.catch(error => {
+
+alert("Submission failed.");
+
+console.error(error);
+
+});
+
+});
+
+</script>
 
 </body>
 </html>
