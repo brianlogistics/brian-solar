@@ -89,6 +89,7 @@ right:10px;
 background:#fff;
 padding:10px;
 box-shadow:0 5px 10px rgba(0,0,0,.2);
+z-index:1000;
 }
 .menu.active{display:flex;}
 .hamburger{display:block;}
@@ -129,6 +130,44 @@ padding:14px 16px;
 border-radius:50px;
 z-index:999;
 text-decoration:none;
+font-weight:bold;
+}
+
+/* FORM STYLES */
+form input, form select, form textarea {
+box-sizing:border-box;
+font-size:16px;
+border:1px solid #ddd;
+border-radius:4px;
+}
+
+form button {
+cursor:pointer;
+font-weight:bold;
+border-radius:6px;
+transition:background 0.3s ease;
+}
+
+form button:hover {
+background:#E6C200 !important;
+}
+
+#msg {
+margin-top:15px;
+font-weight:bold;
+text-align:center;
+padding:10px;
+border-radius:4px;
+}
+
+.success-msg {
+color:#155724;
+background-color:#d4edda;
+}
+
+.error-msg {
+color:#721c24;
+background-color:#f8d7da;
 }
 </style>
 </head>
@@ -208,26 +247,30 @@ text-decoration:none;
 <input type="text" id="website" style="display:none">
 
 <input type="text" id="name" placeholder="Full Name" required style="width:100%;padding:14px;margin-bottom:10px;">
-<input type="text" id="phone" placeholder="Phone Number" required style="width:100%;padding:14px;margin-bottom:10px;">
+
+<input type="tel" id="phone" placeholder="Phone Number" required style="width:100%;padding:14px;margin-bottom:10px;">
+
 <input type="text" id="location" placeholder="Location" required style="width:100%;padding:14px;margin-bottom:10px;">
 
-<select id="service" style="width:100%;padding:14px;margin-bottom:10px;">
-<option>Solar Installation</option>
-<option>Borehole Solarisation</option>
-<option>Electrical Installation</option>
-<option>Backup Systems</option>
+<select id="service" required style="width:100%;padding:14px;margin-bottom:10px;">
+<option value="">Select Service</option>
+<option value="Solar Installation">Solar Installation</option>
+<option value="Borehole Solarisation">Borehole Solarisation</option>
+<option value="Electrical Installation">Electrical Installation</option>
+<option value="Backup Systems">Backup Systems</option>
 </select>
 
-<select id="budget" style="width:100%;padding:14px;margin-bottom:10px;">
-<option>Under 100K</option>
-<option>100K - 300K</option>
-<option>300K - 700K</option>
-<option>700K+</option>
+<select id="budget" required style="width:100%;padding:14px;margin-bottom:10px;">
+<option value="">Select Budget Range</option>
+<option value="Under 100K">Under 100K</option>
+<option value="100K - 300K">100K - 300K</option>
+<option value="300K - 700K">300K - 700K</option>
+<option value="700K+">700K+</option>
 </select>
 
-<textarea id="notes" placeholder="Tell us your needs" style="width:100%;padding:14px;margin-bottom:10px;"></textarea>
+<textarea id="notes" placeholder="Tell us your needs" required style="width:100%;padding:14px;margin-bottom:10px;height:120px;"></textarea>
 
-<button type="submit" style="width:100%;padding:16px;background:#FFD700;border:none;">
+<button type="submit" style="width:100%;padding:16px;background:#FFD700;border:none;color:#000;">
 Get Free Quotation
 </button>
 
@@ -252,7 +295,7 @@ Get Free Quotation
 
 <!-- WHATSAPP FLOAT -->
 <a class="sticky-wa" href="https://wa.me/254768463203">
-WhatsApp
+💬 WhatsApp
 </a>
 
 <!-- SCRIPT -->
@@ -270,30 +313,35 @@ if(document.getElementById("website").value !== ""){
 return;
 }
 
-document.getElementById("msg").innerText = "Sending...";
+const msgElement = document.getElementById("msg");
+msgElement.innerText = "Sending...";
+msgElement.className = "";
 
 const data = {
-name: name.value,
-phone: phone.value,
-location: location.value,
-service: service.value,
-budget: budget.value,
-notes: notes.value
+name: document.getElementById("name").value,
+phone: document.getElementById("phone").value,
+location: document.getElementById("location").value,
+service: document.getElementById("service").value,
+budget: document.getElementById("budget").value,
+notes: document.getElementById("notes").value,
+timestamp: new Date().toLocaleString()
 };
 
 fetch("https://script.google.com/macros/s/AKfycbzkuuNYaH3DxtV5NkOOW3mp7RNfbRO1cTYS5yzADa9mBR1fCjVjyDypNate1qaV85NlHQ/exec", {
 method:"POST",
 body:JSON.stringify(data),
-headers:{"Content-Type":"application/json"}
+headers:{"Content-Type":"application/json"},
+mode:"no-cors"
 })
 .then(()=>{
-document.getElementById("msg").innerText =
-"Request received! We will contact you shortly.";
+msgElement.innerText = "✓ Request received! We will contact you shortly.";
+msgElement.className = "success-msg";
 document.getElementById("solarForm").reset();
 })
-.catch(()=>{
-document.getElementById("msg").innerText =
-"Error sending request. Please WhatsApp us.";
+.catch((error)=>{
+console.error("Error:", error);
+msgElement.innerText = "✗ Error sending request. Please WhatsApp us.";
+msgElement.className = "error-msg";
 });
 
 });
