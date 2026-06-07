@@ -30,22 +30,121 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Brian Solar & Electrical",
-  "image": "https://briansolar.co.ke/images/logo.webp",
-  "url": "https://briansolar.co.ke/",
-  "telephone": "+254768463203",
-  "email": "info@briansolar.co.ke",
-  "priceRange": "$$",
-  "address": {
-    "@type": "PostalAddress",
-    "addressLocality": "Nairobi",
-    "addressCountry": "KE"
-  },
-  "areaServed": "Kenya"
+  "@graph": [
+    {
+      "@type": "LocalBusiness",
+      "@id": "https://briansolar.co.ke/#business",
+      "name": "Brian Solar & Electrical",
+      "url": "https://briansolar.co.ke/",
+      "image": "https://briansolar.co.ke/images/logo.webp",
+      "logo": "https://briansolar.co.ke/images/logo.webp",
+      "telephone": "+254768463203",
+      "email": "info@briansolar.co.ke",
+      "priceRange": "$$",
+      "description": "Professional solar installation company in Kenya specializing in solar panels, inverters, lithium batteries, borehole solarisation, solar water pumps, solar water heaters and electrical installation services.",
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Nairobi",
+        "addressCountry": "KE"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "-1.286389",
+        "longitude": "36.817223"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "Kenya"
+      },
+      "openingHours": "Mo-Sa 08:00-18:00",
+      "sameAs": [
+        "https://www.facebook.com/"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Solar and Electrical Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar Panel Installation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Borehole Solarisation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar Water Pump Installation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Solar Water Heater Installation"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Electrical Installation"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://briansolar.co.ke/#website",
+      "url": "https://briansolar.co.ke/",
+      "name": "Brian Solar & Electrical",
+      "publisher": {
+        "@id": "https://briansolar.co.ke/#business"
+      }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://briansolar.co.ke/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How much does solar installation cost in Kenya?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Solar installation costs depend on energy requirements, equipment specifications and site conditions. Contact Brian Solar & Electrical for a free quotation."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you install borehole solar systems?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We design and install borehole solar pumping systems across Kenya."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Do you provide site surveys?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. We provide site surveys and professional solar system sizing before installation."
+          }
+        }
+      ]
+    }
+  ]
 }
 </script>
-
+  
 <style>
 :root{--primary:#FFD700;--dark:#111;}
 body{margin:0;font-family:Arial;padding-top:80px}
@@ -194,8 +293,7 @@ background-color:#f8d7da;
 <!-- HERO -->
 <section id="hero">
 <div class="container">
-<h1>Solar Installation in Kenya That Cuts Electricity Bills by Up to 97.5%</h1>
-
+<h1>Solar Installation Company in Kenya | Solar Panels, Inverters, Borehole Solar Systems & Solar water heaters</h1>
 <p>Certified Solar Experts • Borehole Solar Systems • Nationwide Installation</p>
 
 <p style="color:#FFD700;font-weight:bold;">
@@ -204,8 +302,8 @@ background-color:#f8d7da;
 
 <div class="cta-buttons">
 <a href="#contact" class="quote-btn">Get Free Quote</a>
+<a href="tel:+254768463203" class="quote-btn">📞 Call Now</a>
 <a href="https://wa.me/254768463203" class="whatsapp-btn">WhatsApp</a>
-</div>
 </div>
 </section>
 
@@ -219,6 +317,34 @@ background-color:#f8d7da;
 <li>Solar Water Pumps</li>
 <li>Electrical Wiring</li>
 </ul>
+</div>
+</section>
+
+ <section class="section">
+<div class="container">
+
+<h2>Areas We Serve</h2>
+
+<p>
+We provide solar installation services in Nairobi,
+Mombasa, Kisumu, Nakuru, Eldoret,
+Kitui, Machakos, Kajiado, Thika,
+Meru and all counties across Kenya.
+</p>
+
+</div>
+</section>
+  <section class="section">
+<div class="container">
+
+<h2>Customer Reviews</h2>
+
+<p>★★★★★ Brian Solar installed our 10kW system professionally and on time.</p>
+
+<p>★★★★★ Excellent workmanship and support.</p>
+
+<p>★★★★★ Reduced our electricity bill significantly.</p>
+
 </div>
 </section>
 
@@ -243,16 +369,20 @@ background-color:#f8d7da;
 
 <form id="solarForm">
 
-<!-- HONEYPOT -->
-<input type="text" id="website" style="display:none">
+<input type="text" id="website" name="website" style="display:none">
 
-<input type="text" id="name" placeholder="Full Name" required style="width:100%;padding:14px;margin-bottom:10px;">
+<label for="name">Full Name</label>
+<input type="text" id="name" name="name" placeholder="Full Name" required style="width:100%;padding:14px;margin-bottom:10px;">
 
-<input type="tel" id="phone" placeholder="Phone Number" required style="width:100%;padding:14px;margin-bottom:10px;">
+  <label for="Phone">Phone Number</label>
+<input type="tel" id="phone" name="phone"> placeholder="Phone Number" required style="width:100%;padding:14px;margin-bottom:10px;">
 
-<input type="text" id="location" placeholder="Location" required style="width:100%;padding:14px;margin-bottom:10px;">
+  <label for="location">Location</label>
+<input type="text" id="location" name="location"> required style="width:100%;padding:14px;margin-bottom:10px;">
 
-<select id="service" required style="width:100%;padding:14px;margin-bottom:10px;">
+  <label for="service">Service Required</label>
+<select id="service" name="service" required style="width:100%;padding:14px;margin-bottom:10px;">
+
 <option value="">Select Service</option>
 <option value="Solar Installation">Solar Installation</option>
 <option value="Borehole Solarisation">Borehole Solarisation</option>
@@ -260,7 +390,8 @@ background-color:#f8d7da;
 <option value="Backup Systems">Backup Systems</option>
 </select>
 
-<select id="budget" required style="width:100%;padding:14px;margin-bottom:10px;">
+  <label for="budget">Budget Range</label>
+<select id="budget" name="budget" required style="width:100%;padding:14px;margin-bottom:10px;">
 <option value="">Select Budget Range</option>
 <option value="Under 100K">Under 100K</option>
 <option value="100K - 300K">100K - 300K</option>
@@ -268,7 +399,8 @@ background-color:#f8d7da;
 <option value="700K+">700K+</option>
 </select>
 
-<textarea id="notes" placeholder="Tell us your needs" required style="width:100%;padding:14px;margin-bottom:10px;height:120px;"></textarea>
+ <label for="notes">Project Details</label>
+<textarea id="notes" name="notes" placeholder="Tell us your needs" required style="width:100%;padding:14px;margin-bottom:10px;height:120px;"></textarea>
 
 <button type="submit" style="width:100%;padding:16px;background:#FFD700;border:none;color:#000;">
 Get Free Quotation
@@ -348,5 +480,26 @@ msgElement.className = "error-msg";
 
 </script>
 
+  <footer style="background:#111;color:#fff;padding:40px 20px;text-align:center;">
+
+<h3>Brian Solar & Electrical</h3>
+
+<p>
+Solar Installation • Borehole Solarisation • Electrical Installation
+</p>
+
+<p>
+Phone: 0768 463 203
+</p>
+
+<p>
+Email: info@briansolar.co.ke
+</p>
+
+<p>
+© 2026 Brian Solar & Electrical. All Rights Reserved.
+</p>
+
+</footer>
 </body>
 </html>
