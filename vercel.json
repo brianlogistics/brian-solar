@@ -1,4 +1,7 @@
 {
+  "buildCommand": "true",
+  "outputDirectory": ".",
+  "cleanUrls": true,
   "redirects": [
     {
       "source": "http://briansolar.co.ke/(.*)",
@@ -9,6 +12,17 @@
       "source": "https://www.briansolar.co.ke/(.*)",
       "destination": "https://briansolar.co.ke/$1",
       "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/:path*",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=300, must-revalidate"
+        }
+      ]
     }
   ]
 }
