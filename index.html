@@ -147,6 +147,19 @@
 </script>
   
 <style>
+  .logo{
+    display:flex;
+    align-items:left;
+    gap:10px;
+    font-weight:bold;
+    font-size:1.2rem;
+}
+
+.logo img{
+    width:50px;
+    height:50px;
+    object-fit:contain;
+}
   /* LAYOUT */
 .container {
     max-width: 1200px;
@@ -362,7 +375,10 @@ background-color:#f8d7da;
 <header>
 <div class="container nav">
 
-<h3>Brian Solar & Electrical </h3>
+<div class="logo">
+    <img src="/images/logo.webp" alt="Brian Solar & Electrical Logo">
+    <span>Brian Solar & Electrical</span>
+</div>
 
 <div class="hamburger" onclick="toggleMenu()">☰</div>
 
@@ -376,7 +392,6 @@ background-color:#f8d7da;
 
 </div>
 </header>
-
   <main>
 <section id="hero">
 <div class="container">
