@@ -147,6 +147,90 @@
 </script>
   
 <style>
+  /* LAYOUT */
+.container {
+    max-width: 1200px;
+    margin: auto;
+    padding: 0 20px;
+}
+
+.section {
+    padding: 80px 0;
+}
+
+.section-light {
+    background: #f8f8f8;
+}
+
+.section-dark {
+    background: #111;
+    color: #fff;
+}
+
+/* TYPOGRAPHY */
+.text-center {
+    text-align: center;
+}
+
+.text-gold {
+    color: #FFD700;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+/* BUTTONS */
+.btn {
+    display: inline-block;
+    padding: 14px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background: #FFD700;
+    color: #000;
+}
+
+.btn-whatsapp {
+    background: #25D366;
+    color: #fff;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+/* CARDS */
+.card {
+    background: #fff;
+    padding: 25px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,.08);
+}
+
+/* GRID */
+.grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2,1fr);
+    gap: 30px;
+}
+
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 30px;
+}
+
+@media(max-width:768px){
+    .grid-2,
+    .grid-3{
+        grid-template-columns:1fr;
+    }
+}
 :root{--primary:#FFD700;--dark:#111;}
 body{margin:0;font-family:Arial;padding-top:80px}
 
@@ -278,7 +362,7 @@ background-color:#f8d7da;
 <header>
 <div class="container nav">
 
-<h3>Brian Solar</h3>
+<h3>Brian Solar & Electrical </h3>
 
 <div class="hamburger" onclick="toggleMenu()">☰</div>
 
@@ -306,9 +390,15 @@ background-color:#f8d7da;
 </p>
 
 <div class="cta-buttons">
-<a href="#contact" class="quote-btn">Get Free Quote</a>
-<a href="tel:+254768463203" class="quote-btn">📞 Call Now</a>
-<a href="https://wa.me/254768463203" class="whatsapp-btn">WhatsApp</a>
+<a href="#contact" class="btn btn-primary">Get Free Quote</a>
+
+<a href="tel:+254768463203" class="btn btn-primary">
+📞 Call Now
+</a>
+
+<a href="https://wa.me/254768463203" class="btn btn-whatsapp">
+WhatsApp
+</a>
 </div>
 
 </div>
@@ -318,12 +408,28 @@ background-color:#f8d7da;
 <section class="section" id="services">
 <div class="container">
 <h2>Solar Services in Kenya</h2>
-<ul>
-<li>Solar Panel Installation</li>
-<li>Borehole Solar Systems</li>
-<li>Solar Water Pumps</li>
-<li>Electrical Wiring</li>
-</ul>
+<div class="grid-2">
+
+<div class="card">
+<h3>Solar Panel Installation</h3>
+<p>Professional solar power systems for homes and businesses.</p>
+</div>
+
+<div class="card">
+<h3>Borehole Solar Systems</h3>
+<p>Efficient solar-powered water pumping solutions.</p>
+</div>
+
+<div class="card">
+<h3>Solar Water Pumps</h3>
+<p>Reliable irrigation and water supply systems.</p>
+</div>
+
+<div class="card">
+<h3>Electrical Wiring</h3>
+<p>Safe and certified electrical installations.</p>
+</div>
+
 </div>
 
 </section>
@@ -385,7 +491,25 @@ Meru and all counties across Kenya.
 <div class="container">
 
 <h2>Recent Solar Projects</h2>
+  
+.project-gallery{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
 
+.project-gallery img{
+    width:100%;
+    border-radius:10px;
+    box-shadow:0 5px 15px rgba(0,0,0,.15);
+}
+
+@media(max-width:768px){
+    .project-gallery{
+        grid-template-columns:1fr;
+    }
+}
+  
 <img src="/images/project11.webp"
 alt="Solar panel installation in Kitui Kenya"
 loading="lazy"
