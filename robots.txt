@@ -1,4 +1,16 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://www.briansolar.co.ke/sitemap.xml
+# Sitemap location
+Sitemap: https://briansolar.co.ke/sitemap.xml
+
+# Block unnecessary admin or system areas (future-proofing)
+Disallow: /admin/
+Disallow: /login/
+Disallow: /tmp/
+Disallow: /private/
+
+# Allow important content
+Allow: /
+Allow: /blog/
+Allow: /solar-installation-*.html
