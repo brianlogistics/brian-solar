@@ -148,6 +148,64 @@
 </script>
   
 <style>
+ /* WHY CHOOSE US */
+.why-choose{
+    padding:80px 20px;
+    background:#f8f9fa;
+}
+
+.why-choose h2{
+    text-align:center;
+    font-size:2rem;
+    margin-bottom:50px;
+    color:#222;
+}
+
+.why-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+    gap:30px;
+}
+
+.why-card{
+    background:#fff;
+    padding:35px 25px;
+    border-radius:15px;
+    text-align:center;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+    transition:all 0.3s ease;
+}
+
+.why-card:hover{
+    transform:translateY(-8px);
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+.why-card .icon{
+    width:80px;
+    height:80px;
+    margin:0 auto 20px;
+    background:#f4b400;
+    color:#fff;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:36px;
+}
+
+.why-card h3{
+    margin-bottom:15px;
+    color:#222;
+    font-size:1.2rem;
+}
+
+.why-card p{
+    color:#666;
+    line-height:1.8;
+    font-size:15px;
+}
+ 
   .footer{
     background:#111;
     color:#fff;
@@ -555,19 +613,75 @@ height="400">
 </div>
 </section>
 
-<!-- TRUST -->
-<section class="section">
-<div class="container">
-<h2>Why Choose Us</h2>
-<ul>
-<li>✔ 5+ Years Experience</li>
-<li>✔ 120+ Installations</li>
-<li>✔ Certified Electricians</li>
-<li>✔ Nationwide Coverage</li>
-</ul>
-</div>
-</section>
+<!-- WHY CHOOSE US -->
+<section class="why-choose">
+    <div class="container">
+        <h2>Why Choose Brian Solar & Electrical?</h2>
 
+        <div class="why-grid">
+
+            <div class="why-card">
+                <div class="icon">🛠️</div>
+                <h3>Licensed & Qualified Technicians</h3>
+                <p>
+                    All installations are carried out by trained professionals
+                    following proper safety and electrical standards.
+                </p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon">⭐</div>
+                <h3>5+ Years Experience</h3>
+                <p>
+                    We have successfully completed residential,
+                    commercial and agricultural solar projects
+                    across Kenya.
+                </p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon">🌍</div>
+                <h3>Nationwide Service Coverage</h3>
+                <p>
+                    We travel across Kenya providing reliable
+                    solar installation, borehole solarisation,
+                    and electrical services.
+                </p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon">🔋</div>
+                <h3>High Quality Solar Equipment</h3>
+                <p>
+                    We use certified solar panels, lithium batteries,
+                    inverters and electrical accessories for
+                    long-lasting performance.
+                </p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon">⚡</div>
+                <h3>Fast Installation</h3>
+                <p>
+                    Our experienced team completes projects
+                    quickly while maintaining the highest
+                    quality standards.
+                </p>
+            </div>
+
+            <div class="why-card">
+                <div class="icon">💰</div>
+                <h3>Affordable Solutions</h3>
+                <p>
+                    We design systems that reduce electricity bills
+                    by up to 97.5% while staying within your budget.
+                </p>
+            </div>
+
+        </div>
+    </div>
+</section>
+   
 <!-- CONTACT -->
 <section id="contact" class="section" style="background:#f4f4f4;">
 <div class="container">
