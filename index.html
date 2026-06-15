@@ -148,6 +148,72 @@
 </script>
   
 <style>
+ /* RECENT PROJECTS */
+.projects{
+    padding:80px 20px;
+    background:#f8f9fa;
+}
+
+.projects h2{
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.section-subtitle{
+    text-align:center;
+    margin-bottom:50px;
+    color:#666;
+}
+
+.project-item{
+    display:flex;
+    align-items:center;
+    gap:40px;
+    margin-bottom:70px;
+    background:#fff;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 20px rgba(0,0,0,0.08);
+}
+
+.project-details{
+    flex:1;
+}
+
+.project-details h3{
+    color:#0a4b78;
+    margin-bottom:20px;
+}
+
+.project-details p{
+    line-height:1.8;
+    margin-bottom:12px;
+}
+
+.project-image{
+    flex:1;
+}
+
+.project-image img{
+    width:100%;
+    border-radius:12px;
+    object-fit:cover;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+/* Mobile */
+@media(max-width:768px){
+
+.project-item{
+    flex-direction:column;
+}
+
+.project-image{
+    width:100%;
+}
+
+}
+ 
  /* WHY CHOOSE US */
 .why-choose{
     padding:80px 20px;
