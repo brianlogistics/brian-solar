@@ -35,26 +35,26 @@
   "@context": "https://schema.org",
   "@graph": [
     {
-      "@type": ["LocalBusiness","Electrician"],
+      "@type": ["LocalBusiness", "Electrician"],
       "@id": "https://briansolar.co.ke/#business",
       "name": "Brian Solar & Electrical",
       "url": "https://briansolar.co.ke/",
       "image": "https://briansolar.co.ke/images/logo.webp",
       "logo": "https://briansolar.co.ke/images/logo.webp",
- "brand": {
-  "@type": "Brand",
-  "name": "Brian Solar & Electrical"
-},
+      "brand": {
+        "@type": "Brand",
+        "name": "Brian Solar & Electrical"
+      },
       "telephone": "+254768463203",
       "email": "info@briansolar.co.ke",
- "founder": {
-  "@type": "Person",
-  "name": "Brian Mumo Taavu"
-},
- "serviceArea": {
-  "@type": "Country",
-  "name": "Kenya"
-},
+      "founder": {
+        "@type": "Person",
+        "name": "Brian Mumo Taavu"
+      },
+      "serviceArea": {
+        "@type": "Country",
+        "name": "Kenya"
+      },
       "priceRange": "$$",
       "description": "Professional solar installation company in Kenya specializing in solar panels, inverters, lithium batteries, borehole solarisation, solar water pumps, solar water heaters and electrical installation services.",
       "address": {
@@ -64,15 +64,13 @@
       },
       "geo": {
         "@type": "GeoCoordinates",
-        "latitude": "-1.286389",
-        "longitude": "36.817223"
+        "latitude": -1.286389,
+        "longitude": 36.817223
       },
-      "areaServed": [
-  {
-    "@type": "Country",
-    "name": "Kenya"
-  }
-],
+      "areaServed": {
+        "@type": "Country",
+        "name": "Kenya"
+      },
       "openingHours": "Mo-Sa 08:00-18:00",
       "sameAs": [
         "https://www.facebook.com/briansolarelectrical"
@@ -119,6 +117,7 @@
         ]
       }
     },
+
     {
       "@type": "WebSite",
       "@id": "https://briansolar.co.ke/#website",
@@ -128,6 +127,20 @@
         "@id": "https://briansolar.co.ke/#business"
       }
     },
+
+    {
+      "@type": "WebPage",
+      "@id": "https://briansolar.co.ke/#webpage",
+      "url": "https://briansolar.co.ke/",
+      "name": "Solar Installation Company in Kenya",
+      "isPartOf": {
+        "@id": "https://briansolar.co.ke/#website"
+      },
+      "about": {
+        "@id": "https://briansolar.co.ke/#business"
+      }
+    },
+
     {
       "@type": "FAQPage",
       "@id": "https://briansolar.co.ke/#faq",
@@ -159,20 +172,6 @@
       ]
     }
   ]
-}
- {
- "@type":"WebPage",
- "@id":"https://briansolar.co.ke/#webpage",
- "url":"https://briansolar.co.ke/",
- "name":"Solar Installation Company in Kenya",
- "isPartOf":{
-   "@id":"https://briansolar.co.ke/#website"
- },
- "about":{
-   "@id":"https://briansolar.co.ke/#business"
-  }
-}
-]
 }
 </script>
   
