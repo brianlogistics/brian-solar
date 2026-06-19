@@ -835,10 +835,9 @@ Meru and all counties across Kenya.
           </div>
 
   <!-- PROJECT 4 -->
-        <div class="project-item">
+ <div class="project-item">
 
-```
-<div class="project-details">
+     <div class="project-details">
     <h3>Industrial Power Distribution & Control Panel Installation</h3>
 
     <p><strong>Location:</strong> Ruaka, Nairobi County</p>
@@ -1093,11 +1092,11 @@ notes: document.getElementById("notes").value,
 timestamp: new Date().toLocaleString()
 };
 
-fetch("https://script.google.com/macros/s/AKfycbzkuuNYaH3DxtV5NkOOW3mp7RNfbRO1cTYS5yzADa9mBR1fCjVjyDypNate1qaV85NlHQ/exec", {
+fetch("https://script.google.com/macros/s/AKfycbyH1GR0bnaHYimsVyeMNBpkWbxoqahltkxrAc_N3et1UIwkGkriN7l6-4ps937aPc1V/exec", {
 method:"POST",
 body:JSON.stringify(data),
 headers:{"Content-Type":"application/json"},
-mode:"no-cors"
+mode:"cors"
 })
 .then(()=>{
 msgElement.innerText = "✓ Request received! We will contact you shortly.";
