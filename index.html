@@ -1091,22 +1091,38 @@ notes: document.getElementById("notes").value,
 timestamp: new Date().toLocaleString()
 };
 
-fetch("https://script.google.com/macros/s/AKfycby3yB0KLHOYguAl-MEvbWZhigk8buYC3ofz8b80-K8QgR3dgP_v1U8EUV06igODleg/exec", {
+fetch("https://script.google.com/macros/s/AKfycbznQjuziDJXrTZqtpn-TlBUVkywhd5Xz9Yrp8J-iXnMOwIpkJOguedApS24Jc7C1jNx2w/exec", {
 method:"POST",
 body:JSON.stringify(data),
 headers:{"Content-Type":"application/json"},
 mode:"cors"
 })
-.then(()=>{
-msgElement.innerText = "✓ Request received! We will contact you shortly.";
-msgElement.className = "success-msg";
-document.getElementById("solarForm").reset();
+.then(response => response.text())
+.then(result => {
+
+  console.log(result);
+
+  if(result.indexOf("SUCCESS") > -1){
+
+    msgElement.innerText =
+      "✓ Request received! We will contact you shortly.";
+
+    msgElement.className = "success-msg";
+
+    document.getElementById("solarForm").reset();
+
+  } else {
+
+    throw new Error(result);
+
+  }
+
+})
 })
 .catch((error)=>{
 console.error("Error:", error);
 msgElement.innerText = "✗ Error sending request. Please WhatsApp us.";
 msgElement.className = "error-msg";
-});
 
 });
 
