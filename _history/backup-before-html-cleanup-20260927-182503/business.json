@@ -1,0 +1,50 @@
+{
+  "name": "Brian Solar & Electrical",
+  "registered_name": "BRIAN SOLAR & ELECTRICAL",
+  "domain": "https://www.briansolar.co.ke",
+  "email": "info@briansolar.co.ke",
+  "phone": "+254796433537",
+  "phone_display": "0796 433 537",
+  "whatsapp_url": "https://wa.me/254796433537",
+
+  "services": [
+    {
+      "slug": "solar",
+      "name": "Solar",
+      "short_name": "Solar",
+      "description": "Professional solar panel installation, system design, lithium batteries, hybrid inverters, borehole solarisation, solar water pumps, solar water heaters, backup power systems, maintenance and repairs."
+    },
+    {
+      "slug": "electrical",
+      "name": "Electrical",
+      "short_name": "Electrical",
+      "description": "Electrical installation, wiring, repairs, upgrades, maintenance and related electrical services."
+    },
+    {
+      "slug": "cctv",
+      "name": "CCTV",
+      "short_name": "CCTV",
+      "description": "CCTV security camera installation, configuration, maintenance and support."
+    },
+    {
+      "slug": "electric-fence",
+      "name": "Electric Fence",
+      "short_name": "Electric Fence",
+      "description": "Electric fence installation, maintenance, repairs and security solutions."
+    }
+  ],
+
+  "primary_service_areas": [
+    "Nairobi",
+    "Mombasa",
+    "Kisumu",
+    "Nakuru",
+    "Eldoret",
+    "Kitui",
+    "Machakos",
+    "Kajiado",
+    "Thika",
+    "Meru",
+    "Kenya"
+  ]
+}

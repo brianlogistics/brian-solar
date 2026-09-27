@@ -1,0 +1,53 @@
+﻿<section class="hero">
+
+  <div class="container">
+    <p class="hero-tagline">
+      Powering Your Future. Protecting What Matters.
+    </p>
+    <h1>
+      Solar, Electrical, CCTV &amp; Electric Fence Services
+    </h1>
+
+    <p class="hero-lead">
+      Professional installation, maintenance and support
+      from Brian Solar &amp; Electrical.
+    </p>
+
+  </div>
+
+</section>
+
+
+<section class="section">
+
+  <div class="container">
+
+    <div class="service-grid">
+
+{% for service in services %}
+      <article class="card">
+
+        <h2>
+          <a href="/services/{{ service.slug }}/">
+            {{ service.name }}
+          </a>
+        </h2>
+
+        <p>
+          {{ service.description }}
+        </p>
+
+        <a href="/services/{{ service.slug }}/">
+          View {{ service.name }} Services Ã¢â€ â€™
+        </a>
+
+      </article>
+{% endfor %}
+
+    </div>
+
+  </div>
+
+</section>
+
+
