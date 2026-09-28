@@ -577,8 +577,8 @@ def build():
     page(
         Path("index.html"),
         "pages/home.html",
-        "Solar, Electrical, CCTV & Electric Fence Solutions in Kenya | Brian Solar & Electrical",
-        "Brian Solar & Electrical provides solar, electrical, CCTV and electric fence services across Kenya."
+        "Solar & Electrical Services in Kenya | CCTV & Electric Fence | Brian Solar",
+        "Brian Solar & Electrical provides professional solar, electrical, CCTV and electric fence installation services across Kenya. Get a free site survey and quotation."
     )
 
     # ---------------------------------------------------------
