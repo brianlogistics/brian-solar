@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   "use strict";
 
   const form = document.getElementById("solarForm");
@@ -313,4 +313,37 @@ ${WEBSITE_URL}`;
       navToggle.setAttribute("aria-label", "Open navigation");
     });
   });
+
+  const revealItems = document.querySelectorAll(
+    ".work-process-card, .why-choose-card"
+  );
+
+  if (revealItems.length) {
+    if (
+      window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      revealItems.forEach((item) => item.classList.add("is-visible"));
+    } else {
+      const observer = new IntersectionObserver(
+        (entries, revealObserver) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            entry.target.classList.add("is-visible");
+            revealObserver.unobserve(entry.target);
+          });
+        },
+        {
+          threshold: 0.15,
+          rootMargin: "0px 0px -40px 0px"
+        }
+      );
+
+      revealItems.forEach((item) => observer.observe(item));
+    }
+  }
+
 })();

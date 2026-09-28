@@ -605,3 +605,204 @@ font-size:2.2rem;
   }
 }
 
+
+
+/* HOW WE WORK */
+.process-intro-title {
+  margin-top: 8px;
+  margin-bottom: 10px;
+}
+
+.process-intro {
+  max-width: 780px;
+  margin-bottom: 30px;
+}
+
+.work-process-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+}
+
+.work-process-card {
+  position: relative;
+  padding: 24px 20px;
+}
+
+.process-number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 16px;
+  border-radius: 50%;
+  background: #f5b800;
+  color: #111;
+  font-weight: 800;
+  font-size: .9rem;
+}
+
+.work-process-card h3 {
+  margin-bottom: 8px;
+}
+
+.work-process-card h4 {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.work-process-card p {
+  margin-bottom: 0;
+  font-size: .92rem;
+  line-height: 1.6;
+}
+
+@media (max-width: 1000px) {
+  .work-process-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .work-process-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .work-process-card {
+    padding: 22px 18px;
+  }
+}
+/* TECHNICAL MOTION + INTERACTION */
+.card,
+.service-card,
+.why-choose-card,
+.work-process-card {
+  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+}
+
+.card:hover,
+.service-card:hover,
+.why-choose-card:hover,
+.work-process-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 14px 32px rgba(0,0,0,.10);
+}
+
+.btn {
+  transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(245,184,0,.24);
+}
+
+/* PROCESS FLOW */
+.work-process-grid {
+  position: relative;
+}
+
+.work-process-card {
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(22px);
+}
+
+.work-process-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .55s ease, transform .55s ease, box-shadow .25s ease;
+}
+
+.work-process-card:nth-child(1) { transition-delay: .05s; }
+.work-process-card:nth-child(2) { transition-delay: .12s; }
+.work-process-card:nth-child(3) { transition-delay: .19s; }
+.work-process-card:nth-child(4) { transition-delay: .26s; }
+.work-process-card:nth-child(5) { transition-delay: .33s; }
+
+.process-number {
+  transition: transform .25s ease, box-shadow .25s ease;
+}
+
+.work-process-card:hover .process-number {
+  transform: scale(1.08);
+  box-shadow: 0 0 0 6px rgba(245,184,0,.12);
+}
+
+/* WHY CHOOSE REVEAL */
+.why-choose-card {
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.why-choose-card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity .5s ease, transform .5s ease, box-shadow .25s ease;
+}
+
+.why-choose-card:nth-child(1) { transition-delay: .04s; }
+.why-choose-card:nth-child(2) { transition-delay: .10s; }
+.why-choose-card:nth-child(3) { transition-delay: .16s; }
+.why-choose-card:nth-child(4) { transition-delay: .22s; }
+.why-choose-card:nth-child(5) { transition-delay: .28s; }
+.why-choose-card:nth-child(6) { transition-delay: .34s; }
+
+/* SUBTLE HERO ENERGY */
+.hero-home {
+  position: relative;
+  overflow: hidden;
+}
+
+.hero-home::after {
+  content: "";
+  position: absolute;
+  width: 420px;
+  height: 420px;
+  right: -180px;
+  top: -180px;
+  border-radius: 50%;
+  background: rgba(245,184,0,.10);
+  pointer-events: none;
+  animation: energy-pulse 5s ease-in-out infinite;
+}
+
+@keyframes energy-pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: .55;
+  }
+  50% {
+    transform: scale(1.12);
+    opacity: .9;
+  }
+}
+
+/* ACCESSIBILITY */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .work-process-card,
+  .why-choose-card {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero-home::after {
+    width: 280px;
+    height: 280px;
+    right: -150px;
+    top: -120px;
+  }
+}
