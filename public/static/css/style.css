@@ -470,3 +470,30 @@ font-size:2.2rem;
 
 }
 
+/* SERVICE CARD ICONS */
+.service-card-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.service-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  color: #f5b800;
+}
+
+.service-icon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
