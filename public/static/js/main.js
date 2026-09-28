@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const form = document.getElementById("solarForm");
@@ -280,3 +280,37 @@ ${WEBSITE_URL}`;
   });
 })();
 
+/* MOBILE NAVIGATION */
+
+(() => {
+  "use strict";
+
+  const navToggle = document.querySelector(".nav-toggle");
+  const mainNavigation = document.getElementById("main-navigation");
+
+  if (!navToggle || !mainNavigation) {
+    return;
+  }
+
+  navToggle.addEventListener("click", () => {
+    const isOpen = mainNavigation.classList.toggle("is-open");
+
+    navToggle.setAttribute(
+      "aria-expanded",
+      isOpen ? "true" : "false"
+    );
+
+    navToggle.setAttribute(
+      "aria-label",
+      isOpen ? "Close navigation" : "Open navigation"
+    );
+  });
+
+  mainNavigation.querySelectorAll("a").forEach((link) => {
+    link.addEventListener("click", () => {
+      mainNavigation.classList.remove("is-open");
+      navToggle.setAttribute("aria-expanded", "false");
+      navToggle.setAttribute("aria-label", "Open navigation");
+    });
+  });
+})();

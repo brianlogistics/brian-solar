@@ -19,28 +19,47 @@
 
 <header class="site-header">
 
-  <div class="brand">
+  <div class="container header-inner">
 
-    <a class="logo" href="/">
-      <img
-        src="/static/images/logo.png"
-        alt="Brian Solar and Electrical Logo"
-        width="120"
-      >
-    </a>
+    <div class="brand">
+      <a class="logo" href="/">
+        <img
+          src="/static/images/logo.png"
+          alt="Brian Solar and Electrical Logo"
+          width="100"
+          height="auto"
+        >
+      </a>
+      <p class="brand-tagline">
+        Powering Your Future. Protecting What Matters.
+      </p>
+    </div>
 
-    <p class="brand-tagline">
-      Powering Your Future. Protecting What Matters.
-    </p>
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      id="main-navigation"
+      class="main-nav"
+      aria-label="Main navigation"
+    >
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+      <a href="/services/">Services</a>
+      <a href="/projects/">Projects</a>
+      <a href="/contact/">Contact</a>
+    </nav>
 
   </div>
-
-  <nav class="main-nav" aria-label="Main navigation">
-    <a href="/">Home</a>
-    <a href="/about/">About</a>
-    <a href="/services/">Services</a>
-    <a href="/contact/">Contact</a>
-  </nav>
 
 </header>
 
@@ -48,35 +67,35 @@
 <main>
 <section class="hero-home">
 
-  <div class="container">
+  <div class="container hero-content">
 
     <p class="eyebrow">
-      Solar &amp; Electrical Services Across Kenya
+      Solar • Electrical • CCTV • Electric Fence
     </p>
 
     <h1>
-      Professional Solar, Electrical, CCTV &amp; Electric Fence Services
+      Reliable Power &amp; Security Solutions Across Kenya
     </h1>
 
     <p class="hero-lead">
-      Brian Solar &amp; Electrical provides professional installation,
-      system design, maintenance and support for homes, businesses,
-      farms, schools and institutions across Kenya.
+      Professional installation, system design, maintenance and support
+      for homes, businesses, farms, schools and institutions across Kenya.
     </p>
 
-    <p class="hero-services">
-      Solar Panels Â· Inverters Â· Lithium Batteries Â·
-      Borehole Solarisation Â· Solar Water Pumps Â·
-      Solar Water Heaters Â· Electrical Installation
+    <p class="hero-trust">
+      Free Site Survey • Professional Installation • Nationwide Service
     </p>
 
     <div class="cta-buttons">
 
-      <a class="btn btn-primary" href="/services/solar/">
-        Solar Services
+      <a class="btn btn-primary" href="#quotation">
+        Get a Free Quote
       </a>
 
-      <a class="btn btn-secondary" href="https://wa.me/254796433537">
+      <a
+        class="btn btn-secondary"
+        href="https://wa.me/254796433537"
+      >
         WhatsApp Us
       </a>
 
@@ -91,44 +110,44 @@
 
   <div class="container">
 
-    <h2>Solar Services in Kenya</h2>
+    <h2>Our Core Services</h2>
 
     <div class="grid-2">
 
       <article class="card">
-        <h3>Solar Panel Installation</h3>
+        <h3>Solar Solutions</h3>
         <p>
-          Reliable solar power systems designed for homes,
-          businesses, farms, schools and institutions.
+          Solar PV systems, hybrid systems, lithium batteries,
+          borehole solarisation, solar water pumps and solar water heaters.
         </p>
-        <a href="/services/solar/">Learn about Solar Services â†’</a>
+        <a href="/services/solar/">Explore Solar Services →</a>
       </article>
 
       <article class="card">
-        <h3>Borehole Solarisation</h3>
+        <h3>Electrical Services</h3>
         <p>
-          Efficient solar-powered borehole pumping solutions
-          designed to reduce water pumping costs.
+          Electrical installation, wiring, upgrades, repairs,
+          maintenance and troubleshooting for homes and businesses.
         </p>
-        <a href="/services/solar/">View Solar Services â†’</a>
+        <a href="/services/electrical/">Explore Electrical Services →</a>
       </article>
 
       <article class="card">
-        <h3>Solar Water Pumps</h3>
+        <h3>CCTV Security</h3>
         <p>
-          Solar water pumping solutions for irrigation,
-          domestic water supply and agricultural applications.
+          CCTV camera installation, positioning, configuration,
+          remote viewing, maintenance and system upgrades.
         </p>
-        <a href="/services/solar/">View Solar Services â†’</a>
+        <a href="/services/cctv/">Explore CCTV Services →</a>
       </article>
 
       <article class="card">
-        <h3>Solar Water Heaters</h3>
+        <h3>Electric Fence</h3>
         <p>
-          Solar water heating solutions for residential,
-          commercial and institutional applications.
+          Electric fence installation, repairs, maintenance,
+          upgrades and security system integration.
         </p>
-        <a href="/services/solar/">View Solar Services â†’</a>
+        <a href="/services/electric-fence/">Explore Electric Fence Services →</a>
       </article>
 
     </div>
@@ -136,7 +155,6 @@
   </div>
 
 </section>
-
 
 <section class="section section-light">
 
@@ -214,7 +232,7 @@
           class="btn btn-primary"
           href="/projects/kitengela-5kw-solar-installation/"
         >
-          Read Project â†’
+          Read Project →
         </a>
 
       </div>
@@ -449,6 +467,8 @@ loading="lazy"
     </form>
   </div>
 </section>
+
+
 
 
 

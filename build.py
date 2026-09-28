@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 import json
 import re
 import shutil
@@ -275,28 +275,9 @@ def clean_source_html(html):
     html = html.replace("\\<", "<")
     html = html.replace("\\>", ">")
 
-    # Repair common UTF-8/Windows-1252 mojibake introduced in
-    # older migrated files. Apply at most two passes.
-    for _ in range(2):
-        bad_before = sum(
-            html.count(ch)
-            for ch in ("ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢", "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡", "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢")
-        )
-
-        try:
-            repaired = html.encode("latin1").decode("utf-8")
-        except (UnicodeEncodeError, UnicodeDecodeError):
-            break
-
-        bad_after = sum(
-            repaired.count(ch)
-            for ch in ("ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Â ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢", "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡", "ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢")
-        )
-
-        if bad_after < bad_before:
-            html = repaired
-        else:
-            break
+    # Source files are already UTF-8.
+    # Do not perform a blanket Latin-1/UTF-8 conversion here because
+    # valid Unicode characters such as •, →, — and – would be corrupted.
 
     # Normalize a few obvious missing spaces found in legacy
     # source content.
