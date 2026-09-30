@@ -1,0 +1,26 @@
+<h1>Solar System Sizing Calculator Kenya</h1>
+
+<p>Estimate your solar requirements before requesting a quotation.</p>
+
+<label>Daily Energy Usage (Wh):</label>
+<input id="daily-load" type="number">
+
+<br><br>
+
+<label>Peak Sun Hours:</label>
+<input id="sun-hours" type="number" value="5">
+
+<br><br>
+
+<label>Battery Backup Days:</label>
+<input id="backup-days" type="number" value="1">
+
+<br><br>
+
+<button onclick="calculateSolarSystem()">
+Calculate Solar System
+</button>
+
+<div id="calculator-result"></div>
+
+<script src="/js/calculator/solar-sizing-calculator.js"></script>
