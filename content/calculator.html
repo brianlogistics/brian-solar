@@ -1,26 +1,102 @@
-<h1>Solar System Sizing Calculator Kenya</h1>
+﻿<h1>Solar System Sizing Calculator Kenya</h1>
 
-<p>Estimate your solar requirements before requesting a quotation.</p>
+<p>
+    Get a preliminary estimate of your solar PV, inverter and battery requirements.
+    For a more accurate result, use appliance-based sizing below.
+</p>
 
-<label>Daily Energy Usage (Wh):</label>
-<input id="daily-load" type="number">
+<section>
+    <h2>1. System Location</h2>
 
-<br><br>
+    <label for="solar-location">Location:</label>
+    <select id="solar-location">
+        <option value="Nairobi">Nairobi</option>
+        <option value="Kiambu">Kiambu</option>
+        <option value="Machakos">Machakos</option>
+        <option value="Kitui">Kitui</option>
+        <option value="Mombasa">Mombasa</option>
+        <option value="Kajiado">Kajiado</option>
+        <option value="Nakuru">Nakuru</option>
+        <option value="Kisumu">Kisumu</option>
+        <option value="Eldoret">Eldoret</option>
+    </select>
+</section>
 
-<label>Peak Sun Hours:</label>
-<input id="sun-hours" type="number" value="5">
+<br>
 
-<br><br>
+<section>
+    <h2>2. Appliance-Based Sizing</h2>
 
-<label>Battery Backup Days:</label>
-<input id="backup-days" type="number" value="1">
+    <p>
+        Add the appliances you normally use. Enter quantity and average hours
+        of operation per day.
+    </p>
 
-<br><br>
+    <div id="appliance-list"></div>
 
-<button onclick="calculateSolarSystem()">
-Calculate Solar System
+    <button type="button" onclick="addApplianceRow()">
+        + Add Appliance
+    </button>
+</section>
+
+<br>
+
+<section>
+    <h2>3. Backup Requirement</h2>
+
+    <label for="backup-hours">Required backup hours:</label>
+
+    <select id="backup-hours">
+        <option value="4">4 hours</option>
+        <option value="6">6 hours</option>
+        <option value="8" selected>8 hours</option>
+        <option value="12">12 hours</option>
+        <option value="24">24 hours</option>
+    </select>
+</section>
+
+<br>
+
+<section>
+    <h2>4. Solar Panel</h2>
+
+    <label for="panel-watts">Panel size:</label>
+
+    <select id="panel-watts">
+        <option value="450">450 W</option>
+        <option value="500">500 W</option>
+        <option value="550" selected>550 W</option>
+        <option value="600">600 W</option>
+    </select>
+</section>
+
+<br>
+
+<button type="button" onclick="calculateSolarSystem()">
+    Calculate My Solar System
 </button>
 
 <div id="calculator-result"></div>
 
-<script src="/js/calculator/solar-sizing-calculator.js"></script>
+<hr>
+
+<p>
+    <strong>Important:</strong>
+    This calculator provides a preliminary estimate only. Final system sizing
+    requires load verification, site assessment, equipment compatibility,
+    inverter limits, battery specifications and professional engineering review.
+</p>
+
+<p>
+    <strong>Ready for a detailed system?</strong>
+</p>
+
+<p>
+    Contact Brian Solar & Electrical for a detailed quotation after reviewing
+    your preliminary system estimate.
+</p>
+
+<script src="/static/js/calculator/appliances.js"></script>
+<script src="/static/js/calculator/locations.js"></script>
+<script src="/static/js/calculator/solar-engine.js"></script>
+<script src="/static/js/calculator/solar-sizing-calculator.js"></script>

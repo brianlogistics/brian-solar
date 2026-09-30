@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Solar System Sizing Calculator Kenya | Brian Solar & Electrical</title>
+  <meta name="description" content="Calculate your estimated solar panel, inverter and battery requirements in Kenya.">
+
+  <link rel="canonical" href="https://www.briansolar.co.ke/calculator/">
+
+  <link rel="stylesheet" href="/static/css/style.css">
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","name":"Brian Solar & Electrical","legalName":"BRIAN SOLAR & ELECTRICAL","url":"https://www.briansolar.co.ke/","logo":"https://www.briansolar.co.ke/static/images/logo.webp","telephone":"+254796433537","email":"info@briansolar.co.ke","description":"Solar, electrical, CCTV and electric fence services for homes, businesses, farms and institutions across Kenya.","areaServed":[{"@type":"Country","name":"Kenya"}],"sameAs":["https://www.facebook.com/briansolarelectrical"],"mainEntityOfPage":{"@type":"WebPage","@id":"https://www.briansolar.co.ke/calculator/"}}</script>
+</head>
+
+<body>
+
+<header class="site-header">
+
+  <div class="container header-inner">
+
+    <div class="brand">
+      <a class="logo" href="/">
+        <img
+          src="/static/images/logo.png"
+          alt="Brian Solar and Electrical Logo"
+          width="100"
+          height="auto"
+        >
+      </a>
+      <p class="brand-tagline">
+        Powering Your Future. Protecting What Matters.
+      </p>
+    </div>
+
+    <button
+      class="nav-toggle"
+      type="button"
+      aria-label="Open navigation"
+      aria-expanded="false"
+      aria-controls="main-navigation"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <nav
+      id="main-navigation"
+      class="main-nav"
+      aria-label="Main navigation"
+    >
+      <a href="/">Home</a>
+      <a href="/about/">About</a>
+
+      <details class="nav-services">
+        <summary>Services <span aria-hidden="true">&#9662;</span></summary>
+        <div class="services-dropdown">
+          <a href="/services/solar/">Solar</a>
+          <a href="/services/electrical/">Electrical</a>
+          <a href="/services/cctv/">CCTV</a>
+          <a href="/services/electric-fence/">Electric Fence</a>
+        </div>
+      </details>
+
+      <a href="/projects/">Projects</a>
+      <a href="/blog/">Blog</a>
+      <a href="/contact/">Contact</a>
+
+      <a class="nav-cta" href="/#quotation">Get a Free Quote</a>
+    </nav>
+
+  </div>
+
+</header>
+
+
+<main>
+<div class="page-content">
+  <div class="container">
+    <h1>Solar System Sizing Calculator Kenya</h1>
+
+<p>
+    Get a preliminary estimate of your solar PV, inverter and battery requirements.
+    For a more accurate result, use appliance-based sizing below.
+</p>
+
+<section>
+    <h2>1. System Location</h2>
+
+    <label for="solar-location">Location:</label>
+    <select id="solar-location">
+        <option value="Nairobi">Nairobi</option>
+        <option value="Kiambu">Kiambu</option>
+        <option value="Machakos">Machakos</option>
+        <option value="Kitui">Kitui</option>
+        <option value="Mombasa">Mombasa</option>
+        <option value="Kajiado">Kajiado</option>
+        <option value="Nakuru">Nakuru</option>
+        <option value="Kisumu">Kisumu</option>
+        <option value="Eldoret">Eldoret</option>
+    </select>
+</section>
+
+<br>
+
+<section>
+    <h2>2. Appliance-Based Sizing</h2>
+
+    <p>
+        Add the appliances you normally use. Enter quantity and average hours
+        of operation per day.
+    </p>
+
+    <div id="appliance-list"></div>
+
+    <button type="button" onclick="addApplianceRow()">
+        + Add Appliance
+    </button>
+</section>
+
+<br>
+
+<section>
+    <h2>3. Backup Requirement</h2>
+
+    <label for="backup-hours">Required backup hours:</label>
+
+    <select id="backup-hours">
+        <option value="4">4 hours</option>
+        <option value="6">6 hours</option>
+        <option value="8" selected>8 hours</option>
+        <option value="12">12 hours</option>
+        <option value="24">24 hours</option>
+    </select>
+</section>
+
+<br>
+
+<section>
+    <h2>4. Solar Panel</h2>
+
+    <label for="panel-watts">Panel size:</label>
+
+    <select id="panel-watts">
+        <option value="450">450 W</option>
+        <option value="500">500 W</option>
+        <option value="550" selected>550 W</option>
+        <option value="600">600 W</option>
+    </select>
+</section>
+
+<br>
+
+<button type="button" onclick="calculateSolarSystem()">
+    Calculate My Solar System
+</button>
+
+<div id="calculator-result"></div>
+
+<hr>
+
+<p>
+    <strong>Important:</strong>
+    This calculator provides a preliminary estimate only. Final system sizing
+    requires load verification, site assessment, equipment compatibility,
+    inverter limits, battery specifications and professional engineering review.
+</p>
+
+<p>
+    <strong>Ready for a detailed system?</strong>
+</p>
+
+<p>
+    Contact Brian Solar & Electrical for a detailed quotation after reviewing
+    your preliminary system estimate.
+</p>
+<script src="/static/js/calculator/appliances.js"></script>
+<script src="/static/js/calculator/locations.js"></script>
+<script src="/static/js/calculator/solar-engine.js"></script>
+<script src="/static/js/calculator/solar-sizing-calculator.js"></script>
+
+  </div>
+</div>
+
+</main>
+
+<footer class="site-footer">
+
+  <div class="container">
+
+    <div class="footer-grid">
+
+      <div class="footer-brand">
+        <p class="footer-title">
+          BRIAN SOLAR &amp; ELECTRICAL
+        </p>
+
+        <p class="footer-tagline">
+          Solar &#8226; Electrical &#8226; CCTV &#8226; Electric Fence
+        </p>
+
+      </div>
+
+      <div class="footer-column">
+        <h2>Services</h2>
+
+        <a href="/services/solar/">Solar</a>
+        <a href="/services/electrical/">Electrical</a>
+        <a href="/services/cctv/">CCTV</a>
+        <a href="/services/electric-fence/">Electric Fence</a>
+      </div>
+
+      <div class="footer-column">
+        <h2>Company</h2>
+
+        <a href="/about/">About</a>
+        <a href="/projects/">Projects</a>
+        <a href="/blog/">Blog</a>
+        <a href="/contact/">Contact</a>
+      </div>
+
+      <div class="footer-column">
+        <h2>Connect</h2>
+
+        <a href="https://www.facebook.com/briansolarelectrical" target="_blank" rel="noopener noreferrer">Facebook</a>
+        <a href="https://www.instagram.com/brian_solar_electrical" target="_blank" rel="noopener noreferrer">Instagram</a>
+        <a href="https://www.linkedin.com/company/brian-solar-electrical/" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+        <a href="https://vm.tiktok.com/ZS9D1yrDdDBUw-wmICn/" target="_blank" rel="noopener noreferrer">TikTok</a>
+      </div>
+
+      <div class="footer-column footer-contact">
+        <h2>Contact</h2>
+
+        <a href="tel:+254796433537">0796 433 537</a>
+        <a href="mailto:info@briansolar.co.ke">info@briansolar.co.ke</a>
+
+        <p>
+          Service Area: Kenya
+        </p>
+
+        <a
+          class="footer-whatsapp"
+          href="https://wa.me/254796433537"
+        >
+          WhatsApp Us
+        </a>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+
+      <p>
+        &copy; 2026 Brian Solar &amp; Electrical
+      </p>
+
+      <p>
+        <a href="/privacy-policy/">Privacy Policy</a>
+        <span aria-hidden="true">&#124;</span>
+        <a href="/terms/">Terms</a>
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<script src="/static/js/main.js" defer></script>
+
+</body>
+</html>

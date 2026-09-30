@@ -1,4 +1,4 @@
-﻿from pathlib import Path
+from pathlib import Path
 import json
 import re
 import shutil
@@ -510,6 +510,17 @@ def build_content_page(
 
     content = load_content_file(source)
 
+    # Calculator scripts are intentionally added after source cleanup.
+    # clean_source_html() removes legacy <script> blocks from migrated
+    # content, so the calculator assets must be attached here.
+    if source.name == "calculator.html":
+        content += """
+<script src="/static/js/calculator/appliances.js"></script>
+<script src="/static/js/calculator/locations.js"></script>
+<script src="/static/js/calculator/solar-engine.js"></script>
+<script src="/static/js/calculator/solar-sizing-calculator.js"></script>
+"""
+
     page(
         output,
         "pages/content.html",
@@ -949,6 +960,16 @@ def build():
 """
     )
 
+    # ---------------------------------------------------------
+    # SOLAR SIZING CALCULATOR
+    # ---------------------------------------------------------
+
+    build_content_page(
+        CONTENT / "calculator.html",
+        Path("calculator/index.html"),
+        "Solar System Sizing Calculator Kenya | Brian Solar & Electrical",
+        "Calculate your estimated solar panel, inverter and battery requirements in Kenya."
+    )
     # ---------------------------------------------------------
     # LEGAL PAGES
     # ---------------------------------------------------------
