@@ -1,4 +1,4 @@
-from pathlib import Path
+﻿from pathlib import Path
 import json
 import re
 import shutil
@@ -277,7 +277,7 @@ def clean_source_html(html):
 
     # Source files are already UTF-8.
     # Do not perform a blanket Latin-1/UTF-8 conversion here because
-    # valid Unicode characters such as â€¢, â†’, â€” and â€“ would be corrupted.
+    # valid Unicode characters such as Ã¢â‚¬Â¢, Ã¢â€ â€™, Ã¢â‚¬â€ and Ã¢â‚¬â€œ would be corrupted.
 
     # Normalize a few obvious missing spaces found in legacy
     # source content.
@@ -954,14 +954,14 @@ def build():
     # ---------------------------------------------------------
 
     build_content_page(
-        LEGACY / "privacy-policy.html",
+        CONTENT / "privacy-policy.html",
         Path("privacy-policy/index.html"),
         "Privacy Policy | Brian Solar & Electrical",
         "Privacy Policy for Brian Solar & Electrical."
     )
 
     build_content_page(
-        LEGACY / "terms-of-service.html",
+        CONTENT / "terms-of-service.html",
         Path("terms/index.html"),
         "Terms of Service | Brian Solar & Electrical",
         "Terms of Service for Brian Solar & Electrical."
@@ -991,6 +991,7 @@ Sitemap: {DATA["domain"].rstrip("/")}/sitemap.xml
 
 if __name__ == "__main__":
     build()
+
 
 
 
