@@ -219,8 +219,8 @@ def page(
     html = render(
         "base.html",
         content=content,
-        title=escape(title),
-        description=escape(description),
+        title=title,
+        description=description,
         canonical=canonical
     )
 
@@ -277,7 +277,7 @@ def clean_source_html(html):
 
     # Source files are already UTF-8.
     # Do not perform a blanket Latin-1/UTF-8 conversion here because
-    # valid Unicode characters such as •, →, — and – would be corrupted.
+    # valid Unicode characters such as â€¢, â†’, â€” and â€“ would be corrupted.
 
     # Normalize a few obvious missing spaces found in legacy
     # source content.
@@ -482,6 +482,17 @@ def extract_metadata(path, fallback_title, fallback_description):
         "Brian Solar & Electrical"
     )
 
+    # Normalize legacy metadata spacing.
+    title = re.sub(r"\s*\|\s*Brian", " | Brian", title)
+
+    description = description.replace("installationin", "installation in")
+    description = description.replace("andborehole", "and borehole")
+    description = description.replace("Kitengela.Solar", "Kitengela. Solar")
+    description = description.replace("Kitui.Borehole", "Kitui. Borehole")
+    description = description.replace("andwater", "and water")
+    description = description.replace("homes,farms", "homes, farms")
+    description = description.replace("batteries,borehole", "batteries, borehole")
+    description = description.replace("0796 433537", "0796 433 537")
     return title, description
 
 
@@ -980,6 +991,10 @@ Sitemap: {DATA["domain"].rstrip("/")}/sitemap.xml
 
 if __name__ == "__main__":
     build()
+
+
+
+
 
 
 
