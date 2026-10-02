@@ -519,6 +519,7 @@ def build_content_page(
 <script src="/static/js/calculator/locations.js"></script>
 <script src="/static/js/calculator/solar-engine.js"></script>
 <script src="/static/js/calculator/solar-sizing-calculator.js"></script>
+<script src="/static/js/calculator/quotation-catalogue.js"></script>
 """
 
     page(

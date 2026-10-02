@@ -1,0 +1,89 @@
+{
+    "version": "1.0.0",
+
+    "settings": {
+        "currency": "KES",
+        "pricesIncludeTax": false
+    },
+
+    "products": [
+        {
+            "id": "panel-example-550w",
+            "category": "solar_panel",
+            "name": "Example 550W Solar Panel",
+            "brand": "",
+            "model": "",
+            "supplier": "",
+            "unit": "piece",
+
+            "specifications": {
+                "ratedPowerW": 550,
+                "vmpV": null,
+                "impA": null,
+                "vocV": null,
+                "iscA": null
+            },
+
+            "pricing": {
+                "costPrice": null,
+                "sellingPrice": null
+            },
+
+            "availability": {
+                "available": false,
+                "quantityInStock": null
+            },
+
+            "warranty": {
+                "period": null,
+                "terms": ""
+            },
+
+            "notes": ""
+        }
+    ],
+
+    "materials": [
+        {
+            "id": "mounting-example",
+            "category": "mounting",
+            "name": "Example Mounting Material",
+            "brand": "",
+            "model": "",
+            "supplier": "",
+            "unit": "set",
+
+            "pricing": {
+                "costPrice": null,
+                "sellingPrice": null
+            },
+
+            "availability": {
+                "available": false,
+                "quantityInStock": null
+            },
+
+            "notes": ""
+        }
+    ],
+
+    "services": [
+        {
+            "id": "installation-example",
+            "category": "installation",
+            "name": "Solar Installation",
+            "unit": "job",
+
+            "pricing": {
+                "costPrice": null,
+                "sellingPrice": null
+            },
+
+            "availability": {
+                "available": true
+            },
+
+            "notes": ""
+        }
+    ]
+}
