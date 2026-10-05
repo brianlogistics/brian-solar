@@ -226,6 +226,20 @@ def page(
 
     html = add_business_schema(html, canonical)
 
+    if path == Path("index.html"):
+        preload = (
+            '<link rel="preload" '
+            'as="image" '
+            'href="/static/images/solar-banner.webp" '
+            'type="image/webp">'
+        )
+        html = html.replace(
+            "</head>",
+            preload + "\n</head>",
+            1
+        )
+
+
     out.write_text(
         html,
         encoding="utf-8",
