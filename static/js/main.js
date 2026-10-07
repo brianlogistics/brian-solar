@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const form = document.getElementById("solarForm");
@@ -199,27 +199,31 @@ ${WEBSITE_URL}`;
     const whatsappMessage = buildWhatsAppMessage(leadData);
     const whatsappURL = buildWhatsAppURL(whatsappMessage);
 
-    const whatsappWindow = window.open(
-      whatsappURL,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    /*
+     * Reserve a browser window while still inside the user's
+     * submit action. This reduces the chance that the browser
+     * blocks WhatsApp as a popup after the network request.
+     */
+    let whatsappWindow = null;
+
+    try {
+      whatsappWindow = window.open("about:blank", "_blank");
+
+      if (whatsappWindow) {
+        whatsappWindow.document.title = "Opening WhatsApp...";
+      }
+    } catch (error) {
+      console.warn("Could not reserve WhatsApp window.", error);
+    }
 
     submitting = true;
     submitButton.disabled = true;
     submitButton.textContent = "Processing Request...";
 
-    if (!whatsappWindow) {
-      setMessage(
-        "Your quotation request is ready. Please use the WhatsApp button to send the message.",
-        "warning"
-      );
-    } else {
-      setMessage(
-        "WhatsApp has been prepared. Please press Send in WhatsApp.",
-        "success"
-      );
-    }
+    setMessage(
+      "Processing your quotation request...",
+      "success"
+    );
 
     try {
       const response = await fetch(
@@ -244,13 +248,34 @@ ${WEBSITE_URL}`;
         );
       }
 
+      /*
+       * Send the reserved window to WhatsApp after the lead
+       * request has been submitted.
+       */
+      if (whatsappWindow && !whatsappWindow.closed) {
+        whatsappWindow.location.href = whatsappURL;
+      } else {
+        /*
+         * Popup was blocked or the reserved window was closed.
+         * Fall back to opening WhatsApp normally.
+         */
+        const fallbackWindow = window.open(whatsappURL, "_blank");
+
+        if (!fallbackWindow) {
+          setMessage(
+            "Your request was processed, but WhatsApp was blocked by your browser. Please allow pop-ups and try again.",
+            "warning"
+          );
+        }
+      }
+
       if (
         response.ok &&
         result &&
         result.success
       ) {
         setMessage(
-          "Request recorded successfully. Please press Send in WhatsApp to contact us.",
+          "Request recorded successfully. WhatsApp is ready — please press Send.",
           "success"
         );
 
@@ -268,10 +293,32 @@ ${WEBSITE_URL}`;
     } catch (error) {
       console.error("Lead submission failed:", error);
 
-      setMessage(
-        "WhatsApp is ready. Please press Send in WhatsApp. We could not confirm the online lead record.",
-        "warning"
-      );
+      /*
+       * Even if Google Apps Script fails, do not lose the
+       * customer's WhatsApp path.
+       */
+      if (whatsappWindow && !whatsappWindow.closed) {
+        whatsappWindow.location.href = whatsappURL;
+
+        setMessage(
+          "WhatsApp is ready. Please press Send. The online lead record could not be confirmed.",
+          "warning"
+        );
+      } else {
+        const fallbackWindow = window.open(whatsappURL, "_blank");
+
+        if (fallbackWindow) {
+          setMessage(
+            "WhatsApp is ready. Please press Send. The online lead record could not be confirmed.",
+            "warning"
+          );
+        } else {
+          setMessage(
+            "The request could not be completed because WhatsApp was blocked by your browser. Please allow pop-ups and try again.",
+            "error"
+          );
+        }
+      }
     } finally {
       submitting = false;
       submitButton.disabled = false;
@@ -345,5 +392,4 @@ ${WEBSITE_URL}`;
       revealItems.forEach((item) => observer.observe(item));
     }
   }
-
 })();
