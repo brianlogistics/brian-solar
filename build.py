@@ -53,6 +53,164 @@ def render(template, **ctx):
         re.DOTALL
     )
 
+    def render(template, **ctx):
+    path = TEMPLATES / template
+    text = path.read_text(encoding="utf-8-sig")
+
+    include_pattern = re.compile(
+        r'{%\s*include\s+"([^"]+)"\s*%}'
+    )
+
+    while True:
+        match = include_pattern.search(text)
+
+        if not match:
+            break
+
+        include_name = match.group(1)
+        include_path = TEMPLATES / include_name
+
+        include_text = include_path.read_text(
+            encoding="utf-8-sig"
+        )
+
+        text = (
+            text[:match.start()]
+            + include_text
+            + text[match.end():]
+        )
+
+    loop_pattern = re.compile(
+        r'{%\s*for\s+service\s+in\s+services\s*%}'
+        r'(.*?)'
+        r'{%\s*endfor\s*%}',
+        re.DOTALL
+    )
+
+    def render_services(match):
+        block = match.group(1)
+        output = []
+
+        for service in DATA["services"]:
+            item = block
+
+            # 1. Dynamically render the features list into clean HTML list items first
+            if "features" in service and isinstance(service["features"], list):
+                bullets = "".join(f"<li>{escape(f)}</li>" for f in service["features"])
+                pattern = re.compile(r'{{\s*service\.features\s*}}')
+                item = pattern.sub(bullets, item)
+
+            # 2. Render all other text strings (slug, name, short_name, description)
+            for key, value in service.items():
+                if key == "features":
+                    continue
+                pattern = re.compile(
+                    r'{{\s*service\.'
+                    + re.escape(key)
+                    + r'\s*}}'
+                )
+
+                item = pattern.sub(
+                    escape(str(value)),
+                    item
+                )
+
+            output.append(item)
+
+        return "".join(output)
+
+    text = loop_pattern.sub(
+        render_services,
+        text
+    )
+
+    service = ctx.get("service")
+
+    if service:
+        for key, value in service.items():
+            pattern = re.compile(
+                r'{{\s*service\.'
+                + re.escape(key)
+                + r'\s*}}'
+            )
+
+            text = pattern.sub(
+                escape(str(value)),
+                text
+            )
+
+    replacements = {
+        "business_name": DATA["name"],
+        "registered_name": DATA["registered_name"],
+        "email": DATA["email"],
+        "phone": DATA["phone"],
+        "phone_display": DATA["phone_display"],
+        "whatsapp_url": DATA["whatsapp_url"],
+        "domain": DATA["domain"],
+        "official_tagline": OFFICIAL_TAGLINE,
+    }
+
+    for key, value in ctx.items():
+        if isinstance(value, str):
+            replacements[key] = value
+
+    for key, value in replacements.items():
+        pattern = re.compile(
+            r'{{\s*'
+            + re.escape(key)
+            + r'\s*}}'
+        )
+
+        text = pattern.sub(
+            lambda m, v=str(value): v,
+            text
+        )
+
+    return text
+
+    if service:
+        for key, value in service.items():
+            pattern = re.compile(
+                r'{{\s*service\.'
+                + re.escape(key)
+                + r'\s*}}'
+            )
+
+            text = pattern.sub(
+                escape(str(value)),
+                text
+            )
+
+    replacements = {
+        "business_name": DATA["name"],
+        "registered_name": DATA["registered_name"],
+        "email": DATA["email"],
+        "phone": DATA["phone"],
+        "phone_display": DATA["phone_display"],
+        "whatsapp_url": DATA["whatsapp_url"],
+        "domain": DATA["domain"],
+        "official_tagline": OFFICIAL_TAGLINE,
+    }
+
+    for key, value in ctx.items():
+        if isinstance(value, str):
+            replacements[key] = value
+
+    for key, value in replacements.items():
+        pattern = re.compile(
+            r'{{\s*'
+            + re.escape(key)
+            + r'\s*}}'
+        )
+
+        text = pattern.sub(
+            lambda m, v=str(value): v,
+            text
+        )
+
+    return text
+
+
     def render_services(match):
         block = match.group(1)
         output = []
@@ -128,40 +286,128 @@ def render(template, **ctx):
 
 def add_business_schema(html, canonical):
     """
-    Add organization/service-area structured data.
-    No street address is invented because business.json does not
-    currently contain a verified physical address.
+    Add LocalBusiness and service-area graph structured data dynamically.
+    Optimized for Brian Solar & Electrical services across Kenya.
     """
-
-    schema = {
-        "@context": "https://schema.org",
-        "@type": "Organization",
+    # Create the base LocalBusiness profile entity
+    local_business = {
+        "@type": ["LocalBusiness", "Electrician"],
+        "@id": "https://briansolar.co.ke",
         "name": DATA["name"],
-        "legalName": DATA["registered_name"],
         "url": DATA["domain"].rstrip("/") + "/",
+        "image": DATA["domain"].rstrip("/") + "/static/images/logo.webp",
         "logo": DATA["domain"].rstrip("/") + "/static/images/logo.webp",
+        "brand": {
+            "@type": "Brand",
+            "name": DATA["name"]
+        },
         "telephone": DATA["phone"],
         "email": DATA["email"],
-        "description": (
-            "Solar, electrical, CCTV and electric fence services "
-            "for homes, businesses, farms and institutions across Kenya."
-        ),
+        "founder": {
+            "@type": "Person",
+            "name": "Brian Mumo Taavu"
+        },
+        "priceRange": "$$",
+        "description": "Professional engineering company in Kenya specializing in hybrid solar installations, backup power systems, domestic/industrial electrical services, smart HD CCTV setup, and security electric fence installations.",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Nairobi",
+            "addressCountry": "KE"
+        },
+        "geo": {
+            "@type": "GeoCoordinates",
+            "latitude": -1.286389,
+            "longitude": 36.817223
+        },
         "areaServed": [
             {
                 "@type": "Country",
                 "name": "Kenya"
+            },
+            {
+                "@type": "AdministrativeArea",
+                "name": "Nairobi County"
+            },
+            {
+                "@type": "AdministrativeArea",
+                "name": "Kiambu County"
             }
         ],
+        "openingHours": "Mo-Sa 07:00-19:00",
         "sameAs": [
             "https://www.facebook.com/briansolarelectrical"
-        ]
+        ],
+        "hasOfferCatalog": {
+            "@type": "OfferCatalog",
+            "name": "Solar, Electrical & Security Services",
+            "itemListElement": [
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Solar Panel Installation & PV Sizing",
+                        "description": "Custom residential and commercial hybrid solar installations with intelligent inverter settings and premium high-wattage panels."
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Solar Backup System Installation",
+                        "description": "Engineering high-capacity backup infrastructure using premium lithium-ion battery banks to provide seamless energy routing during power grid blackouts."
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Commercial & Residential Electrical Installation",
+                        "description": "Professional property electrical wiring, protective distribution layout setups, testing, and system maintenance by licensed contractors."
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "CCTV Surveillance System Setup",
+                        "description": "Installation of high-definition analog and IP camera monitoring setups with direct remote access configurations onto mobile applications."
+                    }
+                },
+                {
+                    "@type": "Offer",
+                    "itemOffered": {
+                        "@type": "Service",
+                        "name": "Perimeter Electric Fence Installation",
+                        "description": "High-security parameter fencing designs featuring automated energizer tracking, integrated razor wire wraps, and instant breach alerting triggers."
+                    }
+                }
+            ]
+        }
     }
 
+    # Add the primary website connection block
+    website_entity = {
+        "@type": "WebSite",
+        "@id": "https://briansolar.co.ke",
+        "url": DATA["domain"].rstrip("/") + "/",
+        "name": DATA["name"],
+        "publisher": {
+            "@id": "https://briansolar.co.ke"
+        }
+    }
+
+    # If a canonical URL is passed, attach its webpage metadata cleanly to the business profile
     if canonical:
-        schema["mainEntityOfPage"] = {
+        local_business["mainEntityOfPage"] = {
             "@type": "WebPage",
             "@id": canonical
         }
+
+    # Package everything perfectly into a clean graph array
+    schema = {
+        "@context": "https://schema.org",
+        "@graph": [local_business, website_entity]
+    }
 
     json_ld = json.dumps(
         schema,
