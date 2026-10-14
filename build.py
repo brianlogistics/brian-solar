@@ -216,12 +216,17 @@ def page(
         **ctx
     )
 
+    # Google reCAPTCHA is loaded on demand by main.js when the
+    # homepage quotation form approaches the viewport or is used.
+    recaptcha_script = ""
+
     html = render(
         "base.html",
         content=content,
         title=title,
         description=description,
-        canonical=canonical
+        canonical=canonical,
+        recaptcha_script=recaptcha_script
     )
 
     html = add_business_schema(html, canonical)
@@ -241,6 +246,9 @@ def copy_static():
 
     for source in STATIC.rglob("*"):
         if source.is_file():
+            name_lower = source.name.lower()
+            if ".backup" in name_lower or "candidate" in name_lower or "preview" in name_lower or "comparison-preview" in name_lower or "original-archive-" in name_lower:
+                continue
             relative = source.relative_to(STATIC)
             destination = destination_root / relative
 

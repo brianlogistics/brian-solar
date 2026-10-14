@@ -1,4 +1,4 @@
-(() => {
+﻿(() => {
   "use strict";
 
   const form = document.getElementById("solarForm");
@@ -10,12 +10,100 @@
   }
 
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbyOpBLFEfPQzDuLUgNpot8LOU9fy27hGEDJTkuR5QrbNFvZLuoqmLN6NOHiSVeJxBvh/exec";
+    "https://script.google.com/macros/s/AKfycbyjEQGmWaSvPA0KBpVx5dnr6LgyjlfsRCFJ93jJ_ntu33Ur9G8x5TlH3Ig0XC0ec_28cg/exec";
 
   const WHATSAPP_NUMBER = "254796433537";
   const WEBSITE_URL = "https://www.briansolar.co.ke/";
 
   let submitting = false;
+  let recaptchaLoadPromise = null;
+
+  function loadRecaptcha() {
+    if (recaptchaLoadPromise) {
+      return recaptchaLoadPromise;
+    }
+
+    recaptchaLoadPromise = new Promise((resolve, reject) => {
+      const finishLoading = () => {
+        if (!window.grecaptcha || typeof window.grecaptcha.ready !== "function") {
+          recaptchaLoadPromise = null;
+          reject(new Error("reCAPTCHA API is not ready."));
+          return;
+        }
+
+        window.grecaptcha.ready(() => {
+          try {
+            const captchaWidget = form.querySelector(".g-recaptcha");
+
+            if (captchaWidget && captchaWidget.dataset.rendered !== "true") {
+              const siteKey = captchaWidget.getAttribute("data-sitekey");
+
+              if (!siteKey) {
+                throw new Error("reCAPTCHA site key is missing.");
+              }
+
+              window.grecaptcha.render(captchaWidget, {
+                sitekey: siteKey
+              });
+
+              captchaWidget.dataset.rendered = "true";
+            }
+
+            resolve();
+          } catch (error) {
+            recaptchaLoadPromise = null;
+            reject(error);
+          }
+        });
+      };
+
+      if (window.grecaptcha && typeof window.grecaptcha.ready === "function") {
+        finishLoading();
+        return;
+      }
+
+      const script = document.createElement("script");
+      script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+      script.async = true;
+      script.onload = finishLoading;
+
+      script.onerror = () => {
+        recaptchaLoadPromise = null;
+        reject(new Error("reCAPTCHA failed to load."));
+      };
+
+      document.head.appendChild(script);
+    });
+
+    return recaptchaLoadPromise;
+  }
+
+  const captchaWidget = form.querySelector(".g-recaptcha");
+
+  if (captchaWidget) {
+    const requestRecaptcha = () => {
+      loadRecaptcha().catch(() => {
+        setMessage(
+          "Security verification could not load. Please refresh the page.",
+          "error"
+        );
+      });
+    };
+
+    form.addEventListener("focusin", requestRecaptcha, { once: true });
+    form.addEventListener("pointerdown", requestRecaptcha, { once: true });
+
+    if ("IntersectionObserver" in window) {
+      const captchaObserver = new IntersectionObserver((entries) => {
+        if (entries.some((entry) => entry.isIntersecting)) {
+          requestRecaptcha();
+          captchaObserver.disconnect();
+        }
+      }, { rootMargin: "400px" });
+
+      captchaObserver.observe(form);
+    }
+  }
 
   function setMessage(message, type) {
     msg.textContent = message;
@@ -216,8 +304,8 @@ ${WEBSITE_URL}`;
       );
     } else {
       setMessage(
-        "WhatsApp has been prepared. Please press Send in WhatsApp.",
-        "success"
+        "Submitting your request. WhatsApp is ready; please press Send there.",
+        "warning"
       );
     }
 
@@ -347,3 +435,4 @@ ${WEBSITE_URL}`;
   }
 
 })();
+
