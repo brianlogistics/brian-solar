@@ -1,4 +1,4 @@
-﻿(() => {
+(() => {
   "use strict";
 
   const form = document.getElementById("solarForm");
@@ -10,7 +10,7 @@
   }
 
   const GOOGLE_SCRIPT_URL =
-    "https://script.google.com/macros/s/AKfycbyjEQGmWaSvPA0KBpVx5dnr6LgyjlfsRCFJ93jJ_ntu33Ur9G8x5TlH3Ig0XC0ec_28cg/exec";
+    "https://script.google.com/macros/s/AKfycbzVL063Hv83xO3iPvBIva8uso4Bv0lJsGjRmSHxAR1mSOdnCJKzfRk-QYXCtA7i3ullNQ/exec";
 
   const WHATSAPP_NUMBER = "254796433537";
   const WEBSITE_URL = "https://www.briansolar.co.ke/";
@@ -435,4 +435,3 @@ ${WEBSITE_URL}`;
   }
 
 })();
-
