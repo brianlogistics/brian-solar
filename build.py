@@ -685,6 +685,19 @@ def build():
       </a>
     </p>
   </article>
+
+  <article>
+    <h2>5kW Solar Installation with Lithium Battery in Migori</h2>
+    <p>
+      A completed installation in Migori featuring a 5kW wall-mounted
+      inverter, 5.12kWh lithium battery and rooftop solar panels.
+    </p>
+    <p>
+      <a href="/projects/5kw-lithium-solar-installation/">
+        View the Migori solar project
+      </a>
+    </p>
+  </article>
 </section>
 """
     )
@@ -700,6 +713,17 @@ def build():
         canonical=(
             DATA["domain"].rstrip("/")
             + "/projects/kitengela-5kw-solar-installation/"
+        )
+    )
+
+    page(
+        Path("projects/5kw-lithium-solar-installation/index.html"),
+        "pages/projects/5kw-lithium-solar.html",
+        "5kW Solar Installation with Lithium Battery in Migori | Brian Solar & Electrical",
+        "Explore a completed solar installation in Migori featuring a 5kW wall-mounted inverter, 5.12kWh lithium battery and rooftop solar panels.",
+        canonical=(
+            DATA["domain"].rstrip("/")
+            + "/projects/5kw-lithium-solar-installation/"
         )
     )
 

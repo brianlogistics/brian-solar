@@ -1,4 +1,4 @@
-﻿const SolarSizingEngine = {
+const SolarSizingEngine = {
 
     settings: {
         performanceRatio: 0.80,
@@ -10,7 +10,27 @@
         defaultBatteryEfficiency: 0.95
     },
 
+    validateAppliances(appliances) {
+        if (!Array.isArray(appliances) || appliances.length === 0) {
+            throw new Error("Add at least one appliance.");
+        }
+        for (const appliance of appliances) {
+            const watts = Number(appliance.watts);
+            const quantity = Number(appliance.quantity);
+            const hours = Number(appliance.hours);
+            if (!Number.isFinite(watts) || watts <= 0) {
+                throw new Error("Appliance wattage must be a positive number.");
+            }
+            if (!Number.isFinite(quantity) || !Number.isInteger(quantity) || quantity <= 0) {
+                throw new Error("Appliance quantity must be greater than zero.");
+            }
+            if (!Number.isFinite(hours) || hours < 0 || hours > 24) {
+                throw new Error("Daily usage must be between 0 and 24 hours.");
+            }
+        }
+    },
     calculateDailyEnergy(appliances) {
+        this.validateAppliances(appliances);
 
         let totalDailyEnergy = 0;
 
@@ -31,6 +51,7 @@
     },
 
     calculateContinuousLoad(appliances) {
+        this.validateAppliances(appliances);
 
         let totalLoad = 0;
 
@@ -46,6 +67,7 @@
     },
 
     calculateStartingLoad(appliances) {
+        this.validateAppliances(appliances);
 
         let totalLoad = 0;
 
@@ -216,6 +238,52 @@
         };
     },
 
+    estimateBatteryChargingTime(options = {}) {
+        const {
+            batteryCapacityKwh,
+            startingSocPercent = 0,
+            targetSocPercent = 100,
+            panelCount,
+            panelWatts,
+            efficiency = 0.90
+        } = options;
+
+        const values = [
+            batteryCapacityKwh, startingSocPercent,
+            targetSocPercent, panelCount, panelWatts, efficiency
+        ];
+
+        if (!values.every(Number.isFinite)) {
+            throw new Error("Enter valid numbers for all charging inputs.");
+        }
+        if (batteryCapacityKwh <= 0 ||
+            !Number.isInteger(panelCount) || panelCount <= 0 ||
+            panelWatts <= 0 ||
+            startingSocPercent < 0 || startingSocPercent > 100 ||
+            targetSocPercent < 0 || targetSocPercent > 100 ||
+            targetSocPercent <= startingSocPercent ||
+            efficiency <= 0 || efficiency > 1) {
+            throw new Error("Check capacity, panel count, wattage, SOC and efficiency values.");
+        }
+
+        const energyNeededKwh =
+            batteryCapacityKwh * (targetSocPercent - startingSocPercent) / 100;
+        const arrayPowerKw = panelCount * panelWatts / 1000;
+        const effectivePowerKw = arrayPowerKw * efficiency;
+        const chargingTimeHours = energyNeededKwh / effectivePowerKw;
+
+        if (!Number.isFinite(chargingTimeHours) || chargingTimeHours <= 0) {
+            throw new Error("Unable to calculate charging time from these inputs.");
+        }
+
+        return {
+            energyNeededKwh,
+            arrayPowerKw,
+            effectivePowerKw,
+            chargingTimeHours,
+            estimatedMinutes: Math.ceil(chargingTimeHours * 60)
+        };
+    },
     calculate(appliances, options = {}) {
 
         const location =
@@ -225,8 +293,11 @@
             KenyaSolarLocations[location] ||
             KenyaSolarLocations.Nairobi;
 
-        const sunHours =
-            Number(options.sunHours || locationData.sunHours);
+        const sunHoursInput = options.sunHours;
+        const sunHours = (sunHoursInput === undefined || sunHoursInput === null || sunHoursInput === "") ? Number(locationData.sunHours) : Number(sunHoursInput);
+        if (!Number.isFinite(sunHours) || sunHours <= 0) {
+            throw new Error("Sunlight hours must be a positive number.");
+        }
 
         const dailyEnergy =
             this.calculateDailyEnergy(appliances);
@@ -237,22 +308,33 @@
         const startingLoad =
             this.calculateStartingLoad(appliances);
 
+        const loadGrowthFactor =
+            Number(this.settings.loadGrowthFactor || 1);
+
+        const designDailyEnergy =
+            dailyEnergy * loadGrowthFactor;
+
+        const designContinuousLoad =
+            continuousLoad * loadGrowthFactor;
+        const designStartingLoad =
+            startingLoad * loadGrowthFactor;
+
         const requiredInverterKw =
             this.calculateRequiredInverterPower(
-                continuousLoad
+                designContinuousLoad
             ) / 1000;
 
         const requiredPvKw =
             this.calculatePVSize(
-                dailyEnergy,
+                designDailyEnergy,
                 sunHours
             );
 
-        const panelWatts =
-            Number(
-                options.panelWatts ||
-                this.settings.defaultPanelWatts
-            );
+        const panelWattsInput = options.panelWatts;
+        const panelWatts = (panelWattsInput === undefined || panelWattsInput === null || panelWattsInput === "") ? Number(this.settings.defaultPanelWatts) : Number(panelWattsInput);
+        if (!Number.isFinite(panelWatts) || panelWatts <= 0) {
+            throw new Error("Solar panel wattage must be a positive number.");
+        }
 
         const panelCount =
             this.calculatePanelCount(
@@ -266,19 +348,25 @@
                 panelWatts
             );
 
-        const backupHours =
-            Number(options.backupHours || 0);
+        const backupHoursInput = options.backupHours;
+        const backupHours = (backupHoursInput === undefined || backupHoursInput === null || backupHoursInput === "") ? 0 : Number(backupHoursInput);
+        if (!Number.isFinite(backupHours) || backupHours < 0 || backupHours > 24) {
+            throw new Error("Backup hours must be between 0 and 24.");
+        }
 
         const backupEnergy =
-            (dailyEnergy / 24) * backupHours;
+            (designDailyEnergy / 24) * backupHours;
 
         const requiredBatteryKwh =
             this.calculateBatteryCapacity(
                 backupEnergy
             );
 
-        const batteryUnitKwh =
-            Number(options.batteryUnitKwh || 5.12);
+        const batteryUnitInput = options.batteryUnitKwh;
+        const batteryUnitKwh = (batteryUnitInput === undefined || batteryUnitInput === null || batteryUnitInput === "") ? 5.12 : Number(batteryUnitInput);
+        if (!Number.isFinite(batteryUnitKwh) || batteryUnitKwh <= 0) {
+            throw new Error("Battery unit capacity must be a positive number.");
+        }
 
         const batteryCount =
             this.calculateBatteryCount(
@@ -300,11 +388,18 @@
             dailyEnergyKwh:
                 Number(dailyEnergy.toFixed(2)),
 
+            designDailyEnergyKwh:
+                Number(designDailyEnergy.toFixed(2)),
+
+            loadGrowthFactor,
+
             continuousLoadKw:
                 Number((continuousLoad / 1000).toFixed(2)),
 
             startingLoadKw:
                 Number((startingLoad / 1000).toFixed(2)),
+            designStartingLoadKw:
+                Number((designStartingLoad / 1000).toFixed(2)),
 
             requiredInverterKw:
                 Number(requiredInverterKw.toFixed(2)),
