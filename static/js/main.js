@@ -198,8 +198,8 @@ ${WEBSITE_URL}`;
     const rawPhone = document.getElementById("phone").value.trim();
     const location = document.getElementById("location").value.trim();
     const service = document.getElementById("service").value;
-    const budget = document.getElementById("budget").value;
-    const notes = document.getElementById("notes").value.trim();
+    const budget = document.getElementById("budget").value.trim() || "Not specified";
+    const notes = document.getElementById("notes").value.trim() || "No additional project details provided.";
     const website = document.getElementById("website").value.trim();
 
     if (website !== "") {
@@ -234,16 +234,6 @@ ${WEBSITE_URL}`;
 
     if (!service) {
       setMessage("Please select the service you need.", "error");
-      return;
-    }
-
-    if (!budget) {
-      setMessage("Please select your budget range.", "error");
-      return;
-    }
-
-    if (!notes) {
-      setMessage("Please describe your project requirements.", "error");
       return;
     }
 
@@ -287,27 +277,13 @@ ${WEBSITE_URL}`;
     const whatsappMessage = buildWhatsAppMessage(leadData);
     const whatsappURL = buildWhatsAppURL(whatsappMessage);
 
-    const whatsappWindow = window.open(
-      whatsappURL,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    window.open(whatsappURL, "_blank", "noopener,noreferrer");
 
     submitting = true;
     submitButton.disabled = true;
     submitButton.textContent = "Processing Request...";
 
-    if (!whatsappWindow) {
-      setMessage(
-        "Your quotation request is ready. Please use the WhatsApp button to send the message.",
-        "warning"
-      );
-    } else {
-      setMessage(
-        "Submitting your request. WhatsApp is ready; please press Send there.",
-        "warning"
-      );
-    }
+    setMessage("Submitting your request. If WhatsApp opens, please press Send there.", "warning");
 
     try {
       const response = await fetch(
