@@ -1048,6 +1048,15 @@ def build():
         "Calculate your estimated solar panel, inverter and battery requirements in Kenya."
     )
     # ---------------------------------------------------------
+    # KITENGELA SOLAR & ELECTRICAL LANDING PAGE
+    # ---------------------------------------------------------
+    build_content_page(
+        CONTENT / "solar-installation-kitengela.html",
+        Path("solar-installation-kitengela/index.html"),
+        "Professional Solar Power & Electrical Installation in Kitengela | Brian Solar & Electrical",
+        "Professional solar installation, borehole solarisation, electrical wiring, CCTV and electric fence services in Kitengela. Request a site assessment and quotation."
+    )
+
     # LEGAL PAGES
     # ---------------------------------------------------------
 
