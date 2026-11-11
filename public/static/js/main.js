@@ -287,11 +287,10 @@ ${WEBSITE_URL}`;
     const whatsappMessage = buildWhatsAppMessage(leadData);
     const whatsappURL = buildWhatsAppURL(whatsappMessage);
 
-    const whatsappWindow = window.open(
-      whatsappURL,
-      "_blank",
-      "noopener,noreferrer"
-    );
+    const whatsappWindow = window.open(whatsappURL, "_blank");
+    if (whatsappWindow) {
+      whatsappWindow.opener = null;
+    }
 
     submitting = true;
     submitButton.disabled = true;
