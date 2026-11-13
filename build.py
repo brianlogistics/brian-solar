@@ -186,6 +186,7 @@ def page(
     title,
     description,
     canonical=None,
+    article_schema=False,
     **ctx
 ):
     out = PUBLIC / path
@@ -230,6 +231,43 @@ def page(
     )
 
     html = add_business_schema(html, canonical)
+
+    if article_schema:
+        article_json_ld = json.dumps(
+            {
+                "@context": "https://schema.org",
+                "@type": "Article",
+                "headline": title,
+                "description": description,
+                "author": {
+                    "@type": "Organization",
+                    "name": "Brian Solar & Electrical"
+                },
+                "publisher": {
+                    "@type": "Organization",
+                    "name": "Brian Solar & Electrical"
+                },
+                "mainEntityOfPage": {
+                    "@type": "WebPage",
+                    "@id": canonical
+                }
+            },
+            ensure_ascii=False,
+            separators=(",", ":")
+        ).replace("<", "\\u003c")
+
+        article_block = (
+            '\n<script type="application/ld+json">'
+            + article_json_ld
+            + '</script>\n'
+        )
+
+        if "</head>" in html:
+            html = html.replace(
+                "</head>",
+                article_block + "</head>",
+                1
+            )
 
     out.write_text(
         html,
@@ -534,7 +572,8 @@ def build_content_page(
         "pages/content.html",
         title,
         description,
-        page_content=content
+        page_content=content,
+        article_schema=(source.parent.name.lower() == "blog")
     )
 
 
@@ -651,7 +690,7 @@ def build():
     # ---------------------------------------------------------
 
     project_title = (
-        "5kW Off-Grid Solar Installation in Kitengela"
+        "5kW Hybrid Solar Installation with Grid Backup in Kitengela"
     )
 
     project_description = (
@@ -711,7 +750,7 @@ def build():
           decoding="async"
         >
         <div class="project-card-content">
-          <h3>5kW Off-Grid Solar Installation - Kitengela</h3>
+          <h3>5kW Hybrid Solar Installation with Grid Backup - Kitengela</h3>
           <p class="project-location">Kitengela, Kajiado County</p>
           <p>
             A residential installation with a 5kW SRNE hybrid inverter,
@@ -1048,6 +1087,7 @@ def build():
         "Calculate your estimated solar panel, inverter and battery requirements in Kenya."
     )
     # ---------------------------------------------------------
+    # ---------------------------------------------------------
     # KITENGELA SOLAR & ELECTRICAL LANDING PAGE
     # ---------------------------------------------------------
     build_content_page(
@@ -1056,7 +1096,6 @@ def build():
         "Professional Solar Power & Electrical Installation in Kitengela | Brian Solar & Electrical",
         "Professional solar installation, borehole solarisation, electrical wiring, CCTV and electric fence services in Kitengela. Request a site assessment and quotation."
     )
-
     # LEGAL PAGES
     # ---------------------------------------------------------
 

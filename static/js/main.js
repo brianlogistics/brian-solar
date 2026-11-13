@@ -277,13 +277,26 @@ ${WEBSITE_URL}`;
     const whatsappMessage = buildWhatsAppMessage(leadData);
     const whatsappURL = buildWhatsAppURL(whatsappMessage);
 
-    window.open(whatsappURL, "_blank", "noopener,noreferrer");
+    const whatsappWindow = window.open(whatsappURL, "_blank");
+    if (whatsappWindow) {
+      whatsappWindow.opener = null;
+    }
 
     submitting = true;
     submitButton.disabled = true;
     submitButton.textContent = "Processing Request...";
 
-    setMessage("Submitting your request. If WhatsApp opens, please press Send there.", "warning");
+    if (!whatsappWindow) {
+      setMessage(
+        "Your quotation request is ready. Please use the WhatsApp button to send the message.",
+        "warning"
+      );
+    } else {
+      setMessage(
+        "Submitting your request. WhatsApp is ready; please press Send there.",
+        "warning"
+      );
+    }
 
     try {
       const response = await fetch(

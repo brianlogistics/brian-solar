@@ -6,74 +6,80 @@ function escapeCalculatorHtml(value) {
     })[character]);
 }
 
-function addApplianceRow() {
+function addApplianceRow(applianceKey = "tv", quantity = 1, hours = 4) {
     const list = document.getElementById("appliance-list");
+    if (!list) throw new Error("Appliance list was not found.");
+
+    const preset = ApplianceDatabase[applianceKey];
     const row = document.createElement("div");
     row.className = "calculator-appliance-row";
     row.dataset.rowId = applianceRowCount++;
+
+    const options = Object.entries(ApplianceDatabase)
+        .map(([key, appliance]) =>
+            `<option value="${key}" ${key === applianceKey ? "selected" : ""}>${appliance.name}</option>`
+        ).join("");
+
     row.innerHTML = `
+        <label>Appliance preset
+            <select class="appliance-type" onchange="updateAppliancePreset(this)">
+                ${options}
+                <option value="custom" ${preset ? "" : "selected"}>Custom appliance</option>
+            </select>
+        </label>
         <label>Appliance name
             <input class="appliance-name" type="text" maxlength="100"
-                placeholder="e.g. Refrigerator" required>
+                value="${preset ? preset.name : ""}" placeholder="e.g. 43-inch LED television" required>
         </label>
-        <label>Running watts (W)
-            <input class="appliance-watts" type="number" min="0.1"
-                step="any" placeholder="e.g. 180" required>
+        <label>Running power (W)
+            <input class="appliance-watts" type="number" min="0.1" step="any"
+                value="${preset ? preset.watts : ""}" placeholder="From rating label" required>
         </label>
-        <label>Starting watts (W, optional)
-            <input class="appliance-starting-watts" type="number" min="0.1"
-                step="any" placeholder="If known">
+        <label>Starting power (W)
+            <input class="appliance-starting-watts" type="number" min="0.1" step="any"
+                value="${preset ? preset.startingWatts : ""}" placeholder="Leave blank if unknown; verify surge rating">
         </label>
         <label>Quantity
-            <input class="appliance-quantity" type="number" min="1"
-                step="1" value="1" required>
+            <input class="appliance-quantity" type="number" min="1" step="1"
+                value="${quantity}" required>
         </label>
-        <label>Hours used per day
-            <input class="appliance-hours" type="number" min="0"
-                max="24" step="any" placeholder="0-24" required>
+        <label>Hours/day
+            <input class="appliance-hours" type="number" min="0" max="24" step="0.5"
+                value="${hours}" required>
         </label>
-        <button type="button" class="remove-appliance">Remove</button>
+        <button type="button" onclick="this.parentElement.remove()">Remove</button>
     `;
-    row.querySelector(".remove-appliance").addEventListener("click", () => row.remove());
     list.appendChild(row);
 }
 
-function collectAppliances() {
-    const rows = [...document.querySelectorAll(".calculator-appliance-row")];
-    return rows.map((row, index) => {
-        const name = row.querySelector(".appliance-name").value.trim();
-        const wattsText = row.querySelector(".appliance-watts").value.trim();
-        const startingText = row.querySelector(".appliance-starting-watts").value.trim();
-        const quantityText = row.querySelector(".appliance-quantity").value.trim();
-        const hoursText = row.querySelector(".appliance-hours").value.trim();
+function updateAppliancePreset(select) {
+    const row = select.closest(".calculator-appliance-row");
+    if (!row) return;
 
-        if (!name || !wattsText || !quantityText || !hoursText) {
-            throw new Error(`Appliance row ${index + 1}: complete the name, running watts, quantity and daily hours.`);
-        }
-
-        const watts = Number(wattsText);
-        const startingWatts = startingText === "" ? null : Number(startingText);
-        const quantity = Number(quantityText);
-        const hours = Number(hoursText);
-
-        if (!Number.isFinite(watts) || watts <= 0) {
-            throw new Error(`Appliance row ${index + 1}: running watts must be greater than zero.`);
-        }
-        if (startingWatts !== null &&
-            (!Number.isFinite(startingWatts) || startingWatts <= 0)) {
-            throw new Error(`Appliance row ${index + 1}: starting watts must be positive or left blank.`);
-        }
-        if (!Number.isInteger(quantity) || quantity <= 0) {
-            throw new Error(`Appliance row ${index + 1}: quantity must be a whole number greater than zero.`);
-        }
-        if (!Number.isFinite(hours) || hours < 0 || hours > 24) {
-            throw new Error(`Appliance row ${index + 1}: daily usage must be between 0 and 24 hours.`);
-        }
-
-        return { name, watts, startingWatts, quantity, hours };
-    });
+    const preset = ApplianceDatabase[select.value];
+    row.querySelector(".appliance-name").value = preset ? preset.name : "";
+    row.querySelector(".appliance-watts").value = preset ? preset.watts : "";
+    row.querySelector(".appliance-starting-watts").value = preset ? preset.startingWatts : "";
 }
 
+function collectAppliances() {
+    const rows = document.querySelectorAll(".calculator-appliance-row");
+    return Array.from(rows, row => {
+        const name = row.querySelector(".appliance-name").value.trim();
+        const wattsInput = row.querySelector(".appliance-watts").value.trim();
+        const startingInput = row.querySelector(".appliance-starting-watts").value.trim();
+        const quantityInput = row.querySelector(".appliance-quantity").value.trim();
+        const hoursInput = row.querySelector(".appliance-hours").value.trim();
+
+        return {
+            name,
+            watts: wattsInput === "" ? NaN : Number(wattsInput),
+            startingWatts: startingInput === "" ? null : Number(startingInput),
+            quantity: quantityInput === "" ? NaN : Number(quantityInput),
+            hours: hoursInput === "" ? NaN : Number(hoursInput)
+        };
+    });
+}
 function calculateSolarSystem() {
 
     const location =
@@ -89,26 +95,64 @@ function calculateSolarSystem() {
             document.getElementById("panel-watts").value
         );
 
-    let appliances;
-    const resultElement = document.getElementById("calculator-result");
-    if (!Number.isFinite(backupHours) || backupHours < 0 ||
-        !Number.isFinite(panelWatts) || panelWatts <= 0) {
-        resultElement.textContent = "Please enter valid backup hours and a positive solar panel wattage.";
+
+
+    const resultElement =
+        document.getElementById("calculator-result");
+
+    if (!resultElement) return;
+
+    const batterySelect = document.getElementById("battery-unit-kwh");
+    const customBatteryInput = document.getElementById("custom-battery-unit-kwh");
+
+    if (!batterySelect || !customBatteryInput) {
+        resultElement.textContent =
+            "The battery capacity controls could not be found. Please reload the calculator.";
         return;
     }
 
-    try {
-        appliances = collectAppliances();
-    } catch (error) {
-        resultElement.textContent = error.message || "Please check the appliance inputs.";
+    const batteryUnitKwh = batterySelect.value === "custom"
+        ? Number(customBatteryInput.value)
+        : Number(batterySelect.value);
+
+    const appliances =
+        collectAppliances();
+    if (!Number.isFinite(backupHours) || backupHours < 0 || backupHours > 24 ||
+        !Number.isFinite(panelWatts) || panelWatts <= 0 ||
+        !Number.isFinite(batteryUnitKwh) || batteryUnitKwh <= 0) {
+        resultElement.textContent =
+            "Please select valid backup hours, panel size, and battery capacity.";
         return;
     }
 
     if (!appliances.length) {
-        resultElement.textContent = "Please add at least one appliance.";
+
+        resultElement.innerHTML =
+            "<p>Please add at least one appliance.</p>";
+
         return;
     }
 
+    const invalidApplianceIndex = appliances.findIndex(appliance =>
+        typeof appliance.name !== "string" ||
+        appliance.name.trim() === "" ||
+        !Number.isFinite(appliance.watts) ||
+        appliance.watts <= 0 ||
+        (appliance.startingWatts !== null &&
+            (!Number.isFinite(appliance.startingWatts) || appliance.startingWatts <= 0)) ||
+        !Number.isFinite(appliance.quantity) ||
+        !Number.isInteger(appliance.quantity) ||
+        appliance.quantity <= 0 ||
+        !Number.isFinite(appliance.hours) ||
+        appliance.hours < 0 ||
+        appliance.hours > 24
+    );
+
+    if (invalidApplianceIndex !== -1) {
+        resultElement.textContent =
+            `Appliance row ${invalidApplianceIndex + 1}: check the name, positive running watts, optional positive starting watts, whole-number quantity, and daily usage between 0 and 24 hours.`;
+        return;
+    }
     let result;
     try {
         result = SolarSizingEngine.calculate(
@@ -116,7 +160,8 @@ function calculateSolarSystem() {
             {
                 location,
                 backupHours,
-                panelWatts
+                panelWatts,
+                batteryUnitKwh
             }
         );
     } catch (error) {
@@ -130,24 +175,6 @@ function calculateSolarSystem() {
         <section class="calculator-results">
 
             <h2>Estimated Solar System</h2>
-
-            <p>
-                <strong>Location:</strong>
-                ${result.location}
-            </p>
-
-            <p>
-                <strong>Total daily consumption:</strong>
-                ${Math.round(result.dailyEnergyKwh * 1000).toLocaleString()} Wh/day
-                (${result.dailyEnergyKwh} kWh/day)
-            </p>
-
-            <p>
-                <strong>Design demand with growth allowance:</strong>
-                ${Math.round(result.designDailyEnergyKwh * 1000).toLocaleString()} Wh/day
-                (${result.designDailyEnergyKwh} kWh/day)
-            </p>
-
             <h3>Daily Energy by Appliance</h3>
             <div class="calculator-energy-table">
                 <table>
@@ -167,7 +194,23 @@ function calculateSolarSystem() {
                     </tbody>
                 </table>
             </div>
+
             ${appliances.some(appliance => appliance.startingWatts === null) ? '<p class="calculator-warning"><strong>Surge verification needed:</strong> Running watts are only a provisional estimate for appliances with unknown starting watts. Confirm actual motor and compressor starting requirements, then check the inverter manufacturer’s surge rating and supported surge duration before installation.</p>' : '<p class="calculator-warning"><strong>Verify inverter surge compatibility:</strong> Check entered starting-watt values against appliance specifications and confirm that the selected inverter supports the required surge power for the necessary duration before installation.</p>'}
+
+            <p>
+                <strong>Location:</strong>
+                ${result.location}
+            </p>
+
+            <p>
+                <strong>Estimated daily consumption:</strong>
+                ${result.dailyEnergyKwh} kWh/day
+            </p>
+
+            <p>
+                <strong>Design demand (includes 15% growth allowance):</strong>
+                 ${result.designDailyEnergyKwh} kWh/day
+            </p>
 
             <p>
                 <strong>Recommended solar PV:</strong>
@@ -176,12 +219,12 @@ function calculateSolarSystem() {
 
             <p>
                 <strong>Solar panels:</strong>
-                ${result.panelCount} x ${result.panelWatts} W
+                ${result.panelCount} &times; ${result.panelWatts} W
                 (${result.actualPvKw} kWp)
             </p>
 
             <p>
-                <strong>Estimated required continuous inverter capacity:</strong>
+                <strong>Required continuous inverter capacity (includes 15% growth allowance and 25% inverter design margin):</strong>
                 ${result.requiredInverterKw} kW
             </p>
 
@@ -206,8 +249,8 @@ function calculateSolarSystem() {
             </p>
 
             <p>
-                <strong>Example battery configuration:</strong>
-                ${result.batteryCount} x ${result.batteryUnitKwh} kWh
+                <strong>Selected battery configuration:</strong>
+                ${result.batteryCount} &times; ${result.batteryUnitKwh} kWh
             </p>
 
             <p>
@@ -242,9 +285,13 @@ function estimateBatteryChargingTime() {
             "charge-panel-watts",
             "charge-efficiency"
         ];
-        const rawValues = inputIds.map(id =>
-            document.getElementById(id).value.trim()
-        );
+        const rawValues = inputIds.map(id => {
+            const input = document.getElementById(id);
+            if (!input) {
+                throw new Error("Required charging input is missing: " + id + ".");
+            }
+            return input.value.trim();
+        });
         if (rawValues.some(value => value === "")) {
             throw new Error("Please complete all battery charging inputs.");
         }
@@ -275,4 +322,11 @@ function estimateBatteryChargingTime() {
         resultElement.textContent = error.message || "Please check the charging inputs.";
     }
 }
-document.addEventListener("DOMContentLoaded", () => addApplianceRow());
+document.addEventListener("DOMContentLoaded", () => {
+
+    addApplianceRow("tv", 1, 4);
+    addApplianceRow("fridge", 1, 8);
+    addApplianceRow("lights", 6, 6);
+    addApplianceRow("wifi", 1, 24);
+
+});

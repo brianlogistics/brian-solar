@@ -1078,3 +1078,232 @@ font-size:2.2rem;
   color: #fff;
 }
 
+
+/* SOLAR CALCULATOR RESPONSIVE LAYOUT */
+.page-content #appliance-list {
+    width: 100%;
+    min-width: 0;
+}
+.page-content .calculator-appliance-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    width: 100%;
+    margin: 16px 0;
+    padding: 16px;
+    border: 1px solid #d9e1e5;
+    border-radius: 10px;
+    background: #fff;
+}
+.page-content .calculator-appliance-row label,
+.page-content #battery-charging-estimator label {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-width: 0;
+    font-weight: 600;
+}
+.page-content #solar-location,
+.page-content #backup-hours,
+.page-content #battery-unit-kwh,
+.page-content #custom-battery-unit-kwh,
+.page-content #panel-watts,
+.page-content #battery-charging-estimator input,
+.page-content .calculator-appliance-row input,
+.page-content .calculator-appliance-row select {
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+    min-height: 44px;
+    padding: 9px 10px;
+    border: 1px solid #b8c4cc;
+    border-radius: 6px;
+    font: inherit;
+}
+.page-content .calculator-appliance-row button,
+.page-content #battery-charging-estimator button {
+    min-height: 44px;
+    max-width: 100%;
+    justify-self: start;
+}
+.page-content #calculator-result,
+.page-content #battery-charge-result,
+.page-content .calculator-results {
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+.page-content .calculator-results p {
+    line-height: 1.6;
+}
+.page-content .calculator-quote-prompt {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+}
+@media (max-width: 760px) {
+    .page-content .calculator-appliance-row {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 12px;
+        padding: 12px;
+    }
+    .page-content .calculator-appliance-row button,
+    .page-content #battery-charging-estimator button {
+        width: 100%;
+    }
+}
+
+/* HOMEPAGE QUOTATION FORM */
+.quote-form {
+  width: 100%;
+  max-width: 900px;
+  margin: 28px auto 0;
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  min-width: 0;
+}
+.form-field-full { grid-column: 1 / -1; }
+.form-field label { font-weight: 700; }
+.quote-form input,
+.quote-form select,
+.quote-form textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 48px;
+  padding: 11px 13px;
+  border: 1px solid #b8c4cc;
+  border-radius: 7px;
+  background: #fff;
+  color: #1a1a1a;
+  font: inherit;
+}
+.quote-form textarea {
+  min-height: 140px;
+  resize: vertical;
+}
+.quote-form input:focus,
+.quote-form select:focus,
+.quote-form textarea:focus {
+  outline: 3px solid rgba(245, 184, 0, .28);
+  outline-offset: 1px;
+  border-color: #9a7100;
+}
+.form-message {
+  min-height: 1.5em;
+  margin: 12px 0 0;
+  overflow-wrap: anywhere;
+}
+.form-message.error { color: #a32121; }
+.form-message.success { color: #176b35; }
+.form-message.warning { color: #795300; }
+.honeypot-field {
+  position: absolute !important;
+  left: -10000px !important;
+  width: 1px !important;
+  height: 1px !important;
+  overflow: hidden !important;
+}
+.quote-form .g-recaptcha {
+  max-width: 100%;
+  overflow-x: auto;
+}
+.quote-form button:disabled {
+  cursor: wait;
+  opacity: .7;
+}
+@media (max-width: 760px) {
+  .form-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 15px;
+  }
+  .form-field-full { grid-column: auto; }
+  .quote-form .g-recaptcha { transform-origin: left top; }
+}
+/* SITE-WIDE STICKY CONVERSION BAR */
+body {
+  padding-bottom: 104px;
+}
+.site-cta-bar {
+  position: fixed;
+  z-index: 1000;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  gap: 10px;
+  width: min(560px, calc(100% - 32px));
+  padding: 9px;
+  border: 1px solid rgba(0, 0, 0, .12);
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 5px 24px rgba(0, 0, 0, .22);
+}
+.site-cta-bar a {
+  display: flex;
+  flex: 1 1 0;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 48px;
+  padding: 11px 14px;
+  border-radius: 9px;
+  font-weight: 800;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+}
+.site-cta-calculator {
+  background: #f5b800;
+  color: #111;
+}
+.site-cta-whatsapp {
+  background: #25d366;
+  color: #fff;
+}
+.site-cta-whatsapp svg {
+  width: 23px;
+  height: 23px;
+  flex: 0 0 23px;
+}
+.site-cta-bar a:focus-visible {
+  outline: 3px solid #111;
+  outline-offset: 3px;
+}
+@media (max-width: 600px) {
+  body {
+    padding-bottom: 100px;
+  }
+  .site-cta-bar {
+    width: calc(100% - 24px);
+    max-width: 440px;
+    bottom: max(10px, env(safe-area-inset-bottom));
+    gap: 7px;
+    padding: 7px;
+    border-radius: 12px;
+  }
+  .site-cta-bar a {
+    flex: 1 1 0;
+    min-width: 0;
+    min-height: 48px;
+    padding: 9px 7px;
+    gap: 6px;
+    font-size: .82rem;
+  }
+  .site-cta-whatsapp svg {
+    width: 20px;
+    height: 20px;
+    flex-basis: 20px;
+  }
+}

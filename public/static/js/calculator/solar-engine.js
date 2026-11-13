@@ -15,17 +15,29 @@ const SolarSizingEngine = {
             throw new Error("Add at least one appliance.");
         }
         for (const appliance of appliances) {
+            if (!appliance || typeof appliance !== "object") {
+                throw new Error("Each appliance must have valid details.");
+            }
+            if (typeof appliance.name !== "string" || !appliance.name.trim()) {
+                throw new Error("Each appliance needs a name.");
+            }
             const watts = Number(appliance.watts);
             const quantity = Number(appliance.quantity);
             const hours = Number(appliance.hours);
             if (!Number.isFinite(watts) || watts <= 0) {
                 throw new Error("Appliance wattage must be a positive number.");
             }
-            if (!Number.isFinite(quantity) || !Number.isInteger(quantity) || quantity <= 0) {
-                throw new Error("Appliance quantity must be greater than zero.");
+            if (!Number.isInteger(quantity) || quantity <= 0) {
+                throw new Error("Appliance quantity must be a whole number greater than zero.");
             }
             if (!Number.isFinite(hours) || hours < 0 || hours > 24) {
                 throw new Error("Daily usage must be between 0 and 24 hours.");
+            }
+            if (appliance.startingWatts !== undefined && appliance.startingWatts !== null && appliance.startingWatts !== "") {
+                const startingWatts = Number(appliance.startingWatts);
+                if (!Number.isFinite(startingWatts) || startingWatts <= 0) {
+                    throw new Error("Starting watts must be positive or left blank.");
+                }
             }
         }
     },
