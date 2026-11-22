@@ -203,7 +203,7 @@ color:#111;
 
 background:#25D366;
 
-color:white;
+color:#111111;
 
 }
 
@@ -317,7 +317,7 @@ bottom:25px;
 
 background:#25D366;
 
-color:white;
+color:#111111;
 
 padding:16px 25px;
 
@@ -1271,7 +1271,7 @@ body {
 }
 .site-cta-whatsapp {
   background: #25d366;
-  color: #fff;
+  color: #111111;
 }
 .site-cta-whatsapp svg {
   width: 23px;
@@ -1307,4 +1307,65 @@ body {
     height: 20px;
     flex-basis: 20px;
   }
+}
+
+/* VISIBLE FAQ SECTIONS */
+.faq-list {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 16px;
+  max-width: 920px;
+  margin-top: 24px;
+}
+
+.faq-item {
+  padding: 20px 22px;
+  border: 1px solid #e5e5e5;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.faq-item h2,
+.faq-item h3 {
+  margin: 0 0 9px;
+  line-height: 1.4;
+}
+
+.faq-item p {
+  margin: 0;
+  line-height: 1.65;
+}
+
+@media (max-width: 760px) {
+  .faq-list {
+    gap: 12px;
+  }
+
+  .faq-item {
+    padding: 18px 16px;
+  }
+}
+/* WHATSAPP AND CALL BUTTON COLOURS */
+a.btn[href^="https://wa.me/"] {
+  background: #25D366;
+  color: #111111;
+}
+a.btn[href^="https://wa.me/"]:hover {
+  background: #20BD5A;
+  color: #111111;
+  box-shadow: 0 8px 20px rgba(37, 211, 102, .25);
+}
+a.btn[href^="tel:"] {
+  background: #111111;
+  color: #FFFFFF;
+}
+a.btn[href^="tel:"]:hover {
+  background: #292929;
+  color: #FFFFFF;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .22);
+}
+
+
+.section-light .eyebrow {
+  color: #8A6900;
 }

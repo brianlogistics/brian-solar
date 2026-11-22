@@ -47,6 +47,14 @@ function addApplianceRow(applianceKey = "tv", quantity = 1, hours = 4) {
             <input class="appliance-hours" type="number" min="0" max="24" step="0.5"
                 value="${hours}" required>
         </label>
+        <label class="calculator-backup-option">
+            <input class="appliance-backup-enabled" type="checkbox"
+                onchange="this.closest('.calculator-appliance-row').querySelector('.appliance-backup-hours').disabled = !this.checked">
+            Include in backup
+        </label>
+        <label>Backup hours
+            <input class="appliance-backup-hours" type="number" min="0.5" max="24" step="0.5" value="8" disabled>
+        </label>
         <button type="button" onclick="this.parentElement.remove()">Remove</button>
     `;
     list.appendChild(row);
@@ -76,14 +84,39 @@ function collectAppliances() {
             watts: wattsInput === "" ? NaN : Number(wattsInput),
             startingWatts: startingInput === "" ? null : Number(startingInput),
             quantity: quantityInput === "" ? NaN : Number(quantityInput),
-            hours: hoursInput === "" ? NaN : Number(hoursInput)
+            hours: hoursInput === "" ? NaN : Number(hoursInput),
+            backupEnabled: row.querySelector(".appliance-backup-enabled").checked,
+            backupHours: Number(row.querySelector(".appliance-backup-hours").value)
         };
     });
+}
+function toggleCustomSunHours() {
+    const locationSelect = document.getElementById("solar-location");
+    const container = document.getElementById("custom-sun-hours-container");
+    const input = document.getElementById("custom-sun-hours");
+
+    if (!locationSelect || !container || !input) return;
+
+    const isCustom = locationSelect.value === "custom";
+    container.hidden = !isCustom;
+    input.required = isCustom;
 }
 function calculateSolarSystem() {
 
     const location =
         document.getElementById("solar-location").value;
+
+    const customSunHoursInput = document.getElementById("custom-sun-hours");
+    const sunHours = location === "custom"
+        ? Number(customSunHoursInput.value)
+        : undefined;
+
+    if (location === "custom" &&
+        (!Number.isFinite(sunHours) || sunHours < 0.5 || sunHours > 12)) {
+        document.getElementById("calculator-result").textContent =
+            "Enter a valid custom Peak Sun Hours value between 0.5 and 12.";
+        return;
+    }
 
     const backupHours =
         Number(
@@ -104,10 +137,9 @@ function calculateSolarSystem() {
 
     const batterySelect = document.getElementById("battery-unit-kwh");
     const customBatteryInput = document.getElementById("custom-battery-unit-kwh");
-
-    if (!batterySelect || !customBatteryInput) {
-        resultElement.textContent =
-            "The battery capacity controls could not be found. Please reload the calculator.";
+    const batteryVoltageSelect = document.getElementById("battery-voltage");
+    if (!batterySelect || !customBatteryInput || !batteryVoltageSelect) {
+        resultElement.textContent = "The battery selection controls could not be found. Please reload the calculator.";
         return;
     }
 
@@ -117,6 +149,13 @@ function calculateSolarSystem() {
 
     const appliances =
         collectAppliances();
+    const batteryVoltage = Number(batteryVoltageSelect.value);
+
+    if (![12, 24, 48].includes(batteryVoltage)) {
+        resultElement.textContent = "Please select 12 V, 24 V or 48 V for the battery-current estimate.";
+        return;
+    }
+
     if (!Number.isFinite(backupHours) || backupHours < 0 || backupHours > 24 ||
         !Number.isFinite(panelWatts) || panelWatts <= 0 ||
         !Number.isFinite(batteryUnitKwh) || batteryUnitKwh <= 0) {
@@ -127,7 +166,7 @@ function calculateSolarSystem() {
 
     if (!appliances.length) {
 
-        resultElement.innerHTML =
+    resultElement.innerHTML =
             "<p>Please add at least one appliance.</p>";
 
         return;
@@ -153,15 +192,32 @@ function calculateSolarSystem() {
             `Appliance row ${invalidApplianceIndex + 1}: check the name, positive running watts, optional positive starting watts, whole-number quantity, and daily usage between 0 and 24 hours.`;
         return;
     }
+    const invalidBackupIndex = appliances.findIndex(appliance =>
+        appliance.backupEnabled &&
+        (
+            !Number.isFinite(appliance.backupHours) ||
+            appliance.backupHours < 0.5 ||
+            appliance.backupHours > backupHours
+        )
+    );
+
+    if (invalidBackupIndex !== -1) {
+        resultElement.textContent =
+            `Appliance row ${invalidBackupIndex + 1}: backup hours must be at least 0.5 and must not exceed the overall backup duration selected above.`;
+        return;
+    }
+
     let result;
     try {
         result = SolarSizingEngine.calculate(
             appliances,
             {
-                location,
+                location: location === "custom" ? "Custom location" : location,
+                sunHours,
                 backupHours,
                 panelWatts,
-                batteryUnitKwh
+                batteryUnitKwh,
+                batteryVoltage,
             }
         );
     } catch (error) {
@@ -170,11 +226,76 @@ function calculateSolarSystem() {
         return;
     }
 
+    const batteryRecommendation = result.requiredBatteryKwh > 0
+        ? SolarSizingEngine.recommendBatteryOptions(result.requiredBatteryKwh)
+        : null;
+
+    const applianceMessage = appliances.map((appliance, index) =>
+        `${index + 1}. ${appliance.name}: ${appliance.watts} W running, ` +
+        `starting watts: ${appliance.startingWatts === null ? "not supplied" : appliance.startingWatts + " W"}, ` +
+        `quantity: ${appliance.quantity}, usage: ${appliance.hours} hours/day, ` +
+        `backup: ${appliance.backupEnabled ? appliance.backupHours + " hours" : "not selected"}`
+    ).join("\n");
+
+    const supplierBatteryMessage = batteryRecommendation && batteryRecommendation.best
+        ? `${batteryRecommendation.best.quantity} x ${batteryRecommendation.best.capacityKwh} kWh (${batteryRecommendation.best.totalCapacityKwh} kWh nominal)`
+        : "No suitable supplier battery option currently identified";
+
+    const projectLocationMessage = location === "custom"
+        ? "Custom location - customer to provide actual town, county and site area"
+        : result.location;
+
+    const calculatorWhatsAppMessage = [
+        "SOLAR CALCULATOR - QUOTATION REQUEST",
+        "",
+        "Hello Brian Solar & Electrical. I have completed the solar calculator and request a technical review and official quotation.",
+        "",
+        "PROJECT LOCATION: " + projectLocationMessage,
+        "PEAK SUN HOURS: " + result.sunHours + " hours/day",
+        "",
+        "APPLIANCES AND USAGE:",
+        applianceMessage,
+        "",
+        "CALCULATOR ESTIMATES:",
+        "Daily energy: " + result.dailyEnergyKwh + " kWh/day",
+        "Design daily energy: " + result.designDailyEnergyKwh + " kWh/day",
+        "Required solar PV: " + result.requiredPvKw + " kWp",
+        "Panel estimate: " + result.panelCount + " x " + result.panelWatts + " W",
+        "Estimated inverter capacity: " + result.requiredInverterKw + " kW",
+        "Estimated starting load: " + result.startingLoadKw + " kW",
+        "Design starting load: " + result.designStartingLoadKw + " kW",
+        "Backup requirement: " + result.backupHours + " hours",
+        "Estimated required battery capacity: " + result.requiredBatteryKwh + " kWh",
+        "Selected calculator battery configuration: " + result.batteryCount + " x " + result.batteryUnitKwh + " kWh",
+        "Estimated supplier battery recommendation: " + supplierBatteryMessage,
+        "Assumed battery-bank voltage: " + result.batteryVoltage + " V",
+        "",
+        "Please review the calculations, appliance starting requirements, inverter surge capability, battery configuration and equipment compatibility.",
+        "",
+        "ITEMISED QUOTATION REQUEST:",
+        "Please provide quantities, specifications, brands/models and unit prices for panels, inverter, batteries, mounting structures, protection equipment, cables, accessories, installation, labour, commissioning, transport and any applicable assessment costs.",
+        "",
+        "INCLUSIONS AND EXCLUSIONS:",
+        "Please clearly state everything included and excluded. Identify additional costs, where applicable, for civil works, trenching, extra cable runs, distribution-board modifications, earthing, lightning protection, transport, site assessment, permits and other site-specific work. Price additional work separately.",
+        "",
+        "Please also state warranties, delivery arrangements, payment terms, assumptions and any proposed equipment substitutions. I need an itemised quotation so I can compare systems on the same basis.",
+        "",
+        "IMPORTANT: These calculator results are preliminary estimates only. They are not a verified quotation, confirmed equipment selection or approved system design. Final sizing, specifications, compatibility, supplier stock, installation scope and prices must be reviewed and confirmed by Brian Solar & Electrical before an official quotation is issued.",
+        "",
+        "My name: [Please add]",
+        "My project town/county and site area: [Please add if not already stated]"
+    ].join("\n");
+
+    const calculatorWhatsAppUrl =
+        "https://wa.me/254796433537?text=" +
+        encodeURIComponent(calculatorWhatsAppMessage);
+
     resultElement.innerHTML = `
 
         <section class="calculator-results">
 
             <h2>Estimated Solar System</h2>
+            <p><strong>Solar resource used:</strong> ${result.sunHours} peak sun hours/day (${location === "custom" ? "customer-supplied estimate" : "location preset"})</p>
             <h3>Daily Energy by Appliance</h3>
             <div class="calculator-energy-table">
                 <table>
@@ -195,7 +316,7 @@ function calculateSolarSystem() {
                 </table>
             </div>
 
-            ${appliances.some(appliance => appliance.startingWatts === null) ? '<p class="calculator-warning"><strong>Surge verification needed:</strong> Running watts are only a provisional estimate for appliances with unknown starting watts. Confirm actual motor and compressor starting requirements, then check the inverter manufacturer’s surge rating and supported surge duration before installation.</p>' : '<p class="calculator-warning"><strong>Verify inverter surge compatibility:</strong> Check entered starting-watt values against appliance specifications and confirm that the selected inverter supports the required surge power for the necessary duration before installation.</p>'}
+            ${appliances.some(appliance => appliance.startingWatts === null) ? '<p class="calculator-warning"><strong>Surge verification needed:</strong> Running watts are only a provisional estimate for appliances with unknown starting watts. Confirm actual motor and compressor starting requirements, then check the inverter manufacturer&#39;s published surge rating and supported surge duration before installation.</p>' : '<p class="calculator-warning"><strong>Verify inverter surge compatibility:</strong> Check entered starting-watt values against appliance specifications and confirm that the selected inverter supports the required surge power for the necessary duration before installation.</p>'}
 
             <p>
                 <strong>Location:</strong>
@@ -248,13 +369,32 @@ function calculateSolarSystem() {
                 ${result.requiredBatteryKwh} kWh
             </p>
 
+            ${batteryRecommendation
+                ? batteryRecommendation.best
+                    ? `<aside class="calculator-battery-recommendation">
+                        <h3>Recommended Supplier Battery Configuration</h3>
+                        <p><strong>Best fit:</strong>
+                        ${batteryRecommendation.best.quantity} &times;
+                        ${batteryRecommendation.best.capacityKwh} kWh
+                        (${batteryRecommendation.best.totalCapacityKwh} kWh nominal capacity)</p>
+                        ${batteryRecommendation.alternatives.length
+                            ? `<p><strong>Other suitable options:</strong>
+                                ${batteryRecommendation.alternatives.map(option =>
+                                    `${option.quantity} &times; ${option.capacityKwh} kWh (${option.totalCapacityKwh} kWh total)`
+                                ).join("; ")}
+                            </p>`
+                            : ""}
+                        <p><small>Recommendations use supplier-supported battery sizes currently marked as available. Final availability, compatibility and pricing must be confirmed before quotation.</small></p>
+                    </aside>`
+                    : `<p class="calculator-warning">No supplier battery option is currently marked as available for this estimated capacity. Please contact Brian Solar &amp; Electrical for assistance.</p>`
+                : ""}
             <p>
                 <strong>Selected battery configuration:</strong>
                 ${result.batteryCount} &times; ${result.batteryUnitKwh} kWh
             </p>
 
             <p>
-                <strong>Estimated 48 V battery current:</strong>
+                <strong>Estimated DC battery current at ${result.batteryVoltage} V:</strong>
                 ${result.batteryCurrentA} A
             </p>
 
@@ -264,8 +404,7 @@ function calculateSolarSystem() {
     <p>Your estimate is a starting point. Our engineering review helps confirm suitable panel capacity, inverter sizing, battery backup and equipment compatibility for your needs.</p>
     <p>Before installation, we will review the system requirements and prepare a quotation based on confirmed specifications. A site assessment may be needed.</p>
     <p><strong>Ready to take the next step?</strong> Send your requirements to Brian Solar &amp; Electrical and let us help you plan with confidence.</p>
-    <p><a class="nav-cta" href="https://wa.me/254796433537?text=Hello%20Brian%20Solar%20%26%20Electrical%2C%20I%20used%20your%20solar%20calculator%20and%20would%20like%20an%20engineer-reviewed%20quotation.%20Please%20review%20my%20requirements%20and%20advise%20on%20the%20next%20steps.">Request Your Engineer-Reviewed Quotation</a></p>
-    <p><small>Calculator results are preliminary estimates, not a final quotation or approved system design. Final specifications and pricing are subject to engineering review and, where necessary, site assessment.</small></p>
+    <p><a class="nav-cta" href="${calculatorWhatsAppUrl}" target="_blank" rel="noopener noreferrer">Request Your Engineer-Reviewed Quotation</a></p>
 </aside>
 
         </section>
@@ -323,6 +462,7 @@ function estimateBatteryChargingTime() {
     }
 }
 document.addEventListener("DOMContentLoaded", () => {
+    toggleCustomSunHours();
 
     addApplianceRow("tv", 1, 4);
     addApplianceRow("fridge", 1, 8);

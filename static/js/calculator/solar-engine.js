@@ -7,7 +7,14 @@ const SolarSizingEngine = {
         defaultPanelWatts: 550,
         defaultBatteryVoltage: 48,
         defaultBatteryDoD: 0.90,
-        defaultBatteryEfficiency: 0.95
+        defaultBatteryEfficiency: 0.95,
+        batteryOptions: [
+            { capacityKwh: 1.2, available: false, stockQuantity: null, supplierConfirmed: false },
+            { capacityKwh: 2.56, available: true, stockQuantity: null, supplierConfirmed: true },
+            { capacityKwh: 5.12, available: true, stockQuantity: null, supplierConfirmed: true },
+            { capacityKwh: 10.24, available: true, stockQuantity: null, supplierConfirmed: true },
+            { capacityKwh: 15, available: true, stockQuantity: null, supplierConfirmed: true }
+        ]
     },
 
     validateAppliances(appliances) {
@@ -133,6 +140,34 @@ const SolarSizingEngine = {
         return continuousLoad * designMargin;
     },
 
+    calculateBackupEnergy(appliances, loadGrowthFactor = this.settings.loadGrowthFactor) {
+        if (!Array.isArray(appliances)) {
+            throw new Error("Backup appliance details are invalid.");
+        }
+
+        let backupEnergy = 0;
+
+        for (const appliance of appliances) {
+            if (!appliance.backupEnabled) {
+                continue;
+            }
+
+            const watts = Number(appliance.watts);
+            const quantity = Number(appliance.quantity);
+            const backupHours = Number(appliance.backupHours);
+
+            if (!Number.isFinite(watts) || watts <= 0 ||
+                !Number.isInteger(quantity) || quantity <= 0 ||
+                !Number.isFinite(backupHours) || backupHours < 0.5 || backupHours > 24) {
+                throw new Error("Check the backup hours and appliance details for each selected backup appliance.");
+            }
+
+            backupEnergy += watts * quantity * backupHours / 1000;
+        }
+
+        return backupEnergy * Number(loadGrowthFactor);
+    },
+
     calculateBatteryCapacity(
         backupEnergy,
         dod = this.settings.defaultBatteryDoD,
@@ -155,6 +190,64 @@ const SolarSizingEngine = {
         return Math.ceil(requiredBatteryKwh / batteryUnitKwh);
     },
 
+    recommendBatteryOptions(requiredBatteryKwh, batteryOptions = this.settings.batteryOptions) {
+        if (!Number.isFinite(Number(requiredBatteryKwh)) || Number(requiredBatteryKwh) <= 0) {
+            throw new Error("Required battery capacity must be a positive number.");
+        }
+
+        if (!Array.isArray(batteryOptions)) {
+            throw new Error("Battery availability settings must be a list.");
+        }
+
+        const evaluatedOptions = batteryOptions.map(option => {
+            const capacityKwh = Number(option.capacityKwh);
+            const stockQuantity =
+                option.stockQuantity === null ||
+                option.stockQuantity === undefined ||
+                option.stockQuantity === ""
+                    ? null
+                    : Number(option.stockQuantity);
+
+            if (!Number.isFinite(capacityKwh) || capacityKwh <= 0) {
+                throw new Error("Each battery option must have a valid capacity.");
+            }
+
+            if (stockQuantity !== null &&
+                (!Number.isInteger(stockQuantity) || stockQuantity < 0)) {
+                throw new Error("Battery stock quantities must be whole numbers or left blank.");
+            }
+
+            const quantity = Math.ceil(Number(requiredBatteryKwh) / capacityKwh);
+            const totalCapacityKwh = quantity * capacityKwh;
+
+            return {
+                capacityKwh,
+                quantity,
+                totalCapacityKwh: Number(totalCapacityKwh.toFixed(2)),
+                excessCapacityKwh: Number((totalCapacityKwh - Number(requiredBatteryKwh)).toFixed(2)),
+                available: option.available === true,
+                stockQuantity,
+                supplierConfirmed: option.supplierConfirmed === true,
+                inStock: option.available === true &&
+                    option.supplierConfirmed === true &&
+                    (stockQuantity === null || stockQuantity >= quantity)
+            };
+        });
+
+        const suitableOptions = evaluatedOptions
+            .filter(option => option.inStock)
+            .sort((a, b) =>
+                a.excessCapacityKwh - b.excessCapacityKwh ||
+                a.quantity - b.quantity ||
+                a.capacityKwh - b.capacityKwh
+            );
+
+        return {
+            best: suitableOptions[0] || null,
+            alternatives: suitableOptions.slice(1),
+            unavailableOptions: evaluatedOptions.filter(option => !option.inStock)
+        };
+    },
     calculateBatteryCurrent(
         inverterPowerKw,
         batteryVoltage = this.settings.defaultBatteryVoltage,
@@ -368,7 +461,7 @@ const SolarSizingEngine = {
         }
 
         const backupEnergy =
-            (designDailyEnergy / 24) * backupHours;
+            this.calculateBackupEnergy(appliances, loadGrowthFactor);
 
         const requiredBatteryKwh =
             this.calculateBatteryCapacity(
@@ -381,6 +474,16 @@ const SolarSizingEngine = {
             throw new Error("Battery unit capacity must be a positive number.");
         }
 
+        const batteryVoltageInput = options.batteryVoltage;
+        const batteryVoltage =
+            (batteryVoltageInput === undefined || batteryVoltageInput === null || batteryVoltageInput === "")
+                ? Number(this.settings.defaultBatteryVoltage)
+                : Number(batteryVoltageInput);
+
+        if (![12, 24, 48].includes(batteryVoltage)) {
+            throw new Error("Select a supported battery-bank voltage: 12 V, 24 V or 48 V.");
+        }
+
         const batteryCount =
             this.calculateBatteryCount(
                 requiredBatteryKwh,
@@ -389,7 +492,8 @@ const SolarSizingEngine = {
 
         const batteryCurrent =
             this.calculateBatteryCurrent(
-                requiredInverterKw
+                requiredInverterKw,
+                batteryVoltage
             );
 
         const result = {
@@ -439,6 +543,7 @@ const SolarSizingEngine = {
             batteryUnitKwh,
 
             batteryCount,
+            batteryVoltage,
 
             batteryCurrentA:
                 Number(batteryCurrent.toFixed(1))

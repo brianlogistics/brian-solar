@@ -128,46 +128,51 @@ def render(template, **ctx):
 
 def add_business_schema(html, canonical):
     """
-    Add organization/service-area structured data.
-    No street address is invented because business.json does not
-    currently contain a verified physical address.
+    Add the permanent Organization identity for this service-area business.
+    No unverified physical address is published.
     """
+
+    organization_id = DATA["domain"].rstrip("/") + "/#organization"
+
+    # Keep configured service areas as text; do not assume every area is a city.
+    area_served = DATA.get("primary_service_areas", [])
 
     schema = {
         "@context": "https://schema.org",
         "@type": "Organization",
+        "@id": organization_id,
         "name": DATA["name"],
         "legalName": DATA["registered_name"],
         "url": DATA["domain"].rstrip("/") + "/",
-        "logo": DATA["domain"].rstrip("/") + "/static/images/logo.webp",
+        "logo": DATA["domain"].rstrip("/") + "/static/images/logo-164.webp",
         "telephone": DATA["phone"],
         "email": DATA["email"],
         "description": (
-            "Solar, electrical, CCTV and electric fence services "
-            "for homes, businesses, farms and institutions across Kenya."
+            "Solar, electrical, CCTV and electric fence installation, "
+            "maintenance and repair services for homes, businesses, "
+            "farms and institutions across Kenya."
         ),
-        "areaServed": [
-            {
-                "@type": "Country",
-                "name": "Kenya"
-            }
+        "areaServed": area_served,
+        "knowsAbout": [
+            service["name"] for service in DATA.get("services", [])
         ],
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": DATA["phone"],
+            "email": DATA["email"],
+            "contactType": "customer service",
+            "url": DATA["whatsapp_url"]
+        },
         "sameAs": [
             "https://www.facebook.com/briansolarelectrical"
         ]
     }
 
-    if canonical:
-        schema["mainEntityOfPage"] = {
-            "@type": "WebPage",
-            "@id": canonical
-        }
-
     json_ld = json.dumps(
         schema,
         ensure_ascii=False,
         separators=(",", ":")
-    )
+    ).replace("<", "\\u003c")
 
     block = (
         '\n<script type="application/ld+json">'
@@ -239,14 +244,8 @@ def page(
                 "@type": "Article",
                 "headline": title,
                 "description": description,
-                "author": {
-                    "@type": "Organization",
-                    "name": "Brian Solar & Electrical"
-                },
-                "publisher": {
-                    "@type": "Organization",
-                    "name": "Brian Solar & Electrical"
-                },
+                "author": {"@id": DATA["domain"].rstrip("/") + "/#organization"},
+                "publisher": {"@id": DATA["domain"].rstrip("/") + "/#organization"},
                 "mainEntityOfPage": {
                     "@type": "WebPage",
                     "@id": canonical
@@ -300,6 +299,11 @@ def copy_static():
                 destination
             )
 
+
+    # Copy the favicon to the website root.
+    favicon_source = STATIC / "favicon.ico"
+    if favicon_source.is_file():
+        shutil.copy2(favicon_source, PUBLIC / "favicon.ico")
 
 def clean_public():
     if PUBLIC.exists():
@@ -647,7 +651,7 @@ def build():
         Path("index.html"),
         "pages/home.html",
         "Solar & Electrical Services in Kenya | CCTV & Electric Fence | Brian Solar",
-        "Brian Solar & Electrical provides professional solar, electrical, CCTV and electric fence installation services across Kenya. Get a free site survey and quotation."
+        "Brian Solar & Electrical provides solar, electrical, CCTV and electric fence installation services across Kenya. Contact our team to discuss your project and request a quotation."
     )
 
     # ---------------------------------------------------------
@@ -689,15 +693,6 @@ def build():
     # PROJECTS
     # ---------------------------------------------------------
 
-    project_title = (
-        "5kW Hybrid Solar Installation with Grid Backup in Kitengela"
-    )
-
-    project_description = (
-        "A completed 5kW residential solar installation "
-        "in Kitengela, Kajiado County."
-    )
-
     page(
         Path("projects/index.html"),
         "pages/content.html",
@@ -711,58 +706,95 @@ def build():
       Explore completed installations by Brian Solar &amp; Electrical
       for homes, businesses, farms and institutions across Kenya.
     </p>
+    <h2>Completed Solar &amp; Electrical Installations</h2>
 
-    <div class="grid-2">
+    <div class="grid-3">
       <article class="card project-card">
-        <img
-          src="/static/images/projects/5kw-solar-installation/watermarked/optimized-900/completed-solar-installation.webp"
-          alt="Completed 5kW lithium solar installation in Migori, Kenya"
-          width="900"
-          height="900"
-          loading="lazy"
-          decoding="async"
-        >
+        <img src="/static/images/projects/5kw-solar-installation/watermarked/optimized-900/completed-solar-installation.webp"
+             alt="Completed 5kW lithium solar installation in Migori, Kenya"
+             width="900" height="900" loading="lazy" decoding="async">
         <div class="project-card-content">
           <h3>5kW Solar Installation with Lithium Battery - Migori</h3>
           <p class="project-location">Migori, Kenya</p>
-          <p>
-            A completed installation featuring a 5kW wall-mounted inverter,
-            5.12kWh lithium battery storage and rooftop solar panels.
-          </p>
+          <p>A completed installation featuring a 5kW wall-mounted inverter, 5.12kWh lithium battery storage and rooftop solar panels.</p>
           <div class="cta-buttons">
-            <a class="btn btn-primary" href="/projects/5kw-lithium-solar-installation/">
-              View Full Project
-            </a>
-            <a class="btn btn-secondary" href="/calculator/">
-              Use Solar Calculator
-            </a>
+            <a class="btn btn-primary" href="/projects/5kw-lithium-solar-installation/">View Full Project</a>
+            <a class="btn btn-secondary" href="/calculator/">Use Solar Calculator</a>
           </div>
         </div>
       </article>
 
       <article class="card project-card">
-        <img
-          src="/static/images/kitengela-complete-solar-installation.webp"
-          alt="Completed 5kW residential solar installation in Kitengela"
-          width="800"
-          height="1067"
-          loading="lazy"
-          decoding="async"
-        >
+        <img src="/static/images/kitengela-complete-solar-installation.webp"
+             alt="Completed 5kW residential solar installation in Kitengela"
+             width="800" height="1067" loading="lazy" decoding="async">
         <div class="project-card-content">
           <h3>5kW Hybrid Solar Installation with Grid Backup - Kitengela</h3>
           <p class="project-location">Kitengela, Kajiado County</p>
-          <p>
-            A residential installation with a 5kW SRNE hybrid inverter,
-            lithium battery storage, six solar panels and electrical protection.
-          </p>
+          <p>A residential installation with a 5kW SRNE hybrid inverter, lithium battery storage, six solar panels and electrical protection.</p>
           <div class="cta-buttons">
-            <a class="btn btn-primary" href="/projects/kitengela-5kw-solar-installation/">
-              View Full Project
-            </a>
-            <a class="btn btn-secondary" href="/calculator/">
-              Use Solar Calculator
-            </a>
+            <a class="btn btn-primary" href="/projects/kitengela-5kw-solar-installation/">View Full Project</a>
+            <a class="btn btn-secondary" href="/calculator/">Use Solar Calculator</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card project-card">
+        <img src="/static/images/projects/nyahururu-5kw-solar/nyahururu-rooftop-panels.webp"
+             alt="Rooftop solar panels for a 5kW hybrid installation in Nyahururu"
+             width="900" height="900" loading="lazy" decoding="async">
+        <div class="project-card-content">
+          <h3>5kW Hybrid Solar Installation - Nyahururu</h3>
+          <p class="project-location">Nyahururu, Kenya</p>
+          <p>A 5kW inverter installation with one 5.12kWh battery and rooftop solar panels.</p>
+          <div class="cta-buttons">
+            <a class="btn btn-primary" href="/projects/nyahururu-5kw-solar-installation/">View Full Project</a>
+            <a class="btn btn-secondary" href="/calculator/">Use Solar Calculator</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card project-card">
+        <img src="/static/images/projects/runda-borehole-solar/runda-63-panel-solar-array.webp"
+             alt="63-panel borehole solar array in Runda"
+             width="900" height="900" loading="lazy" decoding="async">
+        <div class="project-card-content">
+          <h3>63-Panel Borehole Solar Installation - Runda</h3>
+          <p class="project-location">Runda, Kenya</p>
+          <p>A borehole solar installation featuring a 63-panel solar array and pump control equipment.</p>
+          <div class="cta-buttons">
+            <a class="btn btn-primary" href="/projects/runda-63-panel-borehole-solar/">View Full Project</a>
+            <a class="btn btn-secondary" href="/calculator/">Use Solar Calculator</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card project-card">
+        <img src="/static/images/projects/kiambu-solar/kiambu-18-panel-solar-array.webp"
+             alt="18-panel solar array installation in Kiambu"
+             width="900" height="900" loading="lazy" decoding="async">
+        <div class="project-card-content">
+          <h3>18-Panel Solar Installation - Kiambu</h3>
+          <p class="project-location">Kiambu, Kenya</p>
+          <p>An 18-panel solar array installation completed in Kiambu.</p>
+          <div class="cta-buttons">
+            <a class="btn btn-primary" href="/projects/kiambu-18-panel-solar-installation/">View Full Project</a>
+            <a class="btn btn-secondary" href="/calculator/">Use Solar Calculator</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="card project-card">
+        <img src="/static/images/projects/electrical-installations/electrical-changeover.webp"
+             alt="Electrical changeover installation"
+             width="900" height="900" loading="lazy" decoding="async">
+        <div class="project-card-content">
+          <h3>Electrical Changeover Installations</h3>
+          <p class="project-location">Kenya</p>
+          <p>Examples of electrical changeover installations and different changeover arrangements.</p>
+          <div class="cta-buttons">
+            <a class="btn btn-primary" href="/projects/electrical-changeover-installations/">View Full Project</a>
+            <a class="btn btn-secondary" href="/services/electrical/">Explore Electrical Services</a>
           </div>
         </div>
       </article>
@@ -780,20 +812,18 @@ def build():
     <div class="cta-buttons">
       <a class="btn btn-primary" href="/calculator/">Estimate Your Solar System</a>
       <a class="btn btn-secondary" href="/services/solar/">Explore Solar Services</a>
-      <a class="btn btn-secondary" href="/#quotation">Request a Free Quote</a>
+      <a class="btn btn-secondary" href="/#quotation">Request a Quotation</a>
     </div>
   </div>
 </section>
 """
     )
+
     page(
-        Path(
-            "projects/kitengela-5kw-solar-installation/index.html"
-        ),
+        Path("projects/kitengela-5kw-solar-installation/index.html"),
         "pages/projects/kitengela-5kw-solar.html",
-        project_title
-        + " | Brian Solar & Electrical",
-        project_description,
+        "5kW Hybrid Solar Installation with Grid Backup in Kitengela | Brian Solar & Electrical",
+        "A completed 5kW residential solar installation in Kitengela, Kajiado County.",
         canonical=(
             DATA["domain"].rstrip("/")
             + "/projects/kitengela-5kw-solar-installation/"
@@ -811,6 +841,33 @@ def build():
         )
     )
 
+    page(
+        Path("projects/nyahururu-5kw-solar-installation/index.html"),
+        "pages/projects/nyahururu-5kw-solar.html",
+        "5kW Hybrid Solar Installation in Nyahururu | Brian Solar & Electrical",
+        "See a completed 5kW hybrid solar installation in Nyahururu featuring one 5.12kWh battery and rooftop solar panels.",
+    )
+
+    page(
+        Path("projects/runda-63-panel-borehole-solar/index.html"),
+        "pages/projects/runda-63-panel-borehole-solar.html",
+        "63-Panel Borehole Solar Installation in Runda | Brian Solar & Electrical",
+        "Explore a borehole solar installation in Runda featuring a 63-panel solar array and pump control equipment.",
+    )
+
+    page(
+        Path("projects/kiambu-18-panel-solar-installation/index.html"),
+        "pages/projects/kiambu-18-panel-solar.html",
+        "18-Panel Solar Installation in Kiambu | Brian Solar & Electrical",
+        "View an 18-panel solar installation project in Kiambu, Kenya, completed by Brian Solar & Electrical.",
+    )
+
+    page(
+        Path("projects/electrical-changeover-installations/index.html"),
+        "pages/projects/electrical-changeovers.html",
+        "Electrical Changeover Installations in Kenya | Brian Solar & Electrical",
+        "View electrical changeover installation work by Brian Solar & Electrical, including different changeover arrangements.",
+    )
     # ---------------------------------------------------------
     # BLOG
     # ---------------------------------------------------------
@@ -928,6 +985,26 @@ def build():
             "solar-installation-nairobi.html",
             "Nairobi"
         ),
+        (
+            "solar-installation-thika.html",
+            "Thika"
+        ),
+        (
+            "solar-installation-kajiado.html",
+            "Kajiado"
+        ),
+        (
+            "solar-installation-nakuru.html",
+            "Nakuru"
+        ),
+        (
+            "solar-installation-eldoret.html",
+            "Eldoret"
+        ),
+        (
+            "solar-installation-meru.html",
+            "Meru"
+        ),
     ]
 
     location_cards = []
@@ -945,21 +1022,21 @@ def build():
         build_content_page(
             source,
             output,
-            f"Solar Installation in {location} | Brian Solar & Electrical",
-            f"Professional solar installation services in {location}, Kenya."
+            f"Solar, Electrical, CCTV & Electric Fence Services in {location} | Brian Solar & Electrical",
+            f"Solar, electrical, CCTV and electric fence projects for homes, businesses and institutions in {location}, Kenya."
         )
 
         location_cards.append(
             f"""
 <article>
-  <h2>Solar Installation in {escape(location)}</h2>
+  <h2>Services in {escape(location)}</h2>
   <p>
-    Solar installation services for homes, businesses,
-    farms and institutions in {escape(location)}.
+    Solar, electrical, CCTV and electric fence services for homes,
+    businesses, farms and institutions in {escape(location)}.
   </p>
   <p>
     <a href="/locations/{slug}/">
-      View {escape(location)} solar services
+      View services in {escape(location)}
     </a>
   </p>
 </article>
@@ -969,14 +1046,15 @@ def build():
     page(
         Path("locations/index.html"),
         "pages/content.html",
-        "Solar Installation Locations in Kenya | Brian Solar & Electrical",
-        "Solar installation and solar water pumping services in selected locations across Kenya.",
+        "Service Areas in Kenya | Brian Solar & Electrical",
+        "Solar, electrical, CCTV and electric fence projects for homes, businesses, farms and institutions across selected areas of Kenya.",
         page_content="""
 <section>
-  <h1>Solar Installation Locations</h1>
+  <h1>Service Areas Across Kenya</h1>
   <p>
-    Brian Solar &amp; Electrical provides solar installation,
-    backup power and solar water pumping services across Kenya.
+    Brian Solar &amp; Electrical arranges solar, electrical, CCTV
+    and electric fence projects across Kenya. Work is planned
+    around each property's requirements and project scope.
   </p>
 """
         + "\n".join(location_cards)
@@ -995,45 +1073,95 @@ def build():
         "Frequently Asked Questions | Brian Solar & Electrical",
         "Frequently asked questions about solar, electrical, CCTV and electric fence services.",
         page_content="""
-<section>
+<section class="faq-page">
   <h1>Frequently Asked Questions</h1>
 
-  <h2>How much does solar cost in Kenya?</h2>
-  <p>
-    Solar system prices depend on system size, equipment,
-    battery capacity, installation requirements and energy needs.
-    Contact Brian Solar &amp; Electrical for a site assessment
-    and quotation.
-  </p>
+  <div class="faq-list">
+    <article class="faq-item">
+      <h2>How much does a solar system cost in Kenya?</h2>
+      <p>
+        The cost depends on your energy needs, system size, equipment,
+        battery capacity and installation requirements. Contact Brian Solar
+        &amp; Electrical to discuss your project and request a quotation.
+      </p>
+    </article>
 
-  <h2>Do you provide solar installation services in Kitengela?</h2>
-  <p>
-    Yes. Brian Solar &amp; Electrical provides residential and
-    commercial solar installation services in Kitengela,
-    Kajiado County and surrounding areas.
-  </p>
+    <article class="faq-item">
+      <h2>What size solar system do I need?</h2>
+      <p>
+        The right system depends on daily electricity consumption, appliances,
+        peak power demand and backup requirements. These details help determine
+        suitable panel, inverter and battery capacities.
+      </p>
+    </article>
 
-  <h2>Do you provide electrical installation services?</h2>
-  <p>
-    Yes. Our electrical services include wiring, installations,
-    upgrades, maintenance, repairs and troubleshooting.
-  </p>
+    <article class="faq-item">
+      <h2>Do you provide solar installation services in Kitengela?</h2>
+      <p>
+        Yes. We provide residential and commercial solar installation services
+        in Kitengela, Kajiado County and surrounding areas, subject to project
+        requirements.
+      </p>
+    </article>
 
-  <h2>Do you install CCTV systems?</h2>
-  <p>
-    Yes. We provide CCTV installation, configuration and
-    maintenance services.
-  </p>
+    <article class="faq-item">
+      <h2>Do you provide electrical installation and repair services?</h2>
+      <p>
+        Yes. Our electrical services include wiring, installations, upgrades,
+        maintenance, repairs and troubleshooting for residential and commercial
+        electrical systems.
+      </p>
+    </article>
 
-  <h2>Do you install electric fences?</h2>
-  <p>
-    Yes. We provide electric fence installation, maintenance
-    and repair services.
-  </p>
+    <article class="faq-item">
+      <h2>Do you install and maintain CCTV systems?</h2>
+      <p>
+        Yes. We provide CCTV installation, system configuration and maintenance.
+        The recommended setup depends on the property and coverage requirements.
+      </p>
+    </article>
+
+    <article class="faq-item">
+      <h2>Do you install and maintain electric fences?</h2>
+      <p>
+        Yes. We provide electric fence installation, maintenance and repair.
+        The appropriate solution depends on the property layout and security needs.
+      </p>
+    </article>
+
+    <article class="faq-item">
+      <h2>Do you offer site assessments?</h2>
+      <p>
+        We discuss your project requirements and can arrange an on-site
+        assessment where appropriate. Arrangements depend on the project
+        and location.
+      </p>
+    </article>
+
+    <article class="faq-item">
+      <h2>Which areas do you serve?</h2>
+      <p>
+        Our service areas include Nairobi, Kiambu, Thika, Kajiado, Kitengela,
+        Machakos, Kitui, Nakuru, Eldoret, Mombasa, Kisumu, Meru and surrounding
+        areas. We also consider projects elsewhere in Kenya, depending on
+        project scope and location.
+      </p>
+    </article>
+
+    <article class="faq-item">
+      <h2>What happens after I request a quotation?</h2>
+      <p>
+        We review the information you provide and may contact you to clarify
+        your requirements. We then consider the project details and prepare
+        a suitable technical solution and quotation.
+      </p>
+    </article>
+  </div>
 </section>
 """
     )
 
+    # ---------------------------------------------------------
     # ---------------------------------------------------------
     # CONTACT
     # ---------------------------------------------------------
@@ -1042,41 +1170,65 @@ def build():
         Path("contact/index.html"),
         "pages/content.html",
         "Contact Brian Solar & Electrical | Kenya",
-        "Contact Brian Solar & Electrical for solar, electrical, CCTV and electric fence services in Kenya.",
+        "Contact Brian Solar & Electrical about solar, electrical, CCTV and electric fence projects anywhere in Kenya.",
         page_content=f"""
 <section>
   <h1>Contact Brian Solar &amp; Electrical</h1>
 
   <p>
-    Contact us for solar, electrical, CCTV and electric fence
-    installation, maintenance and technical support.
+    Contact our team to discuss Solar, Electrical, CCTV or Electric Fence
+    installation, maintenance, repairs and other project requirements.
+    We serve homes, businesses, farms and institutions across Kenya.
   </p>
 
-  <h2>Phone</h2>
+  <h2>Tell us about your project</h2>
   <p>
-    <a href="tel:{DATA["phone"]}">
-      {escape(DATA["phone_display"])}
-    </a>
+    When making an enquiry, please share your location, the service you
+    need, a brief description of the work and your preferred timeframe.
+    Photos or other relevant details can also help us understand the
+    requirements.
   </p>
 
-  <h2>WhatsApp</h2>
+  <h2>Call us</h2>
+  <p>
+    Speak to our team on
+    <a href="tel:{DATA["phone"]}">{escape(DATA["phone_display"])}</a>.
+  </p>
+
+  <h2>WhatsApp enquiries</h2>
   <p>
     <a href="{escape(DATA["whatsapp_url"])}">
-      Chat with us on WhatsApp
+      Chat with Brian Solar &amp; Electrical on WhatsApp
     </a>
+    to share your project details and relevant photos.
   </p>
 
   <h2>Email</h2>
   <p>
-    <a href="mailto:{escape(DATA["email"])}">
-      {escape(DATA["email"])}
-    </a>
+    Send your enquiry to
+    <a href="mailto:{escape(DATA["email"])}">{escape(DATA["email"])}</a>.
+  </p>
+
+  <h2>Our services</h2>
+  <ul>
+    <li><a href="/services/solar/">Solar installation and solutions</a></li>
+    <li><a href="/services/electrical/">Electrical installation and services</a></li>
+    <li><a href="/services/cctv/">CCTV installation and services</a></li>
+    <li><a href="/services/electric-fence/">Electric fence installation and services</a></li>
+  </ul>
+
+  <h2>What happens after you enquire?</h2>
+  <p>
+    We review the information you provide and may contact you to clarify
+    the project requirements. Where an assessment or site visit is needed,
+    any applicable charges will be explained and agreed with you before
+    the visit. We can then discuss a suitable solution and quotation based
+    on the scope of work.
   </p>
 </section>
 """
     )
 
-    # ---------------------------------------------------------
     # SOLAR SIZING CALCULATOR
     # ---------------------------------------------------------
 
@@ -1085,16 +1237,6 @@ def build():
         Path("calculator/index.html"),
         "Solar System Sizing Calculator Kenya | Brian Solar & Electrical",
         "Calculate your estimated solar panel, inverter and battery requirements in Kenya."
-    )
-    # ---------------------------------------------------------
-    # ---------------------------------------------------------
-    # KITENGELA SOLAR & ELECTRICAL LANDING PAGE
-    # ---------------------------------------------------------
-    build_content_page(
-        CONTENT / "solar-installation-kitengela.html",
-        Path("solar-installation-kitengela/index.html"),
-        "Professional Solar Power & Electrical Installation in Kitengela | Brian Solar & Electrical",
-        "Professional solar installation, borehole solarisation, electrical wiring, CCTV and electric fence services in Kitengela. Request a site assessment and quotation."
     )
     # LEGAL PAGES
     # ---------------------------------------------------------
