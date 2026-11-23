@@ -1,0 +1,34 @@
+{
+  "redirects": [
+    {
+      "source": "/solar-installation-kisumu.html",
+      "destination": "/locations/solar-installation-kisumu/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-installation-kitengela.html",
+      "destination": "/locations/solar-installation-kitengela/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-installation-kitui.html",
+      "destination": "/locations/solar-installation-kitui/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-installation-machakos.html",
+      "destination": "/locations/solar-installation-machakos/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-installation-mombasa.html",
+      "destination": "/locations/solar-installation-mombasa/",
+      "permanent": true
+    },
+    {
+      "source": "/solar-installation-nairobi.html",
+      "destination": "/locations/solar-installation-nairobi/",
+      "permanent": true
+    }
+  ]
+}
