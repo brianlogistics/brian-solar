@@ -822,8 +822,8 @@ def build():
     page(
         Path("projects/kitengela-5kw-solar-installation/index.html"),
         "pages/projects/kitengela-5kw-solar.html",
-        "5kW Hybrid Solar Installation with Grid Backup in Kitengela | Brian Solar & Electrical",
-        "A completed 5kW residential solar installation in Kitengela, Kajiado County.",
+        "5kW Solar Installation with Automatic/Manual Grid Changeover in Kitengela | Brian Solar & Electrical",
+        "Completed 5kW residential solar installation in Kitengela featuring an SRNE hybrid inverter, lithium battery storage and automatic/manual grid changeover, with solar power prioritised.",
         canonical=(
             DATA["domain"].rstrip("/")
             + "/projects/kitengela-5kw-solar-installation/"

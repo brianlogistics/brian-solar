@@ -226,7 +226,9 @@ function calculateSolarSystem() {
         return;
     }
 
-    const batteryRecommendation = result.requiredBatteryKwh > 0
+    const hasBackupAppliances = appliances.some(appliance => appliance.backupEnabled === true);
+
+    const batteryRecommendation = hasBackupAppliances && result.requiredBatteryKwh > 0
         ? SolarSizingEngine.recommendBatteryOptions(result.requiredBatteryKwh)
         : null;
 
@@ -264,11 +266,11 @@ function calculateSolarSystem() {
         "Estimated inverter capacity: " + result.requiredInverterKw + " kW",
         "Estimated starting load: " + result.startingLoadKw + " kW",
         "Design starting load: " + result.designStartingLoadKw + " kW",
-        "Backup requirement: " + result.backupHours + " hours",
-        "Estimated required battery capacity: " + result.requiredBatteryKwh + " kWh",
-        "Selected calculator battery configuration: " + result.batteryCount + " x " + result.batteryUnitKwh + " kWh",
-        "Estimated supplier battery recommendation: " + supplierBatteryMessage,
-        "Assumed battery-bank voltage: " + result.batteryVoltage + " V",
+        "Backup requirement: " + (hasBackupAppliances ? result.backupHours + " hours" : "No appliances selected for battery backup"),
+        "Estimated required battery capacity: " + (hasBackupAppliances ? result.requiredBatteryKwh + " kWh" : "Not sized"),
+        "Selected calculator battery configuration: " + (hasBackupAppliances ? result.batteryCount + " x " + result.batteryUnitKwh + " kWh" : "Not sized"),
+        "Estimated supplier battery recommendation: " + (hasBackupAppliances ? supplierBatteryMessage : "Not applicable - no appliances selected for battery backup"),
+        "Assumed battery-bank voltage: " + (hasBackupAppliances ? result.batteryVoltage + " V" : "Not applicable"),
         "",
         "Please review the calculations, appliance starting requirements, inverter surge capability, battery configuration and equipment compatibility.",
         "",
@@ -361,15 +363,15 @@ function calculateSolarSystem() {
 
             <p>
                 <strong>Backup requirement:</strong>
-                ${result.backupHours} hours
+                ${hasBackupAppliances ? result.backupHours + " hours" : "No appliances selected for battery backup"}
             </p>
 
             <p>
                 <strong>Estimated battery capacity:</strong>
-                ${result.requiredBatteryKwh} kWh
+                ${hasBackupAppliances ? result.requiredBatteryKwh + " kWh" : "Not sized"}
             </p>
 
-            ${batteryRecommendation
+            ${hasBackupAppliances && batteryRecommendation
                 ? batteryRecommendation.best
                     ? `<aside class="calculator-battery-recommendation">
                         <h3>Recommended Supplier Battery Configuration</h3>
@@ -388,6 +390,7 @@ function calculateSolarSystem() {
                     </aside>`
                     : `<p class="calculator-warning">No supplier battery option is currently marked as available for this estimated capacity. Please contact Brian Solar &amp; Electrical for assistance.</p>`
                 : ""}
+            ${hasBackupAppliances ? `
             <p>
                 <strong>Selected battery configuration:</strong>
                 ${result.batteryCount} &times; ${result.batteryUnitKwh} kWh
@@ -397,6 +400,7 @@ function calculateSolarSystem() {
                 <strong>Estimated DC battery current at ${result.batteryVoltage} V:</strong>
                 ${result.batteryCurrentA} A
             </p>
+            ` : ""}
 
             <hr>
 <aside class="calculator-quote-prompt" style="border:1px solid #d5e4d8;border-radius:10px;padding:18px;margin:18px 0;">

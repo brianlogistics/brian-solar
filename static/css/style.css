@@ -1369,3 +1369,177 @@ a.btn[href^="tel:"]:hover {
 .section-light .eyebrow {
   color: #8A6900;
 }
+
+/* HOMEPAGE PROJECT COMMITMENT SECTION */
+.project-commitment {
+  position: relative;
+  overflow: hidden;
+  color: #ffffff;
+  background: linear-gradient(135deg, #082b45 0%, #063b5c 100%);
+}
+
+.project-commitment .container {
+  position: relative;
+  z-index: 1;
+}
+
+.commitment-eyebrow {
+  margin: 0 0 12px;
+  color: #f5c542;
+  font-size: .82rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.project-commitment h2 {
+  max-width: 760px;
+  margin: 0 0 16px;
+  color: #ffffff;
+}
+
+.commitment-intro {
+  max-width: 720px;
+  margin: 0 0 34px;
+  color: #e0eaf0;
+  line-height: 1.7;
+}
+
+.commitment-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.commitment-card {
+  min-width: 0;
+  padding: 26px 22px;
+  border: 1px solid rgba(255, 255, 255, .16);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, .07);
+  transition: transform .25s ease, background-color .25s ease,
+    border-color .25s ease;
+}
+
+.commitment-card:hover {
+  transform: translateY(-5px);
+  border-color: rgba(245, 197, 66, .65);
+  background: rgba(255, 255, 255, .11);
+}
+
+.commitment-icon {
+  display: inline-flex;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 18px;
+  border: 1px solid rgba(245, 197, 66, .45);
+  border-radius: 13px;
+  color: #f5c542;
+  background: rgba(245, 197, 66, .10);
+}
+
+.commitment-icon svg {
+  width: 25px;
+  height: 25px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.7;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.commitment-card h3 {
+  margin: 0 0 12px;
+  color: #ffffff;
+  font-size: 1.08rem;
+  line-height: 1.4;
+}
+
+.commitment-card p {
+  margin: 0;
+  color: #dce7ee;
+  font-size: .95rem;
+  line-height: 1.7;
+}
+
+.commitment-action {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 34px;
+  padding-top: 26px;
+  border-top: 1px solid rgba(255, 255, 255, .18);
+}
+
+.commitment-action p {
+  margin: 0;
+  color: #ffffff;
+  font-weight: 700;
+}
+
+.commitment-cta {
+  display: inline-flex;
+  min-height: 48px;
+  align-items: center;
+  justify-content: center;
+  padding: 12px 22px;
+  border-radius: 8px;
+  color: #111111;
+  background: #f5c542;
+  font-weight: 800;
+  text-align: center;
+  text-decoration: none;
+  transition: transform .2s ease, background-color .2s ease;
+}
+
+.commitment-cta:hover {
+  transform: translateY(-2px);
+  color: #111111;
+  background: #ffd65e;
+}
+
+.commitment-cta:focus-visible {
+  outline: 3px solid #ffffff;
+  outline-offset: 4px;
+}
+
+@media (max-width: 1000px) {
+  .commitment-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 560px) {
+  .commitment-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .commitment-card {
+    padding: 23px 20px;
+  }
+
+  .commitment-action {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .commitment-cta {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commitment-card,
+  .commitment-cta {
+    transition: none;
+  }
+
+  .commitment-card:hover,
+  .commitment-cta:hover {
+    transform: none;
+  }
+}

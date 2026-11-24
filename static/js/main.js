@@ -327,7 +327,9 @@ ${WEBSITE_URL}`;
         result.success
       ) {
         setMessage(
-          "Request recorded successfully. Please press Send in WhatsApp to contact us.",
+          whatsappWindow
+            ? "Request recorded successfully. Please press Send in WhatsApp to contact us."
+            : "Request recorded successfully. Please use the WhatsApp button to contact us.",
           "success"
         );
 
@@ -352,7 +354,7 @@ ${WEBSITE_URL}`;
     } finally {
       submitting = false;
       submitButton.disabled = false;
-      submitButton.textContent = "Get Free Quotation";
+      submitButton.textContent = "Request a Quotation";
     }
   });
 })();

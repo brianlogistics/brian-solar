@@ -11,7 +11,7 @@
                          "slug":  "solar",
                          "name":  "Solar",
                          "short_name":  "Solar",
-                         "description":  "Professional solar panel installation, system design, lithium batteries, hybrid inverters, borehole solarisation, solar water pumps, solar water heaters, backup power systems, maintenance and repairs."
+                         "description":  "Professional solar panel installation and system design, lithium batteries, hybrid inverters, borehole solarisation, solar water pumps, solar water heaters, backup power systems, maintenance and repairs."
                      },
                      {
                          "slug":  "electrical",
@@ -23,13 +23,13 @@
                          "slug":  "cctv",
                          "name":  "CCTV",
                          "short_name":  "CCTV",
-                         "description":  "CCTV security camera installation, configuration, maintenance and support."
+                         "description":  "CCTV security camera installation, system configuration, maintenance and support."
                      },
                      {
                          "slug":  "electric-fence",
                          "name":  "Electric Fence",
                          "short_name":  "Electric Fence",
-                         "description":  "Electric fence installation, maintenance, repairs and security solutions."
+                         "description":  "Electric fence installation, maintenance, repairs and perimeter security solutions."
                      }
                  ],
     "primary_service_areas":  [

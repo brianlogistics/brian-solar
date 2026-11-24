@@ -29,6 +29,11 @@
       "source": "/solar-installation-nairobi.html",
       "destination": "/locations/solar-installation-nairobi/",
       "permanent": true
+    },
+    {
+      "source": "/solar-installation-kitengela/",
+      "destination": "/locations/solar-installation-kitengela/",
+      "permanent": true
     }
   ]
 }
